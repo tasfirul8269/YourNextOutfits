@@ -88,25 +88,30 @@ return new class extends Migration
             );
         }
 
-        // 3. Add to "Description" attribute group (id=2) so they appear in product edit form
-        $descriptionGroupId = DB::table('attribute_groups')->where('name', 'Description')->value('id') ?? 2;
+        // 3. Add to "Description" attribute group — look it up dynamically, skip if not seeded yet
+        $descriptionGroupId = DB::table('attribute_groups')->where('name', 'Description')->value('id')
+            ?? DB::table('attribute_groups')->value('id'); // fallback: first available group
 
-        $maxPos = DB::table('attribute_group_mappings')
-            ->where('attribute_group_id', $descriptionGroupId)
-            ->max('position') ?? 0;
-
-        foreach ([$deliveryAttrId, $careAttrId] as $i => $attrId) {
-            $exists = DB::table('attribute_group_mappings')
-                ->where('attribute_id', $attrId)
+        if (! $descriptionGroupId) {
+            // Attribute groups not seeded yet — skip mapping, will be handled by DB import
+        } else {
+            $maxPos = DB::table('attribute_group_mappings')
                 ->where('attribute_group_id', $descriptionGroupId)
-                ->exists();
+                ->max('position') ?? 0;
 
-            if (! $exists) {
-                DB::table('attribute_group_mappings')->insert([
-                    'attribute_id'       => $attrId,
-                    'attribute_group_id' => $descriptionGroupId,
-                    'position'           => $maxPos + $i + 1,
-                ]);
+            foreach ([$deliveryAttrId, $careAttrId] as $i => $attrId) {
+                $exists = DB::table('attribute_group_mappings')
+                    ->where('attribute_id', $attrId)
+                    ->where('attribute_group_id', $descriptionGroupId)
+                    ->exists();
+
+                if (! $exists) {
+                    DB::table('attribute_group_mappings')->insert([
+                        'attribute_id'       => $attrId,
+                        'attribute_group_id' => $descriptionGroupId,
+                        'position'           => $maxPos + $i + 1,
+                    ]);
+                }
             }
         }
 
