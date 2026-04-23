@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Bagisto 2.4.x - open-source Laravel 12 e-commerce platform. PHP 8.3+, Vue.js 3, Tailwind CSS 3, Vite 5.
+Yournext 2.4.x - open-source Laravel 12 e-commerce platform. PHP 8.3+, Vue.js 3, Tailwind CSS 3, Vite 5.
 
 ## Common Commands
 
 ### Development
 ```bash
 composer install                # Install PHP dependencies
-php artisan bagisto:install     # Full installation (migrations, seeders, assets)
+php artisan yournext:install     # Full installation (migrations, seeders, assets)
 php artisan serve               # Start PHP dev server
 php artisan optimize:clear      # Clear all caches (run after config/code changes)
 ```
@@ -20,20 +20,20 @@ php artisan optimize:clear      # Clear all caches (run after config/code change
 ```bash
 vendor/bin/pest                                         # Run all tests
 vendor/bin/pest --testsuite="Admin Feature Test"        # Run a specific test suite
-vendor/bin/pest packages/Webkul/Admin/tests/Feature     # Run tests in a directory
+vendor/bin/pest packages/Frooxi/Admin/tests/Feature     # Run tests in a directory
 vendor/bin/pest --filter="test name"                    # Run a single test by name
 ```
 
 Test suites defined in `phpunit.xml`: Admin Feature, Core Unit, Customer Unit, DataGrid Unit, Installer Feature, PayU Unit/Feature, Razorpay Unit/Feature, Shop Feature, Stripe Unit/Feature.
 
-Tests use **Pest 3** with package-specific TestCase classes bound in `tests/Pest.php`. Each package's tests live in `packages/Webkul/<Package>/tests/`.
+Tests use **Pest 3** with package-specific TestCase classes bound in `tests/Pest.php`. Each package's tests live in `packages/Frooxi/<Package>/tests/`.
 
 ### E2E Tests (Playwright)
 E2E tests are run from within each package directory. Each package has its own Playwright config and tests:
 
 **Admin**:
 ```bash
-cd packages/Webkul/Admin
+cd packages/Frooxi/Admin
 npm install
 npx playwright install --with-deps chromium
 npx playwright test --config=tests/e2e-pw/playwright.config.ts
@@ -41,7 +41,7 @@ npx playwright test --config=tests/e2e-pw/playwright.config.ts
 
 **Shop**:
 ```bash
-cd packages/Webkul/Shop
+cd packages/Frooxi/Shop
 npm install
 npx playwright install --with-deps chromium
 npx playwright test --config=tests/e2e-pw/playwright.config.ts
@@ -58,14 +58,14 @@ vendor/bin/pint --test      # Check style without fixing
 ### Translations
 When adding new translation keys, always provide translations for **all locales** in the package's `Resources/lang/` directory. Verify with:
 ```bash
-php artisan bagisto:translations:check
+php artisan yournext:translations:check
 ```
 
 ## Architecture
 
 ### Modular Package System
 
-All core functionality lives in **`packages/Webkul/`** (~42 packages). Each package is a self-contained Laravel package with its own models, controllers, routes, views, migrations, and service providers.
+All core functionality lives in **`packages/Frooxi/`** (~42 packages). Each package is a self-contained Laravel package with its own models, controllers, routes, views, migrations, and service providers.
 
 **Dual registration**: Each package registers in two places:
 1. **`bootstrap/providers.php`** - Main ServiceProvider (routes, views, events, config)
@@ -82,7 +82,7 @@ All core functionality lives in **`packages/Webkul/`** (~42 packages). Each pack
 ### Package Anatomy
 
 ```
-packages/Webkul/<Package>/src/
+packages/Frooxi/<Package>/src/
 ├── Config/           # system.php (admin settings), admin-menu.php, acl.php
 ├── Database/         # Migrations/, Seeders/, Factories/
 ├── Http/Controllers/ # Separate Admin/ and Shop/ controller directories
@@ -101,15 +101,15 @@ packages/Webkul/<Package>/src/
 ### Frontend Assets
 
 Admin, Shop, and Installer each have independent Vite builds. Run `npm install` and `npm run dev`/`npm run build` from within the respective package directory:
-- **Admin**: `packages/Webkul/Admin/` builds to `public/themes/admin/default/build/`
-- **Shop**: `packages/Webkul/Shop/` builds to `public/themes/shop/default/build/`
-- **Installer**: `packages/Webkul/Installer/`
+- **Admin**: `packages/Frooxi/Admin/` builds to `public/themes/admin/default/build/`
+- **Shop**: `packages/Frooxi/Shop/` builds to `public/themes/shop/default/build/`
+- **Installer**: `packages/Frooxi/Installer/`
 
 Vue 3 components are used within Blade templates via `@pushOnce('scripts')` / Blade component slots.
 
 ### Naming Conventions
 
-- **Namespace**: `Webkul\<PackageName>` (e.g., `Webkul\Product`)
+- **Namespace**: `Frooxi\<PackageName>` (e.g., `Frooxi\Product`)
 - **Routes**: Separate `admin-routes.php` and `shop-routes.php` per package
 - **Models**: Singular (`Product`, `Category`)
 - **Repositories**: `<Model>Repository` (e.g., `ProductRepository`)
@@ -117,13 +117,13 @@ Vue 3 components are used within Blade templates via `@pushOnce('scripts')` / Bl
 
 ### Adding a New Package
 
-1. Create `packages/Webkul/<Name>/src/` with the standard structure
+1. Create `packages/Frooxi/<Name>/src/` with the standard structure
 2. Add PSR-4 namespace to root `composer.json` autoload
 3. Register ServiceProvider in `bootstrap/providers.php`
 4. Register ModuleServiceProvider in `config/concord.php`
 5. Run `composer dump-autoload && php artisan optimize:clear`
 
-Or use: `php artisan package:make Webkul/<Name>` (requires `bagisto/bagisto-package-generator`)
+Or use: `php artisan package:make Frooxi/<Name>` (requires `yournext/yournext-package-generator`)
 
 ## CI Pipeline
 

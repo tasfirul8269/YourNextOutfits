@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Frooxi\Category\Models\Category;
+use Frooxi\Category\Models\CategoryTranslation;
 use Illuminate\Database\Seeder;
-use Webkul\Category\Models\Category;
-use Webkul\Category\Models\CategoryTranslation;
 
 class CategoryRedesignSeeder extends Seeder
 {

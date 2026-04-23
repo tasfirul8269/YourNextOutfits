@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Frooxi\Category\Models\Category;
+use Frooxi\Category\Models\CategoryTranslation;
 use Illuminate\Database\Seeder;
-use Webkul\Category\Models\Category;
-use Webkul\Category\Models\CategoryTranslation;
 
 class SubcategorySeeder extends Seeder
 {
@@ -29,12 +29,12 @@ class SubcategorySeeder extends Seeder
             5 => [
                 ['name' => 'Boys',   'slug' => 'kids-boys'],
                 ['name' => 'Girls',  'slug' => 'kids-girls'],
-                ['name' => 'Infants','slug' => 'kids-infants'],
+                ['name' => 'Infants', 'slug' => 'kids-infants'],
             ],
         ];
 
         $locales = ['en', 'bn', 'ar', 'ca', 'de', 'es', 'fa', 'fr', 'he', 'hi_IN',
-                    'id', 'it', 'ja', 'nl', 'pl', 'pt_BR', 'ru', 'sin', 'tr', 'uk', 'zh_CN'];
+            'id', 'it', 'ja', 'nl', 'pl', 'pt_BR', 'ru', 'sin', 'tr', 'uk', 'zh_CN'];
 
         foreach ($subcategories as $parentId => $children) {
             foreach ($children as $child) {
@@ -42,13 +42,14 @@ class SubcategorySeeder extends Seeder
 
                 if ($exists) {
                     $this->command->info("Skipping existing: {$child['slug']}");
+
                     continue;
                 }
 
                 $category = Category::create([
-                    'parent_id'    => $parentId,
-                    'position'     => 0,
-                    'status'       => 1,
+                    'parent_id' => $parentId,
+                    'position' => 0,
+                    'status' => 1,
                     'display_mode' => 'products_only',
                 ]);
 
@@ -56,12 +57,12 @@ class SubcategorySeeder extends Seeder
                     CategoryTranslation::updateOrCreate(
                         ['category_id' => $category->id, 'locale' => $locale],
                         [
-                            'name'             => $child['name'],
-                            'slug'             => $child['slug'],
-                            'meta_title'       => $child['name'],
-                            'description'      => null,
+                            'name' => $child['name'],
+                            'slug' => $child['slug'],
+                            'meta_title' => $child['name'],
+                            'description' => null,
                             'meta_description' => null,
-                            'meta_keywords'    => null,
+                            'meta_keywords' => null,
                         ]
                     );
                 }

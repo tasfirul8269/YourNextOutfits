@@ -1,7 +1,7 @@
 <?php
 
-use Webkul\Admin\Providers\ModuleServiceProvider;
-use Webkul\Core\CoreConvention;
+use Frooxi\Admin\Providers\ModuleServiceProvider;
+use Frooxi\Core\CoreConvention;
 
 return [
 
@@ -18,19 +18,19 @@ return [
      */
     'modules' => [
         ModuleServiceProvider::class,
-        Webkul\Attribute\Providers\ModuleServiceProvider::class,
-        Webkul\Category\Providers\ModuleServiceProvider::class,
-        Webkul\Checkout\Providers\ModuleServiceProvider::class,
-        Webkul\Core\Providers\ModuleServiceProvider::class,
-        Webkul\Customer\Providers\ModuleServiceProvider::class,
-        Webkul\DataGrid\Providers\ModuleServiceProvider::class,
-        Webkul\Inventory\Providers\ModuleServiceProvider::class,
-        Webkul\Payment\Providers\ModuleServiceProvider::class,
-        Webkul\Product\Providers\ModuleServiceProvider::class,
-        Webkul\Sales\Providers\ModuleServiceProvider::class,
-        Webkul\Shipping\Providers\ModuleServiceProvider::class,
-        Webkul\Shop\Providers\ModuleServiceProvider::class,
-        Webkul\Theme\Providers\ModuleServiceProvider::class,
-        Webkul\User\Providers\ModuleServiceProvider::class,
+        Frooxi\Attribute\Providers\ModuleServiceProvider::class,
+        Frooxi\Category\Providers\ModuleServiceProvider::class,
+        Frooxi\Checkout\Providers\ModuleServiceProvider::class,
+        Frooxi\Core\Providers\ModuleServiceProvider::class,
+        Frooxi\Customer\Providers\ModuleServiceProvider::class,
+        Frooxi\DataGrid\Providers\ModuleServiceProvider::class,
+        Frooxi\Inventory\Providers\ModuleServiceProvider::class,
+        Frooxi\Payment\Providers\ModuleServiceProvider::class,
+        Frooxi\Product\Providers\ModuleServiceProvider::class,
+        Frooxi\Sales\Providers\ModuleServiceProvider::class,
+        Frooxi\Shipping\Providers\ModuleServiceProvider::class,
+        Frooxi\Shop\Providers\ModuleServiceProvider::class,
+        Frooxi\Theme\Providers\ModuleServiceProvider::class,
+        Frooxi\User\Providers\ModuleServiceProvider::class,
     ],
 ];

@@ -13,7 +13,7 @@ return [
     |
     | NOTE: These are the fallback .env values. When the admin panel has
     | store_id / store_password configured, the SSLCommerzController reads
-    | directly from the Bagisto config DB (getConfigData), which takes
+    | directly from the Yournext config DB (getConfigData), which takes
     | precedence over these .env values.
     |
     */
@@ -33,7 +33,7 @@ return [
     |
     | Controlled by SSLCZ_TESTMODE in .env (true = sandbox, false = live).
     | The admin panel "Sandbox Mode" toggle overrides this at runtime via
-    | the Bagisto config DB.
+    | the Yournext config DB.
     |
     */
 

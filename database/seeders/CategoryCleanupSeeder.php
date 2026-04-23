@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use Frooxi\Category\Models\Category;
+use Frooxi\Category\Models\CategoryTranslation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Webkul\Category\Models\Category;
-use Webkul\Category\Models\CategoryTranslation;
 
 class CategoryCleanupSeeder extends Seeder
 {

@@ -1,23 +1,23 @@
 <?php
 
 use App\Providers\AppServiceProvider;
-use Webkul\Admin\Providers\AdminServiceProvider;
-use Webkul\Attribute\Providers\AttributeServiceProvider;
-use Webkul\Category\Providers\CategoryServiceProvider;
-use Webkul\Checkout\Providers\CheckoutServiceProvider;
-use Webkul\Core\Providers\CoreServiceProvider;
-use Webkul\Core\Providers\EnvValidatorServiceProvider;
-use Webkul\Customer\Providers\CustomerServiceProvider;
-use Webkul\DataGrid\Providers\DataGridServiceProvider;
-use Webkul\Installer\Providers\InstallerServiceProvider;
-use Webkul\Inventory\Providers\InventoryServiceProvider;
-use Webkul\Payment\Providers\PaymentServiceProvider;
-use Webkul\Product\Providers\ProductServiceProvider;
-use Webkul\Sales\Providers\SalesServiceProvider;
-use Webkul\Shipping\Providers\ShippingServiceProvider;
-use Webkul\Shop\Providers\ShopServiceProvider;
-use Webkul\Theme\Providers\ThemeServiceProvider;
-use Webkul\User\Providers\UserServiceProvider;
+use Frooxi\Admin\Providers\AdminServiceProvider;
+use Frooxi\Attribute\Providers\AttributeServiceProvider;
+use Frooxi\Category\Providers\CategoryServiceProvider;
+use Frooxi\Checkout\Providers\CheckoutServiceProvider;
+use Frooxi\Core\Providers\CoreServiceProvider;
+use Frooxi\Core\Providers\EnvValidatorServiceProvider;
+use Frooxi\Customer\Providers\CustomerServiceProvider;
+use Frooxi\DataGrid\Providers\DataGridServiceProvider;
+use Frooxi\Installer\Providers\InstallerServiceProvider;
+use Frooxi\Inventory\Providers\InventoryServiceProvider;
+use Frooxi\Payment\Providers\PaymentServiceProvider;
+use Frooxi\Product\Providers\ProductServiceProvider;
+use Frooxi\Sales\Providers\SalesServiceProvider;
+use Frooxi\Shipping\Providers\ShippingServiceProvider;
+use Frooxi\Shop\Providers\ShopServiceProvider;
+use Frooxi\Theme\Providers\ThemeServiceProvider;
+use Frooxi\User\Providers\UserServiceProvider;
 
 return [
     /**
@@ -26,7 +26,7 @@ return [
     AppServiceProvider::class,
 
     /**
-     * Webkul's service providers.
+     * Frooxi's service providers.
      */
     AdminServiceProvider::class,
     AttributeServiceProvider::class,

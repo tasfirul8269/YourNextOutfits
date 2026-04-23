@@ -1,7 +1,7 @@
 <?php
 
-use Webkul\Customer\Models\Customer;
-use Webkul\User\Models\Admin;
+use Frooxi\Customer\Models\Customer;
+use Frooxi\User\Models\Admin;
 
 return [
 

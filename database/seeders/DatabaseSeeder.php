@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use Frooxi\Installer\Database\Seeders\DatabaseSeeder as FrooxiDatabaseSeeder;
 use Illuminate\Database\Seeder;
-use Webkul\Installer\Database\Seeders\DatabaseSeeder as FrooxiDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,5 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(FrooxiDatabaseSeeder::class);
+
+        $this->call(ClothingProductSeeder::class);
     }
 }

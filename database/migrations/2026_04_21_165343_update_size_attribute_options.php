@@ -1,8 +1,8 @@
 <?php
 
+use Frooxi\Attribute\Repositories\AttributeRepository;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Webkul\Attribute\Repositories\AttributeRepository;
 
 return new class extends Migration
 {

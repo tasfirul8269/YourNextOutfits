@@ -40,12 +40,12 @@ return [
 
         'fixer' => [
             'key' => env('FIXER_API_KEY'),
-            'class' => 'Webkul\Core\Helpers\Exchange\FixerExchange',
+            'class' => 'Frooxi\Core\Helpers\Exchange\FixerExchange',
         ],
 
         'exchange_rates' => [
             'key' => env('EXCHANGE_RATES_API_KEY'),
-            'class' => 'Webkul\Core\Helpers\Exchange\ExchangeRates',
+            'class' => 'Frooxi\Core\Helpers\Exchange\ExchangeRates',
         ],
     ],
 

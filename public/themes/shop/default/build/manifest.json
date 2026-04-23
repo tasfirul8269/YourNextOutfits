@@ -1,27 +1,27 @@
 {
-  "_veeValidate-BVmzDvBf.js": {
-    "file": "assets/veeValidate-BVmzDvBf.js",
+  "_veeValidate-mYcwtPXf.js": {
+    "file": "assets/veeValidate-mYcwtPXf.js",
     "name": "veeValidate",
     "imports": [
-      "_vue-35TV7fXZ.js"
+      "_vue-ZnRn8rKq.js"
     ]
   },
-  "_vendor-BvB-yI7E.js": {
-    "file": "assets/vendor-BvB-yI7E.js",
+  "_vendor-DHYXV57S.js": {
+    "file": "assets/vendor-DHYXV57S.js",
     "name": "vendor"
   },
-  "_vue-35TV7fXZ.js": {
-    "file": "assets/vue-35TV7fXZ.js",
+  "_vue-ZnRn8rKq.js": {
+    "file": "assets/vue-ZnRn8rKq.js",
     "name": "vue"
   },
   "src/Resources/assets/css/app.css": {
-    "file": "assets/app-BZ0UWKUi.css",
+    "file": "assets/app-Bkbn61k2.css",
     "src": "src/Resources/assets/css/app.css",
     "isEntry": true
   },
-  "src/Resources/assets/fonts/bagisto-shop.woff": {
-    "file": "assets/bagisto-shop-BHAKyv0r.woff",
-    "src": "src/Resources/assets/fonts/bagisto-shop.woff"
+  "src/Resources/assets/fonts/yournext-shop.woff": {
+    "file": "assets/yournext-shop-BHAKyv0r.woff",
+    "src": "src/Resources/assets/fonts/yournext-shop.woff"
   },
   "src/Resources/assets/images/cash-on-delivery.png": {
     "file": "assets/cash-on-delivery-Ck2rBtSq.png",
@@ -108,14 +108,14 @@
     "src": "src/Resources/assets/images/wishlist.png"
   },
   "src/Resources/assets/js/app.js": {
-    "file": "assets/app-OsCmdBqe.js",
+    "file": "assets/app-agQJl9JT.js",
     "name": "app",
     "src": "src/Resources/assets/js/app.js",
     "isEntry": true,
     "imports": [
-      "_vue-35TV7fXZ.js",
-      "_vendor-BvB-yI7E.js",
-      "_veeValidate-BVmzDvBf.js"
+      "_vue-ZnRn8rKq.js",
+      "_vendor-DHYXV57S.js",
+      "_veeValidate-mYcwtPXf.js"
     ],
     "css": [
       "assets/app-DsP8OK1c.css"

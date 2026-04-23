@@ -146,7 +146,7 @@ return [
         ],
 
         'repositories' => [
-            'Webkul\Core\Repositories\CoreConfigRepository' => [
+            'Frooxi\Core\Repositories\CoreConfigRepository' => [
                 'enabled' => true,
 
                 // 'minutes'    => 10080,
@@ -168,23 +168,23 @@ return [
                 // ],
             ],
 
-            'Webkul\Core\Repositories\ChannelRepository' => [
+            'Frooxi\Core\Repositories\ChannelRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\CountryRepository' => [
+            'Frooxi\Core\Repositories\CountryRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\CountryStateRepository' => [
+            'Frooxi\Core\Repositories\CountryStateRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\CurrencyRepository' => [
+            'Frooxi\Core\Repositories\CurrencyRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\LocaleRepository' => [
+            'Frooxi\Core\Repositories\LocaleRepository' => [
                 'enabled' => true,
             ],
         ],
