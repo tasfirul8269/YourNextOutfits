@@ -75,17 +75,17 @@
 
             <template v-else>
                 <div class="overflow-x-auto">
-                    <table class="w-full table-fixed border-collapse">
+                    <table class="w-full border-collapse" style="min-width: 700px;">
                         <colgroup>
                             @if ($hasPermission)
                             <col style="width: 48px;" />
                             @endif
-                            <col style="width: 90px;" />  {{-- Image --}}
+                            <col style="width: 70px;" />   {{-- Image --}}
                             <col style="width: auto;" />   {{-- Name --}}
-                            <col style="width: 180px;" />  {{-- Price --}}
-                            <col style="width: 130px;" />  {{-- Quantity --}}
-                            <col style="width: 100px;" />  {{-- Status --}}
-                            <col style="width: 140px;" />  {{-- Actions --}}
+                            <col style="width: 120px;" />  {{-- Price --}}
+                            <col style="width: 90px;" />   {{-- Quantity --}}
+                            <col style="width: 80px;" />   {{-- Status --}}
+                            <col style="width: 100px;" />  {{-- Actions --}}
                         </colgroup>
                         <thead>
                             <tr class="border-b bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
@@ -115,12 +115,12 @@
                                     </label>
                                 </th>
                                 @endif
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Image</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Price</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Quantity</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                                <th class="px-4 py-3 max-sm:px-2 max-sm:py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Image</th>
+                                <th class="px-4 py-3 max-sm:px-2 max-sm:py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
+                                <th class="px-4 py-3 max-sm:px-2 max-sm:py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Price</th>
+                                <th class="px-4 py-3 max-sm:px-2 max-sm:py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Quantity</th>
+                                <th class="px-4 py-3 max-sm:px-2 max-sm:py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                                <th class="px-4 py-3 max-sm:px-2 max-sm:py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
