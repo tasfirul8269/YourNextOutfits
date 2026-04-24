@@ -43,7 +43,10 @@
                                 @if (bouncer()->hasPermission('sales.invoices.create'))
                                     <button
                                         type="submit"
-                                        class="primary-button ltr:mr-11 rtl:ml-11"
+                                        class="inline-flex items-center gap-1.5 rounded-md px-4 py-2 text-sm font-semibold text-white transition-colors ltr:mr-11 rtl:ml-11"
+                                        style="background:#e30612; border:1px solid #e30612;"
+                                        onmouseover="this.style.background='#c20510'"
+                                        onmouseout="this.style.background='#e30612'"
                                     >
                                         @lang('admin::app.sales.invoices.create.create-invoice')
                                     </button>
@@ -148,23 +151,6 @@
                                 @endif
                             @endforeach
 
-                            <!-- Create Transaction Button -->
-                            <x-admin::form.control-group class="!mb-0 flex w-max cursor-pointer select-none items-center gap-2.5 p-1.5">
-                                <x-admin::form.control-group.control
-                                    type="checkbox"
-                                    name="can_create_transaction"
-                                    id="can_create_transaction"
-                                    value="1"
-                                    for="can_create_transaction"
-                                />
-
-                                <label
-                                    for="can_create_transaction"
-                                    class="cursor-pointer !text-sm !font-semibold !text-gray-600 dark:!text-gray-300"
-                                >
-                                    @lang('admin::app.sales.invoices.create.create-transaction')
-                                </label>
-                            </x-admin::form.control-group>
                         </div>
                     </x-slot>
                 </x-admin::drawer>

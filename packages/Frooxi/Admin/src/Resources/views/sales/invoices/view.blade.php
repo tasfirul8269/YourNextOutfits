@@ -15,7 +15,7 @@
             <p class="font-serif text-2xl font-bold text-gray-900">
                 @lang('admin::app.sales.invoices.view.title', ['invoice_id' => $invoice->increment_id ?? $invoice->id])
 
-                <span class="{{ $invoice->status_label_class }} mx-1.5 text-sm">
+                <span class="mx-1.5 inline-flex items-center rounded-md bg-red-50 px-2.5 py-0.5 text-sm font-medium text-[#e30612] ring-1 ring-[#e30612]/10 dark:bg-red-900/20 dark:text-red-400 dark:ring-red-800/30">
                     {{ $invoice->status_label }}
                 </span>
             </p>
@@ -41,7 +41,10 @@
 
             <a
                 href="{{ route('admin.sales.invoices.print', $invoice->id) }}"
-                class="secondary-button"
+                class="inline-flex items-center gap-1.5 rounded-md px-4 py-2 text-sm font-semibold text-white transition-colors"
+                style="background:#e30612; border:1px solid #e30612;"
+                onmouseover="this.style.background='#c20510'"
+                onmouseout="this.style.background='#e30612'"
             >
                 <span class="text-2xl icon-printer"></span>
 
@@ -52,7 +55,7 @@
             <div>
                 <button
                     type="button"
-                    class="secondary-button"
+                    class="inline-flex items-center gap-1.5 rounded-md px-4 py-2 text-sm font-semibold text-[#e30612] transition-colors border border-[#e30612] bg-white hover:bg-red-50 dark:bg-gray-900 dark:text-red-400 dark:border-red-800 dark:hover:bg-red-900/20"
                     @click="$refs.groupCreateModal.open()"
                 >
                     <span class="text-2xl icon-mail"></span>
@@ -95,7 +98,8 @@
                             <!-- Save Button -->
                             <x-admin::button
                                 button-type="button"
-                                class="primary-button"
+                                class="inline-flex items-center gap-1.5 rounded-md px-4 py-2 text-sm font-semibold text-white transition-colors"
+                                style="background:#e30612; border:1px solid #e30612;"
                                 :title="trans('admin::app.sales.invoices.view.send')"
                             />
                         </x-slot>
@@ -113,8 +117,8 @@
         <!-- Left sub-component -->
         <div class="flex flex-col flex-1 gap-2 max-xl:flex-auto">
             <!-- Invoice Item Section -->
-            <div class="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
-                <p class="text-base font-semibold text-gray-900 pb-3 border-b border-gray-50 mb-4">
+            <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:bg-gray-900">
+                <p class="text-base font-semibold text-gray-900 pb-3 border-b-2 border-[#e30612] mb-4">
                     @lang('admin::app.sales.invoices.view.invoice-items') ({{ count($invoice->items) }})
                 </p>
 
@@ -299,7 +303,7 @@
                             </p>
                         @endif
 
-                        <p class="text-base font-semibold !leading-5 text-gray-800 dark:text-white">
+                        <p class="text-base font-semibold !leading-5 text-[#e30612] dark:text-red-400">
                             @lang('admin::app.sales.invoices.view.grand-total')
                         </p>
                     </div>
@@ -356,7 +360,7 @@
                         @endif
 
                         <!-- Grand Total -->
-                        <p class="text-base font-semibold !leading-5 text-gray-800 dark:text-white">
+                        <p class="text-base font-semibold !leading-5 text-[#e30612] dark:text-red-400">
                             {{ core()->formatBasePrice($invoice->base_grand_total) }}
                         </p>
                     </div>
@@ -369,7 +373,7 @@
             <!-- component 1 -->
             <x-admin::accordion>
                 <x-slot:header>
-                    <p class="p-2.5 text-base font-semibold text-gray-900">
+                    <p class="p-2.5 text-base font-semibold text-gray-900 border-l-2 border-[#e30612] pl-3">
                         @lang('admin::app.sales.invoices.view.customer')
                     </p>
                 </x-slot>
@@ -434,7 +438,7 @@
             <!-- component 2 -->
             <x-admin::accordion>
                 <x-slot:header>
-                    <p class="p-2.5 text-base font-semibold text-gray-900">
+                    <p class="p-2.5 text-base font-semibold text-gray-900 border-l-2 border-[#e30612] pl-3">
                         @lang('admin::app.sales.invoices.view.order-information')
                     </p>
                 </x-slot>
@@ -451,7 +455,7 @@
 
                         <div class="flex flex-col gap-y-1.5">
                             <!-- Order Id -->
-                            <p class="font-semibold text-blue-600 transition-all hover:underline">
+                            <p class="font-semibold text-[#e30612] transition-all hover:underline">
                                 <a href="{{ route('admin.sales.orders.view', $order->id) }}">#{{ $order->increment_id }}</a>
                             </p>
 
