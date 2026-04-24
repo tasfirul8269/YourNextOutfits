@@ -3,7 +3,7 @@
     <div class="transparent-button px-1 py-1.5 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">
         <span class="icon-sales text-2xl"></span>
 
-        @lang('admin::app.sales.invoices.create.invoice')
+        @lang('admin::app.sales.invoices.create.create-invoice')
     </div>
 </v-create-invoices>
 
@@ -23,7 +23,7 @@
                         tabindex="0"
                     ></span>
 
-                    @lang('admin::app.sales.invoices.create.invoice')
+                    @lang('admin::app.sales.invoices.create.create-invoice')
             </div>
 
             <!-- Invoice Create drawer -->

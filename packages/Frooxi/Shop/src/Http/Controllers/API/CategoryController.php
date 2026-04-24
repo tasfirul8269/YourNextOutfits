@@ -48,11 +48,19 @@ class CategoryController extends APIController
     /**
      * Get all categories in tree format.
      */
-    public function tree(): JsonResource
+    public function tree(): JsonResponse
     {
-        $categories = $this->categoryRepository->getVisibleCategoryTree(core()->getCurrentChannel()->root_category_id);
+        $version = cache()->get('category_tree_version', 1);
 
-        return CategoryTreeResource::collection($categories);
+        $cacheKey = 'category_tree_'.core()->getCurrentChannel()->id.'_'.app()->getLocale().'_'.$version;
+
+        $data = cache()->remember($cacheKey, 3600, function () {
+            return CategoryTreeResource::collection(
+                $this->categoryRepository->getVisibleCategoryTree(core()->getCurrentChannel()->root_category_id)
+            )->toArray(request());
+        });
+
+        return response()->json(['data' => $data]);
     }
 
     /**

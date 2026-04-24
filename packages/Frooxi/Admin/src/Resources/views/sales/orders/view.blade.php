@@ -84,6 +84,13 @@
                 </div>
             @endif
 
+            @if (
+                $order->canInvoice()
+                && bouncer()->hasPermission('sales.invoices.create')
+            )
+                @include('admin::sales.invoices.create')
+            @endif
+
             {!! view_render_event('frooxi.admin.sales.order.page_action.after', ['order' => $order]) !!}
         </div>
 

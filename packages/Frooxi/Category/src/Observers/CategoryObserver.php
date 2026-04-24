@@ -3,6 +3,7 @@
 namespace Frooxi\Category\Observers;
 
 use Frooxi\Category\Models\Category;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryObserver
@@ -15,6 +16,8 @@ class CategoryObserver
      */
     public function deleted($category)
     {
+        Cache::increment('category_tree_version');
+
         Storage::deleteDirectory('category/'.$category->id);
     }
 
@@ -26,6 +29,8 @@ class CategoryObserver
      */
     public function saved($category)
     {
+        Cache::increment('category_tree_version');
+
         foreach ($category->children as $child) {
             $child->touch();
         }
