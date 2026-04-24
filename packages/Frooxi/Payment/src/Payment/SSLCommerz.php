@@ -2,6 +2,8 @@
 
 namespace Frooxi\Payment\Payment;
 
+use Illuminate\Support\Facades\Storage;
+
 class SSLCommerz extends Payment
 {
     /**
@@ -22,6 +24,18 @@ class SSLCommerz extends Payment
     public function getRedirectUrl()
     {
         return route('shop.sslcommerz.pay');
+    }
+
+    /**
+     * Get payment method image.
+     *
+     * @return array
+     */
+    public function getImage()
+    {
+        $url = $this->getConfigData('image');
+
+        return $url ? Storage::url($url) : yournext_asset('images/sslcommerz.png', 'shop');
     }
 
     /**

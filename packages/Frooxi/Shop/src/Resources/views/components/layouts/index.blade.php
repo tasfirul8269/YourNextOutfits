@@ -26,6 +26,8 @@
 
         <title>{{ $title ?? '' }}</title>
 
+        <link rel="icon" href="{{ asset('themes/shop/favicon_white.png') }}" type="image/png">
+
         <meta charset="UTF-8">
 
         <meta

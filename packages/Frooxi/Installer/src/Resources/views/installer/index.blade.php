@@ -8,6 +8,8 @@
             @lang('installer::app.installer.index.title')
         </title>
 
+        <link rel="icon" href="{{ asset('themes/shop/favicon_white.png') }}" type="image/png">
+
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
