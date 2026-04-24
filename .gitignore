@@ -40,6 +40,10 @@ package-lock.json
 skills-lock.json
 /storage/*.key
 /storage/dcc-data/
+/storage/framework/cache/
+/storage/framework/views/
+/storage/framework/sessions/
+/storage/logs/
 /test-results
 /vendor
 yarn.lock

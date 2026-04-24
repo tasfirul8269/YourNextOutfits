@@ -10,7 +10,7 @@
             type="price"
             name="price"
             rules="required"
-            :value="old('price') ?: $product->price"
+            :value="old('price') ?: (isset($product->price) && $product->price !== null ? rtrim(rtrim(number_format((float) $product->price, 4, '.', ''), '0'), '.') : '')"
             label="Base Price"
         >
             <x-slot:currency>
@@ -31,7 +31,7 @@
             type="price"
             name="special_price"
             rules="nullable|numeric|min:0"
-            :value="old('special_price') ?: $product->special_price"
+            :value="old('special_price') ?: (isset($product->special_price) && $product->special_price !== null ? rtrim(rtrim(number_format((float) $product->special_price, 4, '.', ''), '0'), '.') : '')"
             label="Sale Price"
         >
             <x-slot:currency>

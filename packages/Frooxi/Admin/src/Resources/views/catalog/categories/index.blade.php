@@ -107,12 +107,21 @@
                         </span>
 
                         <!-- Actions -->
-                        <a 
+                        <a
                             :href="'/admin/catalog/categories/edit/' + category.id"
                             class="rounded-md p-2 cursor-pointer transition-colors hover:bg-gray-100"
                         >
                             <span class="icon-edit text-lg text-gray-500"></span>
                         </a>
+
+                        @if (bouncer()->hasPermission('catalog.categories.delete'))
+                            <span
+                                @click.stop="deleteCategory(category)"
+                                class="icon-delete cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-red-50 max-sm:place-self-center"
+                                title="Delete"
+                            >
+                            </span>
+                        @endif
                     </div>
                 </div>
 
@@ -177,6 +186,28 @@
                         if (this.category.children && this.category.children.length > 0) {
                             this.isExpanded = !this.isExpanded;
                         }
+                    },
+
+                    deleteCategory(category) {
+                        if (category.children && category.children.length > 0) {
+                            this.$emitter.emit('add-flash', { type: 'warning', message: 'Cannot delete a category that has subcategories. Please delete subcategories first.' });
+
+                            return;
+                        }
+
+                        this.$emitter.emit('open-confirm-modal', {
+                            agree: () => {
+                                this.$axios.delete("{{ url('/api/v1/admin/categories') }}/" + category.id)
+                                    .then(response => {
+                                        this.$emitter.emit('add-flash', { type: 'success', message: 'Category deleted successfully.' });
+
+                                        this.$emit('refresh');
+                                    })
+                                    .catch(error => {
+                                        this.$emitter.emit('add-flash', { type: 'error', message: error.response?.data?.message || 'Failed to delete category.' });
+                                    });
+                            }
+                        });
                     }
                 }
             });
