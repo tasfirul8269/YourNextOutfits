@@ -8,7 +8,7 @@
 
 </v-datagrid-search>
 
-<?php if (! $__env->hasRenderedOnce('dba7bfea-70e8-4abf-96ae-7ef80f84369b')): $__env->markAsRenderedOnce('dba7bfea-70e8-4abf-96ae-7ef80f84369b');
+<?php if (! $__env->hasRenderedOnce('536c4e74-a834-4320-9042-8094647b6f81')): $__env->markAsRenderedOnce('536c4e74-a834-4320-9042-8094647b6f81');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

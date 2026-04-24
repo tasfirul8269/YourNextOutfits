@@ -411,7 +411,7 @@
     <?php echo view_render_event('frooxi.shop.products.view.after', ['product' => $product]); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('ba266d72-d1d3-4c44-bd5a-c6921c1eddfc')): $__env->markAsRenderedOnce('ba266d72-d1d3-4c44-bd5a-c6921c1eddfc');
+    <?php if (! $__env->hasRenderedOnce('a94b8aac-79f2-4f9e-bd27-c844c250ec9e')): $__env->markAsRenderedOnce('a94b8aac-79f2-4f9e-bd27-c844c250ec9e');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

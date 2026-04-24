@@ -34,7 +34,7 @@ unset($__defined_vars, $__key, $__value); ?>
     </div>
 </v-carousel>
 
-<?php if (! $__env->hasRenderedOnce('761e9651-7b5e-4e7d-ba30-a1ed81978568')): $__env->markAsRenderedOnce('761e9651-7b5e-4e7d-ba30-a1ed81978568');
+<?php if (! $__env->hasRenderedOnce('f7e00319-1150-4ba5-874e-65b2e730caee')): $__env->markAsRenderedOnce('f7e00319-1150-4ba5-874e-65b2e730caee');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

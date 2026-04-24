@@ -300,7 +300,7 @@
     <?php echo view_render_event('frooxi.admin.catalog.products.list.after'); ?>
 
 
-    <?php if (! $__env->hasRenderedOnce('19c72323-d696-40b5-b8ac-61e3da4ea096')): $__env->markAsRenderedOnce('19c72323-d696-40b5-b8ac-61e3da4ea096');
+    <?php if (! $__env->hasRenderedOnce('bd86da0f-8209-4d5c-a17f-1fd674c82444')): $__env->markAsRenderedOnce('bd86da0f-8209-4d5c-a17f-1fd674c82444');
 $__env->startPush('scripts'); ?>
         <script
             type="text/x-template"

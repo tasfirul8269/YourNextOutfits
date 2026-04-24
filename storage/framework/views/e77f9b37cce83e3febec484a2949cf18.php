@@ -13,7 +13,7 @@
 
 <v-tinymce <?php echo e($attributes); ?>></v-tinymce>
 
-<?php if (! $__env->hasRenderedOnce('387cd069-6767-4ad2-a3e5-5fcb9403ac22')): $__env->markAsRenderedOnce('387cd069-6767-4ad2-a3e5-5fcb9403ac22');
+<?php if (! $__env->hasRenderedOnce('06dde68b-7a89-4c67-950d-041a66a0cb7b')): $__env->markAsRenderedOnce('06dde68b-7a89-4c67-950d-041a66a0cb7b');
 $__env->startPush('scripts'); ?>
     <!--
         TODO (@devansh-webkul): Only this portion is pending; it just needs to be integrated using the Vite bundler. Currently,

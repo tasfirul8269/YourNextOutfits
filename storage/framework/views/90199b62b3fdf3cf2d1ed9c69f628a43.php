@@ -6,7 +6,7 @@
 
 </v-datagrid-mass-action>
 
-<?php if (! $__env->hasRenderedOnce('3fd4645c-6fca-4b66-bbd4-6eb74820e1bd')): $__env->markAsRenderedOnce('3fd4645c-6fca-4b66-bbd4-6eb74820e1bd');
+<?php if (! $__env->hasRenderedOnce('3671432a-f31b-44e1-8a94-e953da2a585f')): $__env->markAsRenderedOnce('3671432a-f31b-44e1-8a94-e953da2a585f');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

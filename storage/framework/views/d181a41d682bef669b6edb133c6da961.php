@@ -174,7 +174,7 @@
 <?php echo view_render_event('frooxi.admin.catalog.product.edit.form.inventories.controls.after', ['product' => $product]); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('2b6dd160-011e-4e0d-aefe-ee733c261d8f')): $__env->markAsRenderedOnce('2b6dd160-011e-4e0d-aefe-ee733c261d8f');
+<?php if (! $__env->hasRenderedOnce('d5a5f5f8-f13f-430e-b54f-36c62313b39f')): $__env->markAsRenderedOnce('d5a5f5f8-f13f-430e-b54f-36c62313b39f');
 $__env->startPush('scripts'); ?>
     <script
         type="text/x-template"

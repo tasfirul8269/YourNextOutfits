@@ -167,7 +167,7 @@
     </div>
 </div>
 
-<?php if (! $__env->hasRenderedOnce('cd636749-cb7d-4763-af28-d6510f76e25d')): $__env->markAsRenderedOnce('cd636749-cb7d-4763-af28-d6510f76e25d');
+<?php if (! $__env->hasRenderedOnce('a3c0f12a-eb6d-4e7b-9f1b-ef78c1771d94')): $__env->markAsRenderedOnce('a3c0f12a-eb6d-4e7b-9f1b-ef78c1771d94');
 $__env->startPush('styles'); ?>
     <style>
         #main-header-container {
@@ -273,7 +273,7 @@ $__env->startPush('styles'); ?>
     </style>
 <?php $__env->stopPush(); endif; ?>
 
-<?php if (! $__env->hasRenderedOnce('b163bd37-d48b-4716-ae52-9b405a26735c')): $__env->markAsRenderedOnce('b163bd37-d48b-4716-ae52-9b405a26735c');
+<?php if (! $__env->hasRenderedOnce('61b0ac76-9f85-4239-a072-7e23ce93d7c3')): $__env->markAsRenderedOnce('61b0ac76-9f85-4239-a072-7e23ce93d7c3');
 $__env->startPush('scripts'); ?>
     <!-- Desktop Category Component -->
     <script type="text/x-template" id="v-desktop-category-template">

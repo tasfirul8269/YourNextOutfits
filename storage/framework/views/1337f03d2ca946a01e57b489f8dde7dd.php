@@ -10,7 +10,7 @@
 <?php echo view_render_event('frooxi.admin.catalog.product.edit.form.types.configurable.after', ['product' => $product]); ?>
 
 
-<?php if (! $__env->hasRenderedOnce('9ada9084-38a8-40bc-8439-ffa13ca9582d')): $__env->markAsRenderedOnce('9ada9084-38a8-40bc-8439-ffa13ca9582d');
+<?php if (! $__env->hasRenderedOnce('577abcfd-c193-44dc-91f6-742706438bc1')): $__env->markAsRenderedOnce('577abcfd-c193-44dc-91f6-742706438bc1');
 $__env->startPush('scripts'); ?>
     <!-- Variations Template -->
     <script
