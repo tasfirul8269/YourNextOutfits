@@ -11,7 +11,11 @@
         type="text/x-template"
         id="v-carousel-template"
     >
-        <div class="hero-carousel relative m-auto flex w-full overflow-hidden">
+        <div class="hero-carousel relative m-auto flex w-full overflow-hidden"
+             @touchstart="onTouchStart"
+             @touchend="onTouchEnd"
+             ref="carouselContainer"
+        >
             <!-- Slider -->
             <div
                 class="inline-flex translate-x-0 cursor-pointer will-change-transform"
@@ -110,12 +114,10 @@
 
             data() {
                 return {
-                    // REMOVED: Drag/swipe functionality disabled
-                    // isDragging: false,
-                    // startPos: 0,
-                    // currentTranslate: 0,
-                    // prevTranslate: 0,
-                    // animationID: 0,
+                    touchStartX: 0,
+                    touchStartY: 0,
+                    touchEndX: 0,
+                    isSwiping: false,
                     currentIndex: this.images.length > 1 ? 1 : 0,
                     isTransitionDisabled: true,
                     slider: '',
@@ -157,6 +159,11 @@
                     && typeof this.$refs.slide[Symbol.iterator] === 'function'
                 ) {
                     this.slides = Array.from(this.$refs.slide);
+                }
+
+                // Add touchmove with passive:false so we can preventDefault()
+                if (this.$refs.carouselContainer) {
+                    this.$refs.carouselContainer.addEventListener('touchmove', this.onTouchMove, { passive: false });
                 }
 
                 // Use requestIdleCallback for non-critical initialization
@@ -226,8 +233,48 @@
                     }
                 },
 
+                onTouchStart(e) {
+                    this.touchStartX = e.touches[0].clientX;
+                    this.touchStartY = e.touches[0].clientY;
+                    this.isSwiping = false;
+                },
+
+                onTouchMove(e) {
+                    if (!this.touchStartX) return;
+
+                    const diffX = Math.abs(e.touches[0].clientX - this.touchStartX);
+                    const diffY = Math.abs(e.touches[0].clientY - this.touchStartY);
+
+                    // If horizontal movement is dominant, prevent vertical scroll
+                    if (diffX > diffY && diffX > 10) {
+                        this.isSwiping = true;
+                        e.preventDefault();
+                    }
+                },
+
+                onTouchEnd(e) {
+                    if (!this.isSwiping) return;
+
+                    this.touchEndX = e.changedTouches[0].clientX;
+                    const diff = this.touchStartX - this.touchEndX;
+
+                    if (Math.abs(diff) > 50) {
+                        clearInterval(this.autoPlayInterval);
+
+                        if (diff > 0) {
+                            this.next();
+                        } else {
+                            this.prev();
+                        }
+                    }
+
+                    this.touchStartX = 0;
+                    this.touchStartY = 0;
+                    this.isSwiping = false;
+                },
+
                 visitLink(media) {
-                    if (media.link && !this.isDragging) {
+                    if (media.link && !this.isSwiping) {
                         window.location.href = media.link;
                     }
                 },
@@ -367,10 +414,12 @@
                 },
 
                 cleanup() {
-                    // Clear intervals and animation frames
                     clearInterval(this.autoPlayInterval);
 
-                    // REMOVED: Drag event listener cleanup not needed
+                    if (this.$refs.carouselContainer) {
+                        this.$refs.carouselContainer.removeEventListener('touchmove', this.onTouchMove);
+                    }
+
                     window.removeEventListener('resize', this.setPositionByIndex);
                 },
             },

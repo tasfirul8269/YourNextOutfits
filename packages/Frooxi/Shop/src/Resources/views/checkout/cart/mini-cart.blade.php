@@ -343,7 +343,7 @@
 
                         <a
                             href="{{ route('shop.checkout.onepage.index') }}"
-                            class="mx-auto block w-full cursor-pointer rounded-md bg-black px-11 py-4 text-center text-base font-medium text-white hover:bg-gray-800 transition-colors max-md:rounded-md max-md:px-5 max-md:py-2"
+                            class="mx-auto block w-full cursor-pointer rounded-md bg-[#e30612] px-11 py-4 text-center text-base font-medium text-white hover:bg-[#c00510] transition-colors max-md:rounded-md max-md:px-5 max-md:py-2"
                         >
                             @lang('shop::app.checkout.cart.mini-cart.continue-to-checkout')
                         </a>

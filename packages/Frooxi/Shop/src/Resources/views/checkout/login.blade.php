@@ -102,7 +102,7 @@
                         <x-slot:footer>
                             <div class="flex flex-wrap items-center gap-4">
                                 <x-shop::button
-                                    class="primary-button max-w-none flex-auto rounded-[5px] bg-black px-8 py-3 text-sm font-medium text-white max-md:py-2"
+                                    class="primary-button max-w-none flex-auto rounded-[5px] bg-[#e30612] px-8 py-3 text-sm font-medium text-white max-md:py-2"
                                     :title="trans('shop::app.checkout.login.title')"
                                     ::loading="isStoring"
                                     ::disabled="isStoring"

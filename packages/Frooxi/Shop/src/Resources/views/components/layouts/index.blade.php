@@ -262,7 +262,7 @@
 
             <!-- WhatsApp Floating Action Button -->
             <a
-                href="https://wa.me/"
+                href="https://wa.me/8801880932952"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="whatsapp-fab"

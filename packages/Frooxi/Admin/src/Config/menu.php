@@ -58,10 +58,17 @@ return [
         'icon' => '',
     ],
     [
+        'key'   => 'sales.invoices',
+        'name'  => 'admin::app.components.layouts.sidebar.invoices',
+        'route' => 'admin.sales.invoices.index',
+        'sort'  => 2,
+        'icon'  => '',
+    ],
+    [
         'key' => 'sales.payment_methods',
         'name' => 'Payment Methods',
         'route' => 'admin.sales.payment_methods.index',
-        'sort' => 2,
+        'sort' => 3,
         'icon' => '',
     ],
 

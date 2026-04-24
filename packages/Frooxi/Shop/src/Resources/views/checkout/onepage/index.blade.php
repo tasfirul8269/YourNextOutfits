@@ -28,7 +28,7 @@
             <div style="display:flex;align-items:center;gap:0;" class="max-md:hidden">
                 <template v-for="(step, idx) in [{key:'address',label:'Address'},{key:'shipping',label:'Shipping'},{key:'payment',label:'Payment'},{key:'review',label:'Review'}]" :key="step.key">
                     <div style="display:flex;align-items:center;gap:8px;">
-                        <div :style="'width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;transition:all .2s;' + (currentStep === step.key ? 'background:#111;color:#fff;' : ['address','shipping','payment','review'].indexOf(currentStep) > idx ? 'background:#a38c5a;color:#fff;' : 'background:#f3f4f6;color:#9ca3af;')">
+                        <div :style="'width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;transition:all .2s;' + (currentStep === step.key ? 'background:#e30612;color:#fff;' : ['address','shipping','payment','review'].indexOf(currentStep) > idx ? 'background:#a38c5a;color:#fff;' : 'background:#f3f4f6;color:#9ca3af;')">
                             <span v-if="['address','shipping','payment','review'].indexOf(currentStep) > idx">&#10003;</span>
                             <span v-else>@{{ idx + 1 }}</span>
                         </div>
@@ -121,7 +121,7 @@
                             <template v-else>
                                 <x-shop::button
                                     type="button"
-                                    style="width:100%;height:52px;background:#111;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;"
+                                    style="width:100%;height:52px;background:#e30612;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;"
                                     :title="trans('shop::app.checkout.onepage.summary.place-order')"
                                     ::disabled="isPlacingOrder"
                                     ::loading="isPlacingOrder"

@@ -229,9 +229,9 @@
                 {{-- Submit --}}
                 <button
                     type="submit"
-                    style="width:100%;height:52px;background:#111;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;margin-top:8px;margin-bottom:24px;"
-                    onmouseover="this.style.background='#333'"
-                    onmouseout="this.style.background='#111'"
+                    style="width:100%;height:52px;background:#e30612;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;margin-top:8px;margin-bottom:24px;"
+                    onmouseover="this.style.background='#c00510'"
+                    onmouseout="this.style.background='#e30612'"
                 >
                     @lang('shop::app.customers.signup-form.button-title')
                 </button>

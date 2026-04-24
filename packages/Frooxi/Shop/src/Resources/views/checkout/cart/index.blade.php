@@ -294,7 +294,7 @@
                                 {!! view_render_event('frooxi.shop.checkout.cart.update_cart.before') !!}
 
                                 <x-shop::button
-                                    style="height:44px;background:#111;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:0 28px;cursor:pointer;"
+                                    style="height:44px;background:#e30612;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:0 28px;cursor:pointer;"
                                     :title="trans('shop::app.checkout.cart.index.update-cart')"
                                     ::loading="isStoring"
                                     ::disabled="isStoring"
@@ -330,7 +330,7 @@
                         <p style="font-family:'Montserrat',sans-serif;font-size:18px;font-weight:500;color:#111;letter-spacing:.04em;text-transform:uppercase;margin:0 0 8px;" role="heading">
                             @lang('shop::app.checkout.cart.index.empty-product')
                         </p>
-                        <a href="{{ route('shop.home.index') }}" style="margin-top:20px;display:inline-block;height:44px;line-height:44px;padding:0 32px;background:#111;color:#fff;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;">
+                        <a href="{{ route('shop.home.index') }}" style="margin-top:20px;display:inline-block;height:44px;line-height:44px;padding:0 32px;background:#e30612;color:#fff;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;">
                             Continue Shopping
                         </a>
                     </div>

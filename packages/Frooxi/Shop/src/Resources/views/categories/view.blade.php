@@ -34,6 +34,11 @@
             }
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         #category-page-product-grid::-webkit-scrollbar,
         #category-page-product-skeleton-grid::-webkit-scrollbar {
             display: none;
@@ -64,7 +69,7 @@
                         <line x1="11" y1="18" x2="13" y2="18"></line>
                     </svg>
                     Filter
-                    <span id="filter-count-badge" style="display:none;background:#111;color:#fff;font-size:10px;font-weight:600;border-radius:9999px;padding:1px 7px;line-height:1.6;"></span>
+                    <span id="filter-count-badge" style="display:none;background:#e30612;color:#fff;font-size:10px;font-weight:600;border-radius:9999px;padding:1px 7px;line-height:1.6;"></span>
                 </button>
 
                 <div style="display:flex;align-items:center;gap:10px;">
@@ -112,16 +117,12 @@
 
             <div id="category-page-product-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;"></div>
 
-            <div id="load-more-wrapper" style="display:none;text-align:center;margin-top:48px;">
-                <button
-                    id="load-more-button"
-                    onclick="loadMoreProducts()"
-                    style="padding:13px 44px;background:#000;color:#fff;font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;border-radius:9999px;border:none;cursor:pointer;letter-spacing:.3px;"
-                    onmouseover="if (!this.disabled) this.style.background='#333'"
-                    onmouseout="if (!this.disabled) this.style.background='#000'"
-                >
-                    @lang('shop::app.categories.view.load-more')
-                </button>
+            <div id="infinite-scroll-sentinel" style="height:1px;"></div>
+            <div id="infinite-scroll-spinner" style="display:none;justify-content:center;padding:24px 0;">
+                <svg style="width:32px;height:32px;animation:spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="#e30612" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+                </svg>
             </div>
         </div>
     </div>
@@ -216,10 +217,10 @@
                 </div>
 
                 <div id="pc-price-body" style="padding:0 28px 28px;">
-                    <div id="pc-slider-track" style="position:relative;height:2px;background:#111;margin:16px 0 20px;cursor:pointer;">
-                        <div id="price-track-fill" style="position:absolute;top:0;height:100%;background:#111;left:0%;width:100%;"></div>
-                        <div id="pc-thumb-min" style="position:absolute;top:50%;width:22px;height:22px;background:#111;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:0%;z-index:2;"></div>
-                        <div id="pc-thumb-max" style="position:absolute;top:50%;width:22px;height:22px;background:#111;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:100%;z-index:2;"></div>
+                    <div id="pc-slider-track" style="position:relative;height:2px;background:#e30612;margin:16px 0 20px;cursor:pointer;">
+                        <div id="price-track-fill" style="position:absolute;top:0;height:100%;background:#e30612;left:0%;width:100%;"></div>
+                        <div id="pc-thumb-min" style="position:absolute;top:50%;width:22px;height:22px;background:#e30612;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:0%;z-index:2;"></div>
+                        <div id="pc-thumb-max" style="position:absolute;top:50%;width:22px;height:22px;background:#e30612;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:100%;z-index:2;"></div>
                     </div>
 
                     <div style="font-family:Montserrat,sans-serif;font-size:13px;color:#9ca3af;display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
@@ -312,9 +313,9 @@
         <div style="padding:16px 28px;border-top:1px solid #f3f4f6;">
             <button
                 onclick="pcApplyFilters()"
-                style="width:100%;height:50px;background:#111;color:#fff;border:none;border-radius:10px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.5px;"
-                onmouseover="this.style.background='#333'"
-                onmouseout="this.style.background='#111'"
+                style="width:100%;height:50px;background:#e30612;color:#fff;border:none;border-radius:10px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.5px;"
+                onmouseover="this.style.background='#c00510'"
+                onmouseout="this.style.background='#e30612'"
             >
                 Apply Filters
             </button>
@@ -389,7 +390,6 @@
                 var LOGIN_URL = @json(route('shop.customer.session.index'));
                 var PRICE_RANGE_URL = @json(route('shop.api.categories.price_range', ['id' => $category->id]));
                 var EMPTY_TEXT = @json(trans('shop::app.categories.view.empty'));
-                var LOAD_MORE_TEXT = @json(trans('shop::app.categories.view.load-more'));
                 var ADD_TO_WISHLIST_LABEL = @json(trans('shop::app.components.products.card.add-to-wishlist'));
                 var isCustomer = @json(auth()->guard('customer')->check());
                 var wishlistEnabled = @json((bool) core()->getConfigData('customer.settings.wishlist.wishlist_option'));
@@ -627,7 +627,7 @@
                     var grid = document.getElementById('category-page-product-grid');
                     var loading = document.getElementById('product-loading');
                     var empty = document.getElementById('product-empty');
-                    var more = document.getElementById('load-more-wrapper');
+                    var spinner = document.getElementById('infinite-scroll-spinner');
 
                     if (replace && cache[key]) {
                         loading.style.display = 'none';
@@ -640,7 +640,7 @@
 
                         state.page = 2;
                         state.lastPage = cache[key].lastPage;
-                        more.style.display = state.page - 1 < state.lastPage ? 'block' : 'none';
+                        spinner.style.display = state.page - 1 < state.lastPage ? 'flex' : 'none';
                         applyResponsiveGrid();
                         return;
                     }
@@ -656,19 +656,16 @@
                     var loading = document.getElementById('product-loading');
                     var empty = document.getElementById('product-empty');
                     var grid = document.getElementById('category-page-product-grid');
-                    var more = document.getElementById('load-more-wrapper');
-                    var loadMoreButton = document.getElementById('load-more-button');
+                    var spinner = document.getElementById('infinite-scroll-spinner');
 
                     state.loading = true;
 
                     if (replace) {
                         loading.style.display = 'block';
                         empty.style.display = 'none';
-                        more.style.display = 'none';
-                    } else if (loadMoreButton) {
-                        loadMoreButton.disabled = true;
-                        loadMoreButton.textContent = 'Loading...';
-                        loadMoreButton.style.opacity = '0.7';
+                        spinner.style.display = 'none';
+                    } else {
+                        spinner.style.display = 'flex';
                     }
 
                     fetch(PRODUCTS_API_URL + '?' + buildProductQuery(), {
@@ -698,7 +695,7 @@
                             if (replace && products.length === 0) {
                                 empty.style.display = 'block';
                                 empty.textContent = EMPTY_TEXT;
-                                more.style.display = 'none';
+                                spinner.style.display = 'none';
                                 return;
                             }
 
@@ -719,7 +716,7 @@
 
                             syncWishlistStatesFromApi();
 
-                            more.style.display = state.page - 1 < state.lastPage ? 'block' : 'none';
+                            spinner.style.display = state.page - 1 < state.lastPage ? 'flex' : 'none';
                             applyResponsiveGrid();
                         })
                         .catch(function (error) {
@@ -728,16 +725,12 @@
                             console.error('[CategoryPageGrid]', error);
                         })
                         .finally(function () {
-                            if (loadMoreButton) {
-                                loadMoreButton.disabled = false;
-                                loadMoreButton.textContent = LOAD_MORE_TEXT;
-                                loadMoreButton.style.opacity = '1';
-                            }
+                            spinner.style.display = 'none';
                         });
                 }
 
                 window.loadMoreProducts = function () {
-                    if (state.page - 1 >= state.lastPage) {
+                    if (state.page - 1 >= state.lastPage || state.loading) {
                         return;
                     }
 
@@ -809,7 +802,7 @@
                         row.setAttribute('data-cat-id', String(item.id));
                         row.setAttribute('onclick', 'pcToggleCat(this,' + item.id + ')');
                         row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;border:1.5px solid ' + (isActive ? '#111' : 'transparent') + ';background:' + (isActive ? '#fafafa' : 'transparent') + ';';
-                        row.innerHTML = '<div id="pc-cb-cat-' + item.id + '" style="width:16px;height:16px;border-radius:4px;border:1.5px solid ' + (isActive ? '#111' : '#d1d5db') + ';background:' + (isActive ? '#111' : '#fff') + ';flex-shrink:0;display:flex;align-items:center;justify-content:center;">'
+                        row.innerHTML = '<div id="pc-cb-cat-' + item.id + '" style="width:16px;height:16px;border-radius:4px;border:1.5px solid ' + (isActive ? '#111' : '#d1d5db') + ';background:' + (isActive ? '#e30612' : '#fff') + ';flex-shrink:0;display:flex;align-items:center;justify-content:center;">'
                             + (isActive ? '<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"></polyline></svg>' : '')
                             + '</div>'
                             + '<span style="font-family:Montserrat,sans-serif;font-size:13px;color:' + (isActive ? '#111' : '#4b5563') + ';font-weight:' + (isActive ? '500' : '400') + ';">' + esc(item.label) + '</span>';
@@ -962,7 +955,7 @@
                     grid.innerHTML = options.map(function (option) {
                         var isActive = !!selectedSizes[option.id];
 
-                        return '<button type="button" onclick="pcToggleSize(\'' + esc(option.id) + '\')" style="min-height:56px;padding:12px 10px;border:1.5px solid ' + (isActive ? '#111' : '#e5e7eb') + ';border-radius:10px;background:' + (isActive ? '#111' : '#fff') + ';font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;color:' + (isActive ? '#fff' : '#111') + ';cursor:pointer;line-height:1.3;">' + esc(option.label) + '</button>';
+                        return '<button type="button" onclick="pcToggleSize(\'' + esc(option.id) + '\')" style="min-height:56px;padding:12px 10px;border:1.5px solid ' + (isActive ? '#111' : '#e5e7eb') + ';border-radius:10px;background:' + (isActive ? '#e30612' : '#fff') + ';font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;color:' + (isActive ? '#fff' : '#111') + ';cursor:pointer;line-height:1.3;">' + esc(option.label) + '</button>';
                     }).join('');
                 }
 
@@ -1187,7 +1180,7 @@
                         row.style.background = '#fafafa';
 
                         if (checkbox) {
-                            checkbox.style.background = '#111';
+                            checkbox.style.background = '#e30612';
                             checkbox.style.borderColor = '#111';
                             checkbox.innerHTML = '<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"></polyline></svg>';
                         }
@@ -1250,7 +1243,7 @@
                         row.style.background = '#fafafa';
 
                         if (checkbox) {
-                            checkbox.style.background = '#111';
+                            checkbox.style.background = '#e30612';
                             checkbox.style.borderColor = '#111';
                             checkbox.innerHTML = '<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"></polyline></svg>';
                         }
@@ -1508,8 +1501,8 @@
                         cta = '<div style="position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;pointer-events:auto;">'
                             + '<button data-role="cta" onclick="event.stopPropagation();event.preventDefault();' + ((isSaleable && !isConfigurable) ? 'pcAddToCart(event,' + product.id + ')' : 'pcGoTo(event,\'' + url + '\')') + '" '
                             + 'style="display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 28px;background:#111;color:#fff;border:none;outline:none;border-radius:5px;cursor:pointer;transform:translateY(0);transition:transform .3s ease;overflow:hidden;position:relative;min-width:140px;pointer-events:auto;-webkit-tap-highlight-color:transparent;">'
-                            + '<span data-role="btn-text" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;font-family:Montserrat,sans-serif;letter-spacing:.2px;transition:transform .28s ease,opacity .28s ease;transform:translateY(0);opacity:1;">' + label + '</span>'
-                            + '<span data-role="btn-icon" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .28s ease,opacity .28s ease;transform:translateY(100%);opacity:0;">' + hoverIcon + '</span>'
+                            + '<span data-role="btn-text" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;font-family:Montserrat,sans-serif;letter-spacing:.2px;transition:transform .28s ease,opacity .28s ease;transform:translateY(0);opacity:1;z-index:1;">' + label + '</span>'
+                            + '<span data-role="btn-icon" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#111;transition:transform .28s ease,opacity .28s ease;transform:translateY(100%);opacity:1;z-index:2;">' + hoverIcon + '</span>'
                             + '</button></div>';
                     }
 
@@ -1599,7 +1592,6 @@
 
                         if (btnIcon) {
                             btnIcon.style.transform = 'translateY(100%)';
-                            btnIcon.style.opacity = '0';
                         }
                     });
 
@@ -1614,7 +1606,6 @@
 
                             if (btnIcon) {
                                 btnIcon.style.transform = 'translateY(0)';
-                                btnIcon.style.opacity = '1';
                             }
                         });
 
@@ -1628,7 +1619,6 @@
 
                             if (btnIcon) {
                                 btnIcon.style.transform = 'translateY(100%)';
-                                btnIcon.style.opacity = '0';
                             }
                         });
                     }
@@ -1911,6 +1901,17 @@
                         pcInitSlider();
                         pcRenderSlider();
                         loadProducts(true);
+
+                        // Set up IntersectionObserver for infinite scroll
+                        var sentinel = document.getElementById('infinite-scroll-sentinel');
+                        if (sentinel) {
+                            window._scrollObserver = new IntersectionObserver(function (entries) {
+                                if (entries[0].isIntersecting && !state.loading && state.page - 1 < state.lastPage) {
+                                    loadMoreProducts();
+                                }
+                            }, { rootMargin: '200px' });
+                            window._scrollObserver.observe(sentinel);
+                        }
                     });
                     renderCatFilterSection();
                     updateFilterBadge();

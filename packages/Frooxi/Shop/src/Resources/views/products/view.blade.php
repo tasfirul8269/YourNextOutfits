@@ -105,19 +105,19 @@
     }
 
     .pdp-add-to-bag {
-        background: #d45197;
+        background: #e30612;
     }
 
     .pdp-buy-now {
-        background: #9c5e6d;
+        background: #c00510;
     }
 
     .pdp-review-button {
-        background: #14284a;
+        background: #e30612;
     }
 
     .pdp-contact-button {
-        background: #000;
+        background: #e30612;
     }
 
     .pdp-quantity-changer {

@@ -24,7 +24,7 @@
                     width="72"
                     height="72"
                 />
-                <span style="position:absolute;top:-6px;right:-6px;background:#111;color:#fff;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                <span style="position:absolute;top:-6px;right:-6px;background:#e30612;color:#fff;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
                     @{{ item.quantity }}
                 </span>
             </div>

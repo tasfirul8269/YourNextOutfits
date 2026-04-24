@@ -49,14 +49,14 @@
                         <div class="flex gap-4 mt-6">
                             <a
                                 href="{{ route('shop.customer.session.create') }}"
-                                class="block w-max m-0 mx-auto bg-navyBlue rounded-2xl px-7 py-3 text-center text-base font-medium text-white transition-all hover:opacity-80"
+                                class="block w-max m-0 mx-auto bg-[#e30612] rounded-2xl px-7 py-3 text-center text-base font-medium text-white transition-all hover:opacity-80"
                             >
                                 @lang('shop::app.components.layouts.header.desktop.bottom.sign-in')
                             </a>
 
                             <a
                                 href="{{ route('shop.customers.register.index') }}"
-                                class="block w-max m-0 mx-auto bg-white border-2 border-navyBlue rounded-2xl px-7 py-2.5 text-center text-base font-medium text-navyBlue transition-all hover:bg-navyBlue hover:text-white"
+                                class="block w-max m-0 mx-auto bg-white border-2 border-[#e30612] rounded-2xl px-7 py-2.5 text-center text-base font-medium text-[#e30612] transition-all hover:bg-[#e30612] hover:text-white"
                             >
                                 @lang('shop::app.components.layouts.header.desktop.bottom.sign-up')
                             </a>

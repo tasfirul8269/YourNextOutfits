@@ -27,7 +27,7 @@
                 <!-- Themed step card -->
                 <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
                     <div style="display:flex;align-items:center;gap:14px;padding:20px 24px;border-bottom:1px solid #f3f4f6;">
-                        <div style="width:28px;height:28px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <div style="width:28px;height:28px;border-radius:50%;background:#e30612;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                             <span style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#fff;">3</span>
                         </div>
                         <h2 style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#111;margin:0;">

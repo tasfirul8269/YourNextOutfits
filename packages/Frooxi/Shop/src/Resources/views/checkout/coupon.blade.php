@@ -33,7 +33,7 @@
                     type="button"
                     @click="applyCoupon"
                     :disabled="isProcessing"
-                    class="rounded-lg bg-navyBlue px-6 py-2.5 text-sm font-medium text-white transition-all hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+                    class="rounded-lg bg-[#e30612] px-6 py-2.5 text-sm font-medium text-white transition-all hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     @{{ isProcessing ? __('shop::app.checkout.onepage.summary.applying') : __('shop::app.checkout.onepage.summary.apply-coupon') }}
                 </button>

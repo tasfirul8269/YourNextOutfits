@@ -152,7 +152,7 @@
                                 :aria-label="product.name"
                             >
                                 <span
-                                    class="icon-view text-xl"
+                                    class="icon-eye text-xl"
                                     aria-hidden="true"
                                 >
                                 </span>

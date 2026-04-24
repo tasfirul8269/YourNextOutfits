@@ -27,6 +27,10 @@
             0%, 100% { opacity: 1; }
             50% { opacity: .4; }
         }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
         #sp-product-grid::-webkit-scrollbar,
         #sp-skeleton-grid::-webkit-scrollbar {
             display: none;
@@ -84,7 +88,7 @@
                         <line x1="11" y1="18" x2="13" y2="18"></line>
                     </svg>
                     Filter
-                    <span id="sp-filter-count-badge" style="display:none;background:#111;color:#fff;font-size:10px;font-weight:600;border-radius:9999px;padding:1px 7px;line-height:1.6;"></span>
+                    <span id="sp-filter-count-badge" style="display:none;background:#e30612;color:#fff;font-size:10px;font-weight:600;border-radius:9999px;padding:1px 7px;line-height:1.6;"></span>
                 </button>
 
                 <div style="display:flex;align-items:center;gap:10px;">
@@ -135,17 +139,13 @@
             <!-- Product grid -->
             <div id="sp-product-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;"></div>
 
-            <!-- Load more -->
-            <div id="sp-load-more-wrapper" style="display:none;text-align:center;margin-top:48px;">
-                <button
-                    id="sp-load-more-button"
-                    onclick="spLoadMoreProducts()"
-                    style="padding:13px 44px;background:#000;color:#fff;font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;border-radius:9999px;border:none;cursor:pointer;letter-spacing:.3px;"
-                    onmouseover="if (!this.disabled) this.style.background='#333'"
-                    onmouseout="if (!this.disabled) this.style.background='#000'"
-                >
-                    @lang('shop::app.categories.view.load-more')
-                </button>
+            <!-- Infinite scroll sentinel + spinner -->
+            <div id="sp-infinite-scroll-sentinel" style="height:1px;"></div>
+            <div id="sp-infinite-scroll-spinner" style="display:none;justify-content:center;padding:24px 0;">
+                <svg style="width:32px;height:32px;animation:spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="#e30612" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+                </svg>
             </div>
         </div>
     </div>
@@ -210,10 +210,10 @@
                 </div>
 
                 <div id="sp-price-body" style="padding:0 28px 28px;">
-                    <div id="sp-slider-track" style="position:relative;height:2px;background:#111;margin:16px 0 20px;cursor:pointer;">
-                        <div id="sp-price-track-fill" style="position:absolute;top:0;height:100%;background:#111;left:0%;width:100%;"></div>
-                        <div id="sp-thumb-min" style="position:absolute;top:50%;width:22px;height:22px;background:#111;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:0%;z-index:2;"></div>
-                        <div id="sp-thumb-max" style="position:absolute;top:50%;width:22px;height:22px;background:#111;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:100%;z-index:2;"></div>
+                    <div id="sp-slider-track" style="position:relative;height:2px;background:#e30612;margin:16px 0 20px;cursor:pointer;">
+                        <div id="sp-price-track-fill" style="position:absolute;top:0;height:100%;background:#e30612;left:0%;width:100%;"></div>
+                        <div id="sp-thumb-min" style="position:absolute;top:50%;width:22px;height:22px;background:#e30612;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:0%;z-index:2;"></div>
+                        <div id="sp-thumb-max" style="position:absolute;top:50%;width:22px;height:22px;background:#e30612;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:100%;z-index:2;"></div>
                     </div>
 
                     <div style="font-family:Montserrat,sans-serif;font-size:13px;color:#9ca3af;display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
@@ -308,9 +308,9 @@
         <div style="padding:16px 28px;border-top:1px solid #f3f4f6;">
             <button
                 onclick="spApplyFilters()"
-                style="width:100%;height:50px;background:#111;color:#fff;border:none;border-radius:10px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.5px;"
-                onmouseover="this.style.background='#333'"
-                onmouseout="this.style.background='#111'"
+                style="width:100%;height:50px;background:#e30612;color:#fff;border:none;border-radius:10px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.5px;"
+                onmouseover="this.style.background='#c00510'"
+                onmouseout="this.style.background='#e30612'"
             >
                 Apply Filters
             </button>
@@ -396,7 +396,6 @@
                 var PRICE_RANGE_URL  = @json(route('shop.api.categories.price_range'));
                 var CART_STORE_URL   = '/api/checkout/cart';
                 var EMPTY_TEXT       = @json(trans('shop::app.categories.view.empty'));
-                var LOAD_MORE_TEXT   = @json(trans('shop::app.categories.view.load-more'));
 
                 var state = {
                     page: 1,
@@ -513,19 +512,16 @@
                     var loading  = document.getElementById('sp-loading');
                     var empty    = document.getElementById('sp-empty');
                     var grid     = document.getElementById('sp-product-grid');
-                    var more     = document.getElementById('sp-load-more-wrapper');
-                    var moreBtn  = document.getElementById('sp-load-more-button');
+                    var spinner  = document.getElementById('sp-infinite-scroll-spinner');
 
                     state.loading = true;
 
                     if (replace) {
                         loading.style.display = 'block';
                         empty.style.display = 'none';
-                        more.style.display = 'none';
-                    } else if (moreBtn) {
-                        moreBtn.disabled = true;
-                        moreBtn.textContent = 'Loading...';
-                        moreBtn.style.opacity = '0.7';
+                        spinner.style.display = 'none';
+                    } else {
+                        spinner.style.display = 'flex';
                     }
 
                     fetch(PRODUCTS_API_URL + '?' + buildProductQuery(), {
@@ -548,7 +544,7 @@
                             if (replace && products.length === 0) {
                                 empty.style.display = 'block';
                                 empty.textContent = EMPTY_TEXT;
-                                more.style.display = 'none';
+                                spinner.style.display = 'none';
                                 return;
                             }
 
@@ -559,7 +555,7 @@
                                 grid.insertAdjacentHTML('beforeend', buildCard(product));
                             });
 
-                            more.style.display = state.page - 1 < state.lastPage ? 'block' : 'none';
+                            spinner.style.display = state.page - 1 < state.lastPage ? 'flex' : 'none';
                             applyResponsiveGrid();
                         })
                         .catch(function (error) {
@@ -568,16 +564,12 @@
                             console.error('[SearchPageGrid]', error);
                         })
                         .finally(function () {
-                            if (moreBtn) {
-                                moreBtn.disabled = false;
-                                moreBtn.textContent = LOAD_MORE_TEXT;
-                                moreBtn.style.opacity = '1';
-                            }
+                            spinner.style.display = 'none';
                         });
                 }
 
                 window.spLoadMoreProducts = function () {
-                    if (state.page - 1 >= state.lastPage) { return; }
+                    if (state.page - 1 >= state.lastPage || state.loading) { return; }
 
                     loadProducts(false);
                 };
@@ -645,8 +637,8 @@
                         cta = '<div style="position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;pointer-events:auto;">'
                             + '<button data-role="cta" onclick="event.stopPropagation();event.preventDefault();' + ((isSaleable && !isConfigurable) ? 'spAddToCart(event,' + product.id + ')' : 'spGoTo(event,\'' + url + '\')') + '" '
                             + 'style="display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 28px;background:#111;color:#fff;border:none;outline:none;border-radius:5px;cursor:pointer;transform:translateY(0);transition:transform .3s ease;overflow:hidden;position:relative;min-width:140px;pointer-events:auto;-webkit-tap-highlight-color:transparent;">'
-                            + '<span data-role="btn-text" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;font-family:Montserrat,sans-serif;letter-spacing:.2px;transition:transform .28s ease,opacity .28s ease;transform:translateY(0);opacity:1;">' + label + '</span>'
-                            + '<span data-role="btn-icon" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .28s ease,opacity .28s ease;transform:translateY(100%);opacity:0;">' + hoverIcon + '</span>'
+                            + '<span data-role="btn-text" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;font-family:Montserrat,sans-serif;letter-spacing:.2px;transition:transform .28s ease,opacity .28s ease;transform:translateY(0);opacity:1;z-index:1;">' + label + '</span>'
+                            + '<span data-role="btn-icon" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#111;transition:transform .28s ease,opacity .28s ease;transform:translateY(100%);opacity:1;z-index:2;">' + hoverIcon + '</span>'
                             + '</button></div>';
                     }
 
@@ -692,20 +684,20 @@
                         if (img2) { img2.style.opacity = '0'; img2.style.transform = 'scale(1)'; }
                         if (btn)  { btn.style.transform = 'translateY(0)'; }
                         if (btnText) { btnText.style.transform = 'translateY(0)'; btnText.style.opacity = '1'; }
-                        if (btnIcon) { btnIcon.style.transform = 'translateY(100%)'; btnIcon.style.opacity = '0'; }
+                        if (btnIcon) { btnIcon.style.transform = 'translateY(100%)'; }
                     });
 
                     if (btn) {
                         btn.addEventListener('mouseenter', function (e) {
                             e.stopPropagation();
                             if (btnText) { btnText.style.transform = 'translateY(-100%)'; btnText.style.opacity = '0'; }
-                            if (btnIcon) { btnIcon.style.transform = 'translateY(0)'; btnIcon.style.opacity = '1'; }
+                            if (btnIcon) { btnIcon.style.transform = 'translateY(0)'; }
                         });
 
                         btn.addEventListener('mouseleave', function (e) {
                             e.stopPropagation();
                             if (btnText) { btnText.style.transform = 'translateY(0)'; btnText.style.opacity = '1'; }
-                            if (btnIcon) { btnIcon.style.transform = 'translateY(100%)'; btnIcon.style.opacity = '0'; }
+                            if (btnIcon) { btnIcon.style.transform = 'translateY(100%)'; }
                         });
                     }
                 }
@@ -935,7 +927,7 @@
                     grid.innerHTML = options.map(function (o) {
                         var active = !!selectedSizes[o.id];
 
-                        return '<button type="button" onclick="spToggleSize(\'' + esc(o.id) + '\')" style="min-height:56px;padding:12px 10px;border:1.5px solid ' + (active ? '#111' : '#e5e7eb') + ';border-radius:10px;background:' + (active ? '#111' : '#fff') + ';font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;color:' + (active ? '#fff' : '#111') + ';cursor:pointer;line-height:1.3;">' + esc(o.label) + '</button>';
+                        return '<button type="button" onclick="spToggleSize(\'' + esc(o.id) + '\')" style="min-height:56px;padding:12px 10px;border:1.5px solid ' + (active ? '#111' : '#e5e7eb') + ';border-radius:10px;background:' + (active ? '#e30612' : '#fff') + ';font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;color:' + (active ? '#fff' : '#111') + ';cursor:pointer;line-height:1.3;">' + esc(o.label) + '</button>';
                     }).join('');
                 }
 
@@ -1012,7 +1004,7 @@
                     } else {
                         selectedColors[id] = true;
                         row.style.borderColor = '#e5e7eb'; row.style.background = '#fafafa';
-                        if (checkbox) { checkbox.style.background = '#111'; checkbox.style.borderColor = '#111'; checkbox.innerHTML = '<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"></polyline></svg>'; }
+                        if (checkbox) { checkbox.style.background = '#e30612'; checkbox.style.borderColor = '#111'; checkbox.innerHTML = '<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"></polyline></svg>'; }
                         if (label)    { label.style.fontWeight = '500'; }
                     }
                 };
@@ -1096,6 +1088,17 @@
                         spInitSlider();
                         spRenderSlider();
                         loadProducts(true);
+
+                        // Set up IntersectionObserver for infinite scroll
+                        var sentinel = document.getElementById('sp-infinite-scroll-sentinel');
+                        if (sentinel) {
+                            window._spScrollObserver = new IntersectionObserver(function (entries) {
+                                if (entries[0].isIntersecting && !state.loading && state.page - 1 < state.lastPage) {
+                                    spLoadMoreProducts();
+                                }
+                            }, { rootMargin: '200px' });
+                            window._spScrollObserver.observe(sentinel);
+                        }
                     });
 
                     updateFilterBadge();

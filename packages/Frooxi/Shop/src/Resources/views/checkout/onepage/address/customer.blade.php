@@ -234,7 +234,7 @@
                         <!-- Proceed Button -->
                         <div class="mt-4 flex justify-end max-md:my-4">
                             <x-shop::button
-                                class="primary-button rounded-[5px] bg-black px-8 py-3 text-sm font-medium text-white max-sm:w-full max-sm:max-w-full max-sm:py-2"
+                                class="primary-button rounded-[5px] bg-[#e30612] px-8 py-3 text-sm font-medium text-white max-sm:w-full max-sm:max-w-full max-sm:py-2"
                                 :title="trans('shop::app.checkout.onepage.address.proceed')"
                                 ::loading="isStoring"
                                 ::disabled="isStoring"
@@ -303,7 +303,7 @@
                         <!-- Save Button -->
                         <div class="mt-4 flex justify-end">
                             <x-shop::button
-                                class="primary-button rounded-[5px] bg-black px-8 py-3 text-sm font-medium text-white max-sm:w-full max-sm:max-w-full max-sm:py-2"
+                                class="primary-button rounded-[5px] bg-[#e30612] px-8 py-3 text-sm font-medium text-white max-sm:w-full max-sm:max-w-full max-sm:py-2"
                                 :title="trans('shop::app.checkout.onepage.address.save')"
                                 ::loading="isStoring"
                                 ::disabled="isStoring"

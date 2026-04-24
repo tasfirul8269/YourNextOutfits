@@ -46,9 +46,9 @@
 
         <a
             href="{{ route('shop.checkout.onepage.index') }}"
-            style="display:block;width:100%;height:52px;line-height:52px;text-align:center;background:#111;color:#fff;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;margin-top:4px;"
-            onmouseover="this.style.background='#333'"
-            onmouseout="this.style.background='#111'"
+            style="display:block;width:100%;height:52px;line-height:52px;text-align:center;background:#e30612;color:#fff;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;margin-top:4px;"
+            onmouseover="this.style.background='#c00510'"
+            onmouseout="this.style.background='#e30612'"
         >
             @lang('shop::app.checkout.cart.summary.proceed-to-checkout')
         </a>

@@ -50,6 +50,12 @@
     </div>
 </div>
 
+<style>
+    .mobile-drawer-header .icon-cancel {
+        color: #fff !important;
+    }
+</style>
+
 @pushOnce('scripts')
     <script type="text/x-template" id="v-mobile-drawer-template">
             <x-shop::drawer
@@ -61,11 +67,11 @@
                     <span class="text-2xl cursor-pointer icon-hamburger header-icon" style="color: {{ request()->routeIs('shop.home.index') ? '#ffffff' : '#1a1a1a' }} !important;"></span>
                 </x-slot>
 
-                <x-slot:header class="mobile-drawer-header" style="background-color: #fff !important; color: #000 !important; display:flex; align-items:center; min-height:60px;">
-                    <div class="flex items-center justify-between">
+                <x-slot:header class="mobile-drawer-header" style="background-color: #e30612 !important; color: #fff !important; display:flex; align-items:center; min-height:60px;">
+                    <div class="flex items-center justify-between w-full">
                         <a href="{{ route('shop.home.index') }}">
                             <img
-                                src="{{ asset('themes/shop/logo_black.png') }}"
+                                src="{{ asset('themes/shop/logo.png') }}"
                                 alt="{{ config('app.name') }}"
                                 width="60"
                                 height="auto"
@@ -75,28 +81,17 @@
                 </x-slot>
 
                 <x-slot:content class="!p-0">
-                    <!-- Account Profile Hero Section -->
-                    <div class="p-4 border-b border-zinc-200">
-                        <div class="grid grid-cols-[auto_1fr] items-center gap-4 rounded-xl border border-zinc-200 p-2.5">
-                            <div>
-                                <img
-                                src="{{ auth()->user()?->image_url ??  frooxi_asset('images/user-placeholder.png') }}"
-                                    class="h-[60px] w-[60px] rounded-full max-md:rounded-full"
-                                >
-                            </div>
+                    <!-- Account Profile Hero Section (logged-in only) -->
+                    @auth('customer')
+                        <div class="p-4 border-b border-zinc-200">
+                            <div class="grid grid-cols-[auto_1fr] items-center gap-4 rounded-xl border border-zinc-200 p-2.5">
+                                <div>
+                                    <img
+                                        src="{{ auth()->user()?->image_url ?? frooxi_asset('images/user-placeholder.png') }}"
+                                        class="h-[60px] w-[60px] rounded-full max-md:rounded-full"
+                                    >
+                                </div>
 
-                            @guest('customer')
-                                <a
-                                    href="{{ route('shop.customer.session.create') }}"
-                                    class="flex text-base font-medium"
-                                >
-                                    @lang('shop::app.components.layouts.header.mobile.login')
-
-                                    <i class="icon-double-arrow text-2xl ltr:ml-2.5 rtl:mr-2.5"></i>
-                                </a>
-                            @endguest
-
-                            @auth('customer')
                                 <div
                                     class="flex flex-col justify-between gap-2.5 max-md:gap-0"
                                     v-pre
@@ -105,11 +100,28 @@
 
                                     <p class="no-underline text-zinc-500 max-md:text-sm">{{ auth()->user()?->email }}</p>
                                 </div>
-                            @endauth
+                            </div>
                         </div>
-                    </div>
+                    @endauth
 
                     {!! view_render_event('frooxi.shop.components.layouts.header.mobile.drawer.categories.before') !!}
+
+                    <!-- Home Link -->
+                    <div style="border-bottom:1px solid #e5e7eb;">
+                        <a
+                            href="{{ route('shop.home.index') }}"
+                            class="flex items-center justify-between px-6 py-4 transition-colors duration-200 hover:bg-gray-50"
+                        >
+                            <div class="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    <polyline points="9 22 9 12 15 12 15 22"/>
+                                </svg>
+                                <span class="text-base font-medium text-black">Home</span>
+                            </div>
+                            <span class="icon-arrow-right rtl:icon-arrow-left text-lg"></span>
+                        </a>
+                    </div>
 
                     <!-- Mobile category view -->
                     <v-mobile-category ref="mobileCategory"></v-mobile-category>
@@ -117,7 +129,7 @@
                     {!! view_render_event('frooxi.shop.components.layouts.header.mobile.drawer.categories.after') !!}
 
                     <!-- Flash Sale Link -->
-                    <div class="border-t border-zinc-200">
+                    <div style="border-top:1px solid #e5e7eb;">
                         <a
                             href="{{ route('shop.flash-sale.index') }}"
                             class="flex items-center justify-between px-6 py-4 transition-colors duration-200 hover:bg-gray-50"
@@ -246,9 +258,10 @@
             <div class="flex-shrink-0 w-full h-full px-6 overflow-auto">
                 <div class="py-4">
                         <div
-                            v-for="category in categories"
+                            v-for="(category, index) in categories"
                             :key="category.id"
                             :class="{'mb-2': category.children && category.children.length}"
+                            :style="{ borderBottom: index < categories.length - 1 ? '1px solid #e5e7eb' : 'none' }"
                         >
                         <div
                             class="flex items-center justify-between py-2 transition-colors duration-200 cursor-pointer"

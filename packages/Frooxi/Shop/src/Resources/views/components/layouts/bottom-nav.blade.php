@@ -1,11 +1,11 @@
 @php
-    $navStyle = 'display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;text-decoration:none;color:#6b7280;font-weight:500;';
-    $iconStroke = '#6b7280';
+    $iconStroke = '#fff';
+    $activeRoute = request()->route()->getName();
 @endphp
 
 <div
     id="mobile-bottom-nav"
-    style="position:fixed;bottom:0;left:0;right:0;z-index:1000;background:#fff;border-top:1px solid #e5e7eb;padding-bottom:env(safe-area-inset-bottom);"
+    style="position:fixed;bottom:0;left:0;right:0;z-index:1000;background:#e30612;border-top:1px solid rgba(255,255,255,0.15);padding-bottom:env(safe-area-inset-bottom);"
 >
     <div style="display:grid;grid-template-columns:repeat(4,1fr);align-items:stretch;">
 
@@ -13,7 +13,7 @@
         <a
             href="{{ route('shop.home.index') }}"
             aria-label="Home"
-            style="{{ $navStyle }}"
+            style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;text-decoration:none;color:#fff;font-weight:{{ $activeRoute === 'shop.home.index' ? '700' : '500' }};opacity:{{ $activeRoute === 'shop.home.index' ? '1' : '0.75' }};"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{ $iconStroke }}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -26,7 +26,7 @@
         <a
             href="{{ route('shop.all-categories.index') }}"
             aria-label="Categories"
-            style="{{ $navStyle }}"
+            style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;text-decoration:none;color:#fff;font-weight:{{ $activeRoute === 'shop.all-categories.index' ? '700' : '500' }};opacity:{{ $activeRoute === 'shop.all-categories.index' ? '1' : '0.75' }};"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{ $iconStroke }}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="7" height="7"/>
@@ -41,7 +41,7 @@
         <a
             href="{{ route('shop.flash-sale.index') }}"
             aria-label="Flash Sale"
-            style="{{ $navStyle }}"
+            style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;text-decoration:none;color:#fff;font-weight:{{ $activeRoute === 'shop.flash-sale.index' ? '700' : '500' }};opacity:{{ $activeRoute === 'shop.flash-sale.index' ? '1' : '0.75' }};"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{ $iconStroke }}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
@@ -54,14 +54,14 @@
             <a
                 href="{{ route('shop.customer.session.create') }}"
                 aria-label="Account"
-                style="{{ $navStyle }}"
+                style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;text-decoration:none;color:#fff;font-weight:500;opacity:0.75;"
             >
         @endguest
         @auth('customer')
             <a
                 href="{{ route('shop.customers.account.index') }}"
                 aria-label="Account"
-                style="{{ $navStyle }}"
+                style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;text-decoration:none;color:#fff;font-weight:{{ Str::startsWith($activeRoute, 'shop.customer') ? '700' : '500' }};opacity:{{ Str::startsWith($activeRoute, 'shop.customer') ? '1' : '0.75' }};"
             >
         @endauth
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{ $iconStroke }}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">

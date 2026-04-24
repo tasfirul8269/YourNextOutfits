@@ -1,5 +1,6 @@
 <?php
 
+use Frooxi\Admin\Http\Controllers\Sales\InvoiceController;
 use Frooxi\Admin\Http\Controllers\Sales\OrderController;
 use Frooxi\Admin\Http\Controllers\Sales\PaymentMethodController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,19 @@ Route::prefix('sales')->group(function () {
         Route::post('comment/{order_id}', 'comment')->name('admin.sales.orders.comment');
         Route::post('update-status/{id}', 'updateStatus')->name('admin.sales.orders.update_status');
         Route::get('search', 'search')->name('admin.sales.orders.search');
+    });
+
+    /**
+     * Invoices routes.
+     */
+    Route::controller(InvoiceController::class)->prefix('invoices')->group(function () {
+        Route::get('', 'index')->name('admin.sales.invoices.index');
+        Route::get('create/{order_id}', 'create')->name('admin.sales.invoices.create');
+        Route::post('create/{order_id}', 'store')->name('admin.sales.invoices.store');
+        Route::get('view/{id}', 'view')->name('admin.sales.invoices.view');
+        Route::post('send-duplicate-email/{id}', 'sendDuplicateEmail')->name('admin.sales.invoices.send_duplicate_email');
+        Route::get('print/{id}', 'printInvoice')->name('admin.sales.invoices.print');
+        Route::post('mass-update/state', 'massUpdateState')->name('admin.sales.invoices.mass_update.state');
     });
 
     /**
