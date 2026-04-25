@@ -370,8 +370,8 @@
             methods: {
                 initCategories() {
                     try {
-                        const stored = localStorage.getItem('categories_v2');
-                        const timestamp = localStorage.getItem('categories_v2_timestamp');
+                        const stored = localStorage.getItem('categories_v3');
+                        const timestamp = localStorage.getItem('categories_v3_timestamp');
 
                         // Cache expires after 1 hour (3600000 ms)
                         const CACHE_TTL = 3600000;
@@ -385,8 +385,8 @@
                                 return;
                             } else {
                                 // Cache expired, remove it
-                                localStorage.removeItem('categories_v2');
-                                localStorage.removeItem('categories_v2_timestamp');
+                                localStorage.removeItem('categories_v3');
+                                localStorage.removeItem('categories_v3_timestamp');
                             }
                         }
 
@@ -400,8 +400,8 @@
                     this.$axios.get("{{ route('shop.api.categories.tree') }}")
                         .then(response => {
                             this.categories = response.data.data;
-                            localStorage.setItem('categories_v2', JSON.stringify(this.categories));
-                            localStorage.setItem('categories_v2_timestamp', Date.now().toString());
+                            localStorage.setItem('categories_v3', JSON.stringify(this.categories));
+                            localStorage.setItem('categories_v3_timestamp', Date.now().toString());
                             this.autoExpandFirst();
                         })
                         .catch(error => {
