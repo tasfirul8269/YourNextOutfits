@@ -6,6 +6,7 @@ use Frooxi\Admin\Http\Controllers\Controller;
 use Frooxi\Category\Repositories\CategoryRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 
 class CategoryController extends Controller
@@ -24,27 +25,31 @@ class CategoryController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $root = $this->categoryRepository
-                ->getModel()
-                ->whereNull('parent_id')
-                ->first();
+            // Cache the category tree for 1 hour to improve performance
+            $categories = Cache::remember('shop_categories_tree', 3600, function () {
+                $root = $this->categoryRepository
+                    ->getModel()
+                    ->whereNull('parent_id')
+                    ->first();
 
-            if (! $root) {
-                return response()->json(['data' => []]);
-            }
+                if (! $root) {
+                    return [];
+                }
 
-            $categories = $this->categoryRepository
-                ->getModel()
-                ->where('parent_id', $root->id)
-                ->with(['children' => function ($query) {
-                    $query->with(['children' => function ($q2) {
-                        $q2->with('children')->orderBy('position');
-                    }])->orderBy('position');
-                }])
-                ->orderBy('position')
-                ->get()
-                ->map(fn ($cat) => $this->formatCategory($cat))
-                ->values();
+                return $this->categoryRepository
+                    ->getModel()
+                    ->where('parent_id', $root->id)
+                    ->with(['children' => function ($query) {
+                        $query->with(['children' => function ($q2) {
+                            $q2->with('children')->orderBy('position');
+                        }])->orderBy('position');
+                    }])
+                    ->orderBy('position')
+                    ->get()
+                    ->map(fn ($cat) => $this->formatCategory($cat))
+                    ->values()
+                    ->toArray();
+            });
 
             return response()->json([
                 'data' => $categories,

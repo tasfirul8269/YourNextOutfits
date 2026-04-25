@@ -17,6 +17,7 @@ class CategoryObserver
     public function deleted($category)
     {
         Cache::increment('category_tree_version');
+        Cache::forget('shop_categories_tree');
 
         Storage::deleteDirectory('category/'.$category->id);
     }
@@ -30,6 +31,7 @@ class CategoryObserver
     public function saved($category)
     {
         Cache::increment('category_tree_version');
+        Cache::forget('shop_categories_tree');
 
         foreach ($category->children as $child) {
             $child->touch();
