@@ -90,9 +90,13 @@ class InvoiceController extends Controller
             return redirect()->back();
         }
 
+        $invoiceState = $order->payment->method === 'cashondelivery'
+            ? InvoiceRepository::DEFAULT_STATE_PENDING
+            : InvoiceRepository::DEFAULT_STATE_PAID;
+
         $this->invoiceRepository->create(array_merge(request()->all(), [
             'order_id' => $orderId,
-        ]));
+        ]), $invoiceState);
 
         session()->flash('success', trans('admin::app.sales.invoices.create.create-success'));
 

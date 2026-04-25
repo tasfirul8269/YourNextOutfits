@@ -46,7 +46,7 @@
                 onmouseover="this.style.background='#c20510'"
                 onmouseout="this.style.background='#e30612'"
             >
-                <span class="text-2xl icon-printer"></span>
+                <span class="text-2xl icon-printer text-white"></span>
 
                 @lang('admin::app.sales.invoices.view.print')
             </a>

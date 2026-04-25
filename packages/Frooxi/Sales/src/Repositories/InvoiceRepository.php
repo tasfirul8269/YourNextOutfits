@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Event;
 class InvoiceRepository extends Repository
 {
     /**
+     * Default invoice state when payment is pending (e.g. COD).
+     */
+    public const DEFAULT_STATE_PENDING = 'pending';
+
+    /**
+     * Default invoice state when payment is already captured.
+     */
+    public const DEFAULT_STATE_PAID = 'paid';
+
+    /**
      * Create a new repository instance.
      *
      * @return void
@@ -55,7 +65,7 @@ class InvoiceRepository extends Repository
             if (isset($invoiceState)) {
                 $state = $invoiceState;
             } else {
-                $state = 'paid';
+                $state = self::DEFAULT_STATE_PAID;
             }
 
             $invoice = $this->model->create([
