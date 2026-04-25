@@ -126,6 +126,36 @@ class CategoryCleanupSeeder extends Seeder
     {
         return [
             [
+                'name' => 'Women',
+                'bn_name' => 'উইমেন',
+                'slug' => 'women',
+                'description' => '<p>Discover essential womenswear categories.</p>',
+                'bn_description' => '<p>প্রয়োজনীয় নারীদের পোশাকের ক্যাটাগরি দেখুন।</p>',
+                'children' => [
+                    [
+                        'name' => 'One Piece',
+                        'bn_name' => 'ওয়ান পিস',
+                        'slug' => 'women-one-piece',
+                        'description' => '<p>Shop women\'s one piece.</p>',
+                        'bn_description' => '<p>নারীদের ওয়ান পিস কিনুন।</p>',
+                    ],
+                    [
+                        'name' => 'Two Piece',
+                        'bn_name' => 'টু পিস',
+                        'slug' => 'women-two-piece',
+                        'description' => '<p>Shop women\'s two piece.</p>',
+                        'bn_description' => '<p>নারীদের টু পিস কিনুন।</p>',
+                    ],
+                    [
+                        'name' => 'Three Piece',
+                        'bn_name' => 'থ্রি পিস',
+                        'slug' => 'women-three-piece',
+                        'description' => '<p>Shop women\'s three piece.</p>',
+                        'bn_description' => '<p>নারীদের থ্রি পিস কিনুন।</p>',
+                    ],
+                ],
+            ],
+            [
                 'name' => 'Men',
                 'bn_name' => 'মেন',
                 'slug' => 'men',
@@ -201,36 +231,6 @@ class CategoryCleanupSeeder extends Seeder
                         'slug' => 'men-trousers',
                         'description' => '<p>Shop men\'s trousers.</p>',
                         'bn_description' => '<p>পুরুষদের ট্রাউজার্স কিনুন।</p>',
-                    ],
-                ],
-            ],
-            [
-                'name' => 'Women',
-                'bn_name' => 'উইমেন',
-                'slug' => 'women',
-                'description' => '<p>Discover essential womenswear categories.</p>',
-                'bn_description' => '<p>প্রয়োজনীয় নারীদের পোশাকের ক্যাটাগরি দেখুন।</p>',
-                'children' => [
-                    [
-                        'name' => 'One Piece',
-                        'bn_name' => 'ওয়ান পিস',
-                        'slug' => 'women-one-piece',
-                        'description' => '<p>Shop women\'s one piece.</p>',
-                        'bn_description' => '<p>নারীদের ওয়ান পিস কিনুন।</p>',
-                    ],
-                    [
-                        'name' => 'Two Piece',
-                        'bn_name' => 'টু পিস',
-                        'slug' => 'women-two-piece',
-                        'description' => '<p>Shop women\'s two piece.</p>',
-                        'bn_description' => '<p>নারীদের টু পিস কিনুন।</p>',
-                    ],
-                    [
-                        'name' => 'Three Piece',
-                        'bn_name' => 'থ্রি পিস',
-                        'slug' => 'women-three-piece',
-                        'description' => '<p>Shop women\'s three piece.</p>',
-                        'bn_description' => '<p>নারীদের থ্রি পিস কিনুন।</p>',
                     ],
                 ],
             ],
