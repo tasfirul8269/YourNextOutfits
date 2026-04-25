@@ -110,16 +110,9 @@
                     <div style="border-bottom:1px solid #e5e7eb;">
                         <a
                             href="{{ route('shop.home.index') }}"
-                            class="flex items-center justify-between px-6 py-4 transition-colors duration-200 hover:bg-gray-50"
+                            class="block px-6 py-4 text-base font-medium text-black transition-colors duration-200 hover:bg-gray-50"
                         >
-                            <div class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                                    <polyline points="9 22 9 12 15 12 15 22"/>
-                                </svg>
-                                <span class="text-base font-medium text-black">Home</span>
-                            </div>
-                            <span class="icon-arrow-right rtl:icon-arrow-left text-lg"></span>
+                            Home
                         </a>
                     </div>
 
