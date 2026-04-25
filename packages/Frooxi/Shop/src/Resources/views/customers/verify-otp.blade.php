@@ -116,9 +116,9 @@
                 {{-- Submit --}}
                 <button
                     type="submit"
-                    style="width:100%;height:52px;background:#e30612;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;margin-bottom:24px;"
+                    style="width:100%;height:52px;background:#D63044;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;margin-bottom:24px;"
                     onmouseover="this.style.background='#c00510'"
-                    onmouseout="this.style.background='#e30612'"
+                    onmouseout="this.style.background='#D63044'"
                 >
                     Verify & Create Account
                 </button>

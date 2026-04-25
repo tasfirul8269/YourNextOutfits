@@ -11,7 +11,7 @@
 <div style="width:100%;padding:16px 16px 14px;background:#fff;display:flex;justify-content:center;user-select:none;position:sticky;top:0;z-index:900;box-shadow:0 2px 12px rgba(0,0,0,.06);">
     <div id="category-bar"
         style="display:flex;align-items:center;background:#F4F4F4;padding:6px;border-radius:9999px;width:100%;max-width:1400px;margin:0 auto;box-shadow:0 1px 2px rgba(0,0,0,.05);position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;">
-        <div id="tab-indicator" style="position:absolute;background:#e30612;border-radius:9999px;transition:all .45s cubic-bezier(.19,1,.22,1);z-index:1;top:6px;bottom:6px;left:6px;width:0;"></div>
+        <div id="tab-indicator" style="position:absolute;background:#D63044;border-radius:9999px;transition:all .45s cubic-bezier(.19,1,.22,1);z-index:1;top:6px;bottom:6px;left:6px;width:0;"></div>
         <div onclick="moveCategoryTab(this)" class="category-tab-item" data-category-id="all" data-parent-id=""
             style="flex:1 0 auto;min-width:fit-content;text-align:center;padding:12px 20px;border-radius:9999px;color:#fff;font-family:Montserrat,sans-serif;font-size:14px;font-weight:500;cursor:pointer;position:relative;z-index:2;transition:color .3s;">All</div>
         @foreach ($categories as $category)
@@ -38,7 +38,7 @@
                     <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
                 </svg>
                 Filter
-                <span id="filter-count-badge" style="display:none;background:#e30612;color:#fff;font-size:10px;font-weight:600;border-radius:9999px;padding:1px 7px;line-height:1.6;"></span>
+                <span id="filter-count-badge" style="display:none;background:#D63044;color:#fff;font-size:10px;font-weight:600;border-radius:9999px;padding:1px 7px;line-height:1.6;"></span>
             </button>
             <div style="display:flex;align-items:center;gap:10px;">
                 <span style="font-family:Montserrat,sans-serif;font-size:13px;color:#9ca3af;">Sort by:</span>
@@ -82,7 +82,7 @@
         {{-- Infinite scroll sentinel + spinner --}}
         <div id="infinite-scroll-sentinel" style="height:1px;"></div>
         <div id="infinite-scroll-spinner" style="display:none;justify-content:center;padding:24px 0;">
-            <svg style="width:32px;height:32px;animation:spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="#e30612" stroke-width="2">
+            <svg style="width:32px;height:32px;animation:spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="#D63044" stroke-width="2">
                 <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
                 <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
             </svg>
@@ -161,14 +161,14 @@
             <div id="pc-price-body" style="padding:0 28px 28px;">
                 {{-- Dual-range slider — full-width thin black line, large solid dots --}}
                 <div id="pc-slider-track"
-                    style="position:relative;height:2px;background:#e30612;margin:16px 0 20px;cursor:pointer;">
-                    <div id="price-track-fill" style="position:absolute;top:0;height:100%;background:#e30612;left:0%;width:100%;"></div>
+                    style="position:relative;height:2px;background:#D63044;margin:16px 0 20px;cursor:pointer;">
+                    <div id="price-track-fill" style="position:absolute;top:0;height:100%;background:#D63044;left:0%;width:100%;"></div>
                     {{-- Min thumb --}}
                     <div id="pc-thumb-min"
-                        style="position:absolute;top:50%;width:22px;height:22px;background:#e30612;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:0%;z-index:2;"></div>
+                        style="position:absolute;top:50%;width:22px;height:22px;background:#D63044;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:0%;z-index:2;"></div>
                     {{-- Max thumb --}}
                     <div id="pc-thumb-max"
-                        style="position:absolute;top:50%;width:22px;height:22px;background:#e30612;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:100%;z-index:2;"></div>
+                        style="position:absolute;top:50%;width:22px;height:22px;background:#D63044;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;left:100%;z-index:2;"></div>
                 </div>
                 {{-- Price label: "Price: ৳ 0 - ৳ 1,100" --}}
                 <div style="font-family:Montserrat,sans-serif;font-size:13px;color:#9ca3af;display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
@@ -285,9 +285,9 @@
     {{-- ── Drawer Footer ── --}}
     <div style="padding:16px 28px;border-top:1px solid #f3f4f6;">
         <button onclick="pcApplyFilters()"
-            style="width:100%;height:50px;background:#e30612;color:#fff;border:none;border-radius:10px;
+            style="width:100%;height:50px;background:#D63044;color:#fff;border:none;border-radius:10px;
                    font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.5px;"
-            onmouseover="this.style.background='#c00510'" onmouseout="this.style.background='#e30612'">
+            onmouseover="this.style.background='#c00510'" onmouseout="this.style.background='#D63044'">
             Apply Filters
         </button>
     </div>
@@ -836,7 +836,7 @@
         grid.innerHTML = options.map(function (option) {
             var isActive = !!selectedSizes[option.id];
 
-            return '<button type="button" onclick="pcToggleSize(\'' + esc(option.id) + '\')" style="min-height:56px;padding:12px 10px;border:1.5px solid ' + (isActive ? '#111' : '#e5e7eb') + ';border-radius:10px;background:' + (isActive ? '#e30612' : '#fff') + ';font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;color:' + (isActive ? '#fff' : '#111') + ';cursor:pointer;line-height:1.3;">' + esc(option.label) + '</button>';
+            return '<button type="button" onclick="pcToggleSize(\'' + esc(option.id) + '\')" style="min-height:56px;padding:12px 10px;border:1.5px solid ' + (isActive ? '#111' : '#e5e7eb') + ';border-radius:10px;background:' + (isActive ? '#D63044' : '#fff') + ';font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;color:' + (isActive ? '#fff' : '#111') + ';cursor:pointer;line-height:1.3;">' + esc(option.label) + '</button>';
         }).join('');
     }
 
@@ -985,7 +985,7 @@
             row.setAttribute('onclick','pcToggleCat(this,'+item.id+')');
             row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;border:1.5px solid '+(isActive?'#111':'transparent')+';background:'+(isActive?'#fafafa':'transparent')+';';
             row.innerHTML =
-                '<div id="pc-cb-cat-'+item.id+'" style="width:16px;height:16px;border-radius:4px;border:1.5px solid '+(isActive?'#111':'#d1d5db')+';background:'+(isActive?'#e30612':'#fff')+';flex-shrink:0;display:flex;align-items:center;justify-content:center;">'
+                '<div id="pc-cb-cat-'+item.id+'" style="width:16px;height:16px;border-radius:4px;border:1.5px solid '+(isActive?'#111':'#d1d5db')+';background:'+(isActive?'#D63044':'#fff')+';flex-shrink:0;display:flex;align-items:center;justify-content:center;">'
                 + (isActive ? '<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"/></svg>' : '')
                 + '</div>'
                 + '<span style="font-family:Montserrat,sans-serif;font-size:13px;color:'+(isActive?'#111':'#4b5563')+';font-weight:'+(isActive?'500':'400')+';">'+item.label+'</span>';
@@ -1008,7 +1008,7 @@
             row.style.border = '1.5px solid #111';
             row.style.background = '#fafafa';
             if (cb) {
-                cb.style.background='#e30612'; cb.style.borderColor='#e30612';
+                cb.style.background='#D63044'; cb.style.borderColor='#D63044';
                 cb.innerHTML='<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"/></svg>';
             }
             if (sp) { sp.style.color='#111'; sp.style.fontWeight='500'; }
@@ -1051,7 +1051,7 @@
             selectedColors[id]=true;
             row.style.borderColor='#e5e7eb'; row.style.background='#fafafa';
             if (cb) {
-                cb.style.background='#e30612'; cb.style.borderColor='#e30612';
+                cb.style.background='#D63044'; cb.style.borderColor='#D63044';
                 cb.innerHTML='<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"/></svg>';
             }
             if (sp) sp.style.fontWeight='500';
@@ -1072,7 +1072,7 @@
             selectedSleeves[id]=true;
             row.style.borderColor='#e5e7eb'; row.style.background='#fafafa';
             if (cb) {
-                cb.style.background='#e30612'; cb.style.borderColor='#e30612';
+                cb.style.background='#D63044'; cb.style.borderColor='#D63044';
                 cb.innerHTML='<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"/></svg>';
             }
             if (sp) { sp.style.color='#111'; sp.style.fontWeight='500'; }

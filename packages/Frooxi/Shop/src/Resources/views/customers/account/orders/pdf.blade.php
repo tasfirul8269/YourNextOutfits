@@ -171,7 +171,7 @@
             .invoice-title {
                 font-family: "{{ $fontFamily['bold'] }}";
                 font-size: 30px;
-                color: #e30612;
+                color: #D63044;
                 text-transform: uppercase;
                 letter-spacing: 6px;
                 margin: 0;

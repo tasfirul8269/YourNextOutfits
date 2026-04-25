@@ -67,11 +67,11 @@
                     <span class="text-2xl cursor-pointer icon-hamburger header-icon" style="color: {{ request()->routeIs('shop.home.index') ? '#ffffff' : '#1a1a1a' }} !important;"></span>
                 </x-slot>
 
-                <x-slot:header class="mobile-drawer-header" style="background-color: #e30612 !important; color: #fff !important; display:flex; align-items:center; min-height:60px;">
+                <x-slot:header class="mobile-drawer-header" style="background-color: #D63044 !important; color: #fff !important; display:flex; align-items:center; min-height:60px;">
                     <div class="flex items-center justify-between w-full">
                         <a href="{{ route('shop.home.index') }}">
                             <img
-                                src="{{ asset('themes/shop/logo.png') }}"
+                                src="{{ asset('themes/shop/hamburger_menu.png') }}"
                                 alt="{{ config('app.name') }}"
                                 width="60"
                                 height="auto"
