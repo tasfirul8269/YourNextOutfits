@@ -197,7 +197,7 @@
                         <a :href="'{{ route('admin.sales.orders.view', ':id') }}'.replace(':id', record.id)" title="View">
                             <span class="icon-sort-right rtl:icon-sort-left cursor-pointer p-1.5 text-2xl hover:rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"></span>
                         </a>
-                        <span class="icon-delete cursor-pointer p-1.5 text-2xl hover:rounded-md hover:bg-red-100 dark:hover:bg-red-900" title="Delete" @click="deleteOrder(record.id)"></span>
+                        <span class="icon-delete cursor-pointer p-1.5 text-2xl hover:rounded-md hover:bg-red-100 dark:hover:bg-red-900" title="Delete" :data-order-id="record.id" onclick="window.deleteOrder(this.dataset.orderId)"></span>
                     </div>
                 </div>
             </template>
