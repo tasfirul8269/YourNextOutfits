@@ -71,7 +71,7 @@
                     <div class="flex items-center justify-between w-full">
                         <a href="{{ route('shop.home.index') }}">
                             <img
-                                src="{{ asset('themes/shop/hamburger_menu.png') }}"
+                                src="{{ asset('themes/shop/logo.png') }}"
                                 alt="{{ config('app.name') }}"
                                 width="60"
                                 height="auto"
@@ -81,29 +81,6 @@
                 </x-slot>
 
                 <x-slot:content class="!p-0">
-                    <!-- Account Profile Hero Section (logged-in only) -->
-                    @auth('customer')
-                        <div class="p-4 border-b border-zinc-200">
-                            <div class="grid grid-cols-[auto_1fr] items-center gap-4 rounded-xl border border-zinc-200 p-2.5">
-                                <div>
-                                    <img
-                                        src="{{ auth()->user()?->image_url ?? frooxi_asset('images/user-placeholder.png') }}"
-                                        class="h-[60px] w-[60px] rounded-full max-md:rounded-full"
-                                    >
-                                </div>
-
-                                <div
-                                    class="flex flex-col justify-between gap-2.5 max-md:gap-0"
-                                    v-pre
-                                >
-                                    <p class="text-2xl break-all font-mediums max-md:text-xl">Hello! {{ auth()->user()?->first_name }}</p>
-
-                                    <p class="no-underline text-zinc-500 max-md:text-sm">{{ auth()->user()?->email }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    @endauth
-
                     {!! view_render_event('frooxi.shop.components.layouts.header.mobile.drawer.categories.before') !!}
 
                     <!-- Home Link -->
