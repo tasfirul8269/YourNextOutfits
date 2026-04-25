@@ -256,7 +256,11 @@ class OrderController extends Controller
 
         try {
             $this->returnInventoryForOrder($order);
+        } catch (\Exception $e) {
+            \Log::warning('Inventory return failed for order #'.$id.' during delete: '.$e->getMessage());
+        }
 
+        try {
             $order->delete();
 
             return new JsonResponse([
@@ -285,7 +289,11 @@ class OrderController extends Controller
                 $order = $this->orderRepository->find($orderId);
 
                 if ($order) {
-                    $this->returnInventoryForOrder($order);
+                    try {
+                        $this->returnInventoryForOrder($order);
+                    } catch (\Exception $e) {
+                        \Log::warning('Inventory return failed for order #'.$orderId.' during mass delete: '.$e->getMessage());
+                    }
 
                     $order->delete();
                 }

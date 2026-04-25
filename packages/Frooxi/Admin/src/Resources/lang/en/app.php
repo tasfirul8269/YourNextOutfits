@@ -442,6 +442,7 @@ return [
                 'price-excl-tax' => 'Price (Excl. Tax) - :price',
                 'price-incl-tax' => 'Price (Incl. Tax) - :price',
                 'processing' => 'Processing',
+                'shipped' => 'Shipped',
                 'quantity' => 'Quantity',
                 'refund' => 'Refund',
                 'refund-id' => 'Refund #:refund',
