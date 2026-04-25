@@ -13,6 +13,32 @@ class OtpService
     ) {}
 
     /**
+     * Generate OTP without saving or sending.
+     * Returns array with 'plain', 'hashed', and 'expires_at'.
+     */
+    public function generateOtp(string $phone): ?array
+    {
+        // Mock mode: always use 123456, otherwise random 6-digit
+        $otp = config('sslwireless.mock') ? '123456' : str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+
+        Log::info("OTP generated for phone {$phone}", ['mock' => config('sslwireless.mock')]);
+
+        return [
+            'plain' => $otp,
+            'hashed' => Hash::make($otp),
+            'expires_at' => now()->addMinutes(5),
+        ];
+    }
+
+    /**
+     * Send OTP via SMS only.
+     */
+    public function sendOtp(string $phone, string $otp): bool
+    {
+        return $this->smsService->sendOtp($phone, $otp);
+    }
+
+    /**
      * Generate OTP and send it to the phone number.
      */
     public function generateAndSend(string $phone): bool
@@ -23,17 +49,18 @@ class OtpService
             return false;
         }
 
-        // Mock mode: always use 123456, otherwise random 6-digit
-        $otp = config('sslwireless.mock') ? '123456' : str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+        $otpData = $this->generateOtp($phone);
+
+        if (!$otpData) {
+            return false;
+        }
 
         $customer->update([
-            'otp_code' => Hash::make($otp),
-            'otp_expires_at' => now()->addMinutes(5),
+            'otp_code' => $otpData['hashed'],
+            'otp_expires_at' => $otpData['expires_at'],
         ]);
 
-        Log::info("OTP generated for phone {$phone}");
-
-        return $this->smsService->sendOtp($phone, $otp);
+        return $this->sendOtp($phone, $otpData['plain']);
     }
 
     /**

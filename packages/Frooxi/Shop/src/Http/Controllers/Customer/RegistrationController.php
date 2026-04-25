@@ -50,6 +50,7 @@ class RegistrationController extends Controller
     {
         $customerGroup = core()->getConfigData('customer.settings.create_new_account_options.default_group');
 
+        // Prepare customer data but DON'T create account yet
         $data = array_merge($registrationRequest->only([
             'first_name',
             'last_name',
@@ -65,21 +66,30 @@ class RegistrationController extends Controller
             'token' => md5(uniqid(rand(), true)),
         ]);
 
-        Event::dispatch('customer.registration.before');
+        // Generate OTP
+        $otpData = $this->otpService->generateOtp($data['phone']);
 
-        $customer = $this->customerRepository->create($data);
+        if (!$otpData) {
+            session()->flash('error', 'We could not generate the verification code. Please try again later.');
 
-        if (! $this->otpService->generateAndSend($customer->phone)) {
+            return redirect()->back()->withInput();
+        }
+
+        // Send OTP via SMS BEFORE creating account
+        if (!$this->otpService->sendOtp($data['phone'], $otpData['plain'])) {
             session()->flash('error', 'We could not send the verification code. Please try again later.');
 
             return redirect()->back()->withInput();
         }
 
-        session()->put('otp_customer_id', $customer->id);
+        // SMS sent successfully - store data in session for OTP verification
+        session()->put('pending_registration', [
+            'customer_data' => $data,
+            'otp_hashed' => $otpData['hashed'],
+            'otp_expires_at' => $otpData['expires_at'],
+        ]);
 
-        Event::dispatch('customer.create.after', $customer);
-
-        Event::dispatch('customer.registration.after', $customer);
+        Event::dispatch('customer.registration.before');
 
         return redirect()->route('shop.customers.verify-otp');
     }
@@ -161,20 +171,15 @@ class RegistrationController extends Controller
      */
     public function showOtpForm()
     {
-        $customerId = session('otp_customer_id');
-
-        if (! $customerId) {
+        $pendingRegistration = session('pending_registration');
+    
+        if (!$pendingRegistration) {
             return redirect()->route('shop.customers.register.index');
         }
-
-        $customer = $this->customerRepository->find($customerId);
-
-        if (! $customer) {
-            return redirect()->route('shop.customers.register.index');
-        }
-
-        $maskedPhone = $this->maskPhone($customer->phone);
-
+    
+        $phone = $pendingRegistration['customer_data']['phone'];
+        $maskedPhone = $this->maskPhone($phone);
+    
         return view('shop::customers.verify-otp', compact('maskedPhone'));
     }
 
@@ -188,34 +193,47 @@ class RegistrationController extends Controller
         $request->validate([
             'otp' => 'required|string|size:6',
         ]);
-
-        $customerId = session('otp_customer_id');
-
-        if (! $customerId) {
+    
+        $pendingRegistration = session('pending_registration');
+    
+        if (!$pendingRegistration) {
+            session()->flash('error', 'Registration session expired. Please register again.');
             return redirect()->route('shop.customers.register.index');
         }
-
-        $customer = $this->customerRepository->find($customerId);
-
-        if (! $customer) {
+    
+        $otpHashed = $pendingRegistration['otp_hashed'];
+        $otpExpiresAt = $pendingRegistration['otp_expires_at'];
+        $customerData = $pendingRegistration['customer_data'];
+    
+        // Check if OTP expired
+        if ($otpExpiresAt && now()->greaterThan($otpExpiresAt)) {
+            session()->forget('pending_registration');
+            session()->flash('error', 'OTP has expired. Please register again.');
             return redirect()->route('shop.customers.register.index');
         }
-
-        if (! $this->otpService->verify($customer->phone, $request->otp)) {
-            session()->flash('error', 'Invalid or expired OTP. Please try again.');
-
+    
+        // Verify OTP
+        if (!Hash::check($request->otp, $otpHashed)) {
+            session()->flash('error', 'Invalid OTP. Please try again.');
             return redirect()->back();
         }
-
-        $customer->update([
-            'is_verified' => 1,
-            'token' => null,
-        ]);
-
-        session()->forget('otp_customer_id');
-
+    
+        // OTP verified - now create the customer account
+        Event::dispatch('customer.registration.before');
+    
+        $customer = $this->customerRepository->create($customerData);
+    
+        Event::dispatch('customer.create.after', $customer);
+        Event::dispatch('customer.registration.after', $customer);
+    
+        // Clear pending registration session
+        session()->forget('pending_registration');
+    
+        // Auto-login the customer
         auth()->guard('customer')->login($customer);
-
+    
+        session()->flash('success', 'Your account has been created successfully!');
+    
         return redirect()->route('shop.customers.account.profile.index');
     }
 
@@ -226,28 +244,38 @@ class RegistrationController extends Controller
      */
     public function resendOtp()
     {
-        $customerId = session('otp_customer_id');
-
-        if (! $customerId) {
+        $pendingRegistration = session('pending_registration');
+    
+        if (!$pendingRegistration) {
+            session()->flash('error', 'Registration session expired. Please register again.');
             return redirect()->route('shop.customers.register.index');
         }
-
-        $customer = $this->customerRepository->find($customerId);
-
-        if (! $customer) {
-            return redirect()->route('shop.customers.register.index');
-        }
-
-        if (! $this->otpService->canResend($customer->phone)) {
-            session()->flash('warning', 'Please wait before requesting another OTP.');
-
+    
+        $phone = $pendingRegistration['customer_data']['phone'];
+    
+        // Generate new OTP
+        $otpData = $this->otpService->generateOtp($phone);
+    
+        if (!$otpData) {
+            session()->flash('error', 'Could not generate OTP. Please try again.');
             return redirect()->back();
         }
-
-        $this->otpService->generateAndSend($customer->phone);
-
+    
+        // Send new OTP
+        if (!$this->otpService->sendOtp($phone, $otpData['plain'])) {
+            session()->flash('error', 'Could not send OTP. Please try again.');
+            return redirect()->back();
+        }
+    
+        // Update session with new OTP
+        session()->put('pending_registration', [
+            'customer_data' => $pendingRegistration['customer_data'],
+            'otp_hashed' => $otpData['hashed'],
+            'otp_expires_at' => $otpData['expires_at'],
+        ]);
+    
         session()->flash('success', 'A new OTP has been sent to your phone.');
-
+    
         return redirect()->back();
     }
 
