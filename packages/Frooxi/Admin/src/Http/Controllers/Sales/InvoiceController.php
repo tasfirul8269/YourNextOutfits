@@ -5,6 +5,7 @@ namespace Frooxi\Admin\Http\Controllers\Sales;
 use Frooxi\Admin\DataGrids\Sales\OrderInvoiceDataGrid;
 use Frooxi\Admin\Http\Controllers\Controller;
 use Frooxi\Admin\Http\Requests\MassUpdateRequest;
+use Frooxi\Admin\Http\Requests\MassDestroyRequest;
 use Frooxi\Core\Traits\PDFHandler;
 use Frooxi\Sales\Repositories\InvoiceRepository;
 use Frooxi\Sales\Repositories\OrderRepository;
@@ -153,6 +154,60 @@ class InvoiceController extends Controller
             view('shop::customers.account.orders.pdf', compact('invoice', 'orderCurrencyCode'))->render(),
             'invoice-'.$invoice->created_at->format('d-m-Y')
         );
+    }
+
+    /**
+     * Delete the specified resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $invoice = $this->invoiceRepository->findOrFail($id);
+
+        try {
+            $invoice->delete();
+
+            return new JsonResponse([
+                'message' => trans('admin::app.sales.invoices.index.datagrid.delete-success'),
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+
+        return new JsonResponse([
+            'message' => trans('admin::app.sales.invoices.index.datagrid.delete-failed'),
+        ], 500);
+    }
+
+    /**
+     * Mass delete the invoices.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function massDestroy(MassDestroyRequest $massDestroyRequest): JsonResponse
+    {
+        $invoiceIds = $massDestroyRequest->input('indices');
+
+        try {
+            foreach ($invoiceIds as $invoiceId) {
+                $invoice = $this->invoiceRepository->find($invoiceId);
+
+                if ($invoice) {
+                    $invoice->delete();
+                }
+            }
+
+            return new JsonResponse([
+                'message' => trans('admin::app.sales.invoices.index.datagrid.mass-delete-success'),
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+
+        return new JsonResponse([
+            'message' => trans('admin::app.sales.invoices.index.datagrid.delete-failed'),
+        ], 500);
     }
 
     /**

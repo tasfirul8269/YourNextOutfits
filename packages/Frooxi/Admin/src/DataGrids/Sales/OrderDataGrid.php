@@ -234,5 +234,32 @@ class OrderDataGrid extends DataGrid
                 },
             ]);
         }
+
+        if (bouncer()->hasPermission('sales.orders.delete')) {
+            $this->addAction([
+                'icon' => 'icon-delete',
+                'title' => trans('admin::app.sales.orders.index.datagrid.delete'),
+                'method' => 'DELETE',
+                'url' => function ($row) {
+                    return route('admin.sales.orders.delete', $row->id);
+                },
+            ]);
+        }
+    }
+
+    /**
+     * Prepare mass actions.
+     *
+     * @return void
+     */
+    public function prepareMassActions()
+    {
+        if (bouncer()->hasPermission('sales.orders.delete')) {
+            $this->addMassAction([
+                'title' => trans('admin::app.sales.orders.index.datagrid.delete'),
+                'url' => route('admin.sales.orders.mass_delete'),
+                'method' => 'POST',
+            ]);
+        }
     }
 }

@@ -151,6 +151,17 @@ class OrderInvoiceDataGrid extends DataGrid
                 },
             ]);
         }
+
+        if (bouncer()->hasPermission('sales.invoices.delete')) {
+            $this->addAction([
+                'icon' => 'icon-delete',
+                'title' => trans('admin::app.sales.invoices.index.datagrid.delete'),
+                'method' => 'DELETE',
+                'url' => function ($row) {
+                    return route('admin.sales.invoices.delete', $row->id);
+                },
+            ]);
+        }
     }
 
     /**
@@ -179,5 +190,13 @@ class OrderInvoiceDataGrid extends DataGrid
                 ],
             ],
         ]);
+
+        if (bouncer()->hasPermission('sales.invoices.delete')) {
+            $this->addMassAction([
+                'title' => trans('admin::app.sales.invoices.index.datagrid.delete'),
+                'url' => route('admin.sales.invoices.mass_delete'),
+                'method' => 'POST',
+            ]);
+        }
     }
 }

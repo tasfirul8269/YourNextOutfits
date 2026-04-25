@@ -12,6 +12,17 @@
         <div class="flex items-center gap-x-2.5">
             <x-admin::datagrid.export src="{{ route('admin.sales.orders.index') }}" />
 
+            {{-- Bulk Delete Button --}}
+            <button
+                type="button"
+                id="bulk-delete-orders-btn"
+                class="primary-button"
+                style="display:none; background:#ef4444;"
+                onclick="bulkDeleteOrders()"
+            >
+                Delete Selected
+            </button>
+
             {!! view_render_event('frooxi.admin.sales.orders.create.before') !!}
 
             {{-- REMOVED: Admin cart creation feature not available --}}
@@ -49,8 +60,11 @@
             <template v-else>
                 <!-- Grid Header -->
                 <div class="row grid items-center border-b px-4 py-2.5 dark:border-gray-800"
-                    style="grid-template-columns: 130px 160px 1fr 170px 170px 90px 36px; column-gap: 20px;">
+                    style="grid-template-columns: 32px 130px 160px 1fr 170px 170px 90px 36px; column-gap: 12px;">
     
+                    <!-- Checkbox -->
+                    <input type="checkbox" id="select-all-orders" onchange="toggleAllOrders(this)" class="cursor-pointer" />
+
                     <!-- Order / Date -->
                     <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
                         @lang('admin::app.sales.orders.index.datagrid.order-id')
@@ -103,9 +117,12 @@
                 <!-- Order Rows -->
                 <div
                     class="row grid items-center border-b px-4 py-3.5 transition-all hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-950"
-                    style="grid-template-columns: 130px 160px 1fr 170px 170px 90px 36px; column-gap: 20px;"
+                    style="grid-template-columns: 32px 130px 160px 1fr 170px 170px 90px 36px; column-gap: 12px;"
                     v-for="record in available.records"
                 >
+                    <!-- Checkbox -->
+                    <input type="checkbox" class="order-row-checkbox cursor-pointer" :value="record.id" onchange="updateBulkDeleteBtn()" />
+
                     <!-- Order ID + Date -->
                     <div class="flex flex-col gap-0.5">
                         <p class="text-sm font-bold text-gray-800 dark:text-white">
@@ -175,11 +192,12 @@
                     >
                     </div>
     
-                    <!-- View Action -->
-                    <div class="flex justify-end">
-                        <a :href="'{{ route('admin.sales.orders.view', ':id') }}'.replace(':id', record.id)">
+                    <!-- Actions -->
+                    <div class="flex justify-end items-center gap-1">
+                        <a :href="'{{ route('admin.sales.orders.view', ':id') }}'.replace(':id', record.id)" title="View">
                             <span class="icon-sort-right rtl:icon-sort-left cursor-pointer p-1.5 text-2xl hover:rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"></span>
                         </a>
+                        <span class="icon-delete cursor-pointer p-1.5 text-2xl hover:rounded-md hover:bg-red-100 dark:hover:bg-red-900" title="Delete" @click="deleteOrder(record.id)"></span>
                     </div>
                 </div>
             </template>
@@ -443,6 +461,56 @@
                         message: error.response?.data?.message || 'Failed to update status' 
                     });
                 });
+            }
+
+            // Toggle all order checkboxes
+            window.toggleAllOrders = function(masterCheckbox) {
+                document.querySelectorAll('.order-row-checkbox').forEach(cb => {
+                    cb.checked = masterCheckbox.checked;
+                });
+                updateBulkDeleteBtn();
+            }
+
+            // Show/hide bulk delete button based on selection
+            window.updateBulkDeleteBtn = function() {
+                const checked = document.querySelectorAll('.order-row-checkbox:checked');
+                const btn = document.getElementById('bulk-delete-orders-btn');
+                if (btn) btn.style.display = checked.length > 0 ? 'inline-flex' : 'none';
+            }
+
+            // Get selected order IDs
+            function getSelectedOrderIds() {
+                return Array.from(document.querySelectorAll('.order-row-checkbox:checked')).map(cb => cb.value);
+            }
+
+            // Delete single order
+            window.deleteOrder = function(orderId) {
+                if (!confirm('Are you sure you want to delete this order?')) return;
+                
+                axios.delete("{{ route('admin.sales.orders.delete', ':id') }}".replace(':id', orderId))
+                    .then((response) => {
+                        window.$emitter?.emit('add-flash', { type: 'success', message: response.data.message });
+                        location.reload();
+                    })
+                    .catch((error) => {
+                        window.$emitter?.emit('add-flash', { type: 'error', message: error.response?.data?.message || 'Delete failed' });
+                    });
+            }
+
+            // Bulk delete selected orders
+            window.bulkDeleteOrders = function() {
+                const ids = getSelectedOrderIds();
+                if (!ids.length) return;
+                if (!confirm('Are you sure you want to delete ' + ids.length + ' selected order(s)?')) return;
+
+                axios.post("{{ route('admin.sales.orders.mass_delete') }}", { indices: ids })
+                    .then((response) => {
+                        window.$emitter?.emit('add-flash', { type: 'success', message: response.data.message });
+                        location.reload();
+                    })
+                    .catch((error) => {
+                        window.$emitter?.emit('add-flash', { type: 'error', message: error.response?.data?.message || 'Bulk delete failed' });
+                    });
             }
         </script>
     @endPushOnce

@@ -51,6 +51,11 @@ return [
         'route' => 'admin.sales.orders.cancel',
         'sort' => 3,
     ], [
+        'key' => 'sales.orders.delete',
+        'name' => 'admin::app.acl.delete',
+        'route' => 'admin.sales.orders.index',
+        'sort' => 4,
+    ], [
         'key' => 'sales.invoices',
         'name' => 'admin::app.acl.invoices',
         'route' => 'admin.sales.invoices.index',
@@ -65,6 +70,11 @@ return [
         'name' => 'admin::app.acl.create',
         'route' => 'admin.sales.invoices.store',
         'sort' => 2,
+    ], [
+        'key' => 'sales.invoices.delete',
+        'name' => 'admin::app.acl.delete',
+        'route' => 'admin.sales.invoices.index',
+        'sort' => 3,
     ], [
         'key' => 'sales.shipments',
         'name' => 'admin::app.acl.shipments',

@@ -18,6 +18,8 @@ Route::prefix('sales')->group(function () {
         Route::post('create/{cartId}', 'store')->name('admin.sales.orders.store');
         Route::get('view/{id}', 'view')->name('admin.sales.orders.view');
         Route::post('cancel/{id}', 'cancel')->name('admin.sales.orders.cancel');
+        Route::delete('delete/{id}', 'destroy')->name('admin.sales.orders.delete');
+        Route::post('mass-delete', 'massDestroy')->name('admin.sales.orders.mass_delete');
         Route::get('reorder/{id}', 'reorder')->name('admin.sales.orders.reorder');
         Route::post('comment/{order_id}', 'comment')->name('admin.sales.orders.comment');
         Route::post('update-status/{id}', 'updateStatus')->name('admin.sales.orders.update_status');
@@ -32,6 +34,8 @@ Route::prefix('sales')->group(function () {
         Route::get('create/{order_id}', 'create')->name('admin.sales.invoices.create');
         Route::post('create/{order_id}', 'store')->name('admin.sales.invoices.store');
         Route::get('view/{id}', 'view')->name('admin.sales.invoices.view');
+        Route::delete('delete/{id}', 'destroy')->name('admin.sales.invoices.delete');
+        Route::post('mass-delete', 'massDestroy')->name('admin.sales.invoices.mass_delete');
         Route::post('send-duplicate-email/{id}', 'sendDuplicateEmail')->name('admin.sales.invoices.send_duplicate_email');
         Route::get('print/{id}', 'printInvoice')->name('admin.sales.invoices.print');
         Route::post('mass-update/state', 'massUpdateState')->name('admin.sales.invoices.mass_update.state');

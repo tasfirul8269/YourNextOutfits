@@ -4,6 +4,7 @@ namespace Frooxi\Admin\Http\Controllers\Sales;
 
 use Frooxi\Admin\DataGrids\Sales\OrderDataGrid;
 use Frooxi\Admin\Http\Controllers\Controller;
+use Frooxi\Admin\Http\Requests\MassDestroyRequest;
 use Frooxi\Admin\Http\Resources\AddressResource;
 use Frooxi\Admin\Http\Resources\CartResource;
 use Frooxi\Checkout\Facades\Cart;
@@ -242,6 +243,64 @@ class OrderController extends Controller
         }
 
         \Log::info('Inventory return complete for cancelled order #'.$order->id);
+    }
+
+    /**
+     * Delete the specified resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $order = $this->orderRepository->findOrFail($id);
+
+        try {
+            $this->returnInventoryForOrder($order);
+
+            $order->delete();
+
+            return new JsonResponse([
+                'message' => trans('admin::app.sales.orders.index.datagrid.delete-success'),
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+
+        return new JsonResponse([
+            'message' => trans('admin::app.sales.orders.index.datagrid.delete-failed'),
+        ], 500);
+    }
+
+    /**
+     * Mass delete the orders.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function massDestroy(MassDestroyRequest $massDestroyRequest): JsonResponse
+    {
+        $orderIds = $massDestroyRequest->input('indices');
+
+        try {
+            foreach ($orderIds as $orderId) {
+                $order = $this->orderRepository->find($orderId);
+
+                if ($order) {
+                    $this->returnInventoryForOrder($order);
+
+                    $order->delete();
+                }
+            }
+
+            return new JsonResponse([
+                'message' => trans('admin::app.sales.orders.index.datagrid.mass-delete-success'),
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+
+        return new JsonResponse([
+            'message' => trans('admin::app.sales.orders.index.datagrid.delete-failed'),
+        ], 500);
     }
 
     /**

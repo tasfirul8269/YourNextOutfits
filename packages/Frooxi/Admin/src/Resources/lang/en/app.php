@@ -211,6 +211,10 @@ return [
                     'status' => 'Status',
                     'success' => 'Success',
                     'view' => 'View',
+                    'delete' => 'Delete',
+                    'delete-success' => 'Order deleted successfully.',
+                    'delete-failed' => 'Order delete failed.',
+                    'mass-delete-success' => 'Selected orders deleted successfully.',
                 ],
             ],
 
@@ -641,6 +645,10 @@ return [
                     'pending' => 'Pending',
                     'status' => 'Status',
                     'update-status' => 'Update Status',
+                    'delete' => 'Delete',
+                    'delete-success' => 'Invoice deleted successfully.',
+                    'delete-failed' => 'Invoice delete failed.',
+                    'mass-delete-success' => 'Selected invoices deleted successfully.',
                 ],
             ],
 
