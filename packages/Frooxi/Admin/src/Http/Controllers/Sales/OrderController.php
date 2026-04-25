@@ -188,7 +188,12 @@ class OrderController extends Controller
     {
         \Log::info('Returning inventory for cancelled order #'.$order->id);
 
-        $channelInventorySourceIds = $order->channel->inventory_sources->where('status', 1)->pluck('id');
+        try {
+            $channelInventorySourceIds = $order->channel?->inventory_sources?->where('status', 1)?->pluck('id') ?? collect();
+        } catch (\Exception $e) {
+            \Log::warning('Could not load channel for order #'.$order->id.': '.$e->getMessage());
+            $channelInventorySourceIds = collect();
+        }
 
         // Use all_items (includes child variant items); items() filters out parent_id IS NOT NULL
         $allItems = $order->all_items;
@@ -398,7 +403,12 @@ class OrderController extends Controller
     {
         \Log::info('Starting inventory reduction for order #'.$order->id);
 
-        $channelInventorySourceIds = $order->channel->inventory_sources->where('status', 1)->pluck('id');
+        try {
+            $channelInventorySourceIds = $order->channel?->inventory_sources?->where('status', 1)?->pluck('id') ?? collect();
+        } catch (\Exception $e) {
+            \Log::warning('Could not load channel for order #'.$order->id.': '.$e->getMessage());
+            $channelInventorySourceIds = collect();
+        }
         \Log::info('Active inventory sources: '.$channelInventorySourceIds->implode(', '));
 
         // Use all_items (includes child variant items); items() filters out parent_id IS NOT NULL
@@ -493,7 +503,12 @@ class OrderController extends Controller
     {
         \Log::info('Restoring inventory for order #'.$order->id);
 
-        $channelInventorySourceIds = $order->channel->inventory_sources->where('status', 1)->pluck('id');
+        try {
+            $channelInventorySourceIds = $order->channel?->inventory_sources?->where('status', 1)?->pluck('id') ?? collect();
+        } catch (\Exception $e) {
+            \Log::warning('Could not load channel for order #'.$order->id.': '.$e->getMessage());
+            $channelInventorySourceIds = collect();
+        }
         $allItems = $order->all_items;
 
         foreach ($allItems as $item) {
