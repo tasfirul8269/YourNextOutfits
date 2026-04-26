@@ -110,7 +110,7 @@ class CategoryController extends APIController
 
         $query->orderBy('sort_order');
 
-        return AttributeOptionResource::collection($query->paginate());
+        return AttributeOptionResource::collection($query->paginate(request()->integer('per_page', 200)));
     }
 
     /**

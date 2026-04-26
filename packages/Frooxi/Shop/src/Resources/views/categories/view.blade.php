@@ -278,34 +278,7 @@
                 </div>
 
                 <div id="pc-color-body" style="padding:4px 28px 20px;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;">
-                    @php
-                        $colorList = [
-                            ['id' => 4, 'label' => 'Black', 'hex' => '#111111'],
-                            ['id' => 5, 'label' => 'White', 'hex' => '#f9fafb', 'border' => true],
-                            ['id' => 41, 'label' => 'Blue', 'hex' => '#3b82f6'],
-                            ['id' => 1, 'label' => 'Red', 'hex' => '#ef4444'],
-                            ['id' => 42, 'label' => 'Pink', 'hex' => '#ec4899'],
-                            ['id' => 43, 'label' => 'Purple', 'hex' => '#a855f7'],
-                            ['id' => 2, 'label' => 'Green', 'hex' => '#22c55e'],
-                            ['id' => 3, 'label' => 'Yellow', 'hex' => '#facc15'],
-                            ['id' => 39, 'label' => 'Orange', 'hex' => '#f97316'],
-                            ['id' => 46, 'label' => 'Grey', 'hex' => '#9ca3af'],
-                            ['id' => 54, 'label' => 'Brown', 'hex' => '#92400e'],
-                            ['id' => 47, 'label' => 'Dual Tone', 'hex' => 'linear-gradient(135deg,#111 50%,#f9fafb 50%)'],
-                        ];
-                    @endphp
-
-                    @foreach ($colorList as $col)
-                        <div
-                            id="pc-color-row-{{ $col['id'] }}"
-                            onclick="pcToggleColor(this,'{{ $col['id'] }}')"
-                            style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;border:1.5px solid transparent;"
-                        >
-                            <div id="pc-cb-color-{{ $col['id'] }}" style="width:16px;height:16px;border-radius:4px;border:1.5px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;"></div>
-                            <div style="width:18px;height:18px;border-radius:50%;flex-shrink:0;background:{{ $col['hex'] }};{{ isset($col['border']) ? 'border:1.5px solid #d1d5db;' : '' }}"></div>
-                            <span style="font-family:Montserrat,sans-serif;font-size:12px;color:#374151;font-weight:400;">{{ $col['label'] }}</span>
-                        </div>
-                    @endforeach
+                    {{-- Populated dynamically by JS fetchColorOptions() --}}
                 </div>
             </div>
         </div>
@@ -852,6 +825,92 @@
                     return categoryTreePromise;
                 }
 
+                /* ── Color Options (dynamic) ── */
+                var colorOptionsPromise = null;
+                var colorOptions = [];
+
+                var PC_FALLBACK_COLOR_MAP = {
+                    black: '#111111', white: '#f9fafb', blue: '#3b82f6', red: '#ef4444',
+                    pink: '#ec4899', purple: '#a855f7', green: '#22c55e', yellow: '#facc15',
+                    orange: '#f97316', grey: '#9ca3af', gray: '#9ca3af', brown: '#92400e'
+                };
+
+                function resolveSwatchHex(option) {
+                    var swatch = String(option.swatch_value || '').trim();
+                    if (swatch && (swatch.startsWith('#') || swatch.startsWith('rgb') || swatch.startsWith('hsl') || swatch.startsWith('linear-gradient'))) {
+                        return swatch;
+                    }
+                    var name = String(option.name || '').toLowerCase().replace(/[^a-z]/g, '');
+                    return PC_FALLBACK_COLOR_MAP[name] || PC_FALLBACK_COLOR_MAP[swatch.toLowerCase()] || '#cccccc';
+                }
+
+                function renderColorOptions() {
+                    var container = document.getElementById('pc-color-body');
+                    if (!container) return;
+
+                    if (!colorOptions.length) {
+                        container.innerHTML = '<div style="grid-column:1/-1;padding:8px 0 4px;font-family:Montserrat,sans-serif;font-size:12px;color:#9ca3af;">No colors available</div>';
+                        return;
+                    }
+
+                    container.innerHTML = colorOptions.map(function (option) {
+                        var id = option.id;
+                        var label = option.name;
+                        var hex = resolveSwatchHex(option);
+                        var isWhite = hex === '#f9fafb' || hex.toLowerCase() === '#ffffff' || hex.toLowerCase() === 'white';
+                        var isActive = !!selectedColors[id];
+                        var swatchBorder = isWhite ? 'border:1.5px solid #d1d5db;' : '';
+                        return '<div id="pc-color-row-' + id + '" onclick="pcToggleColor(this,\'' + id + '\')"'
+                            + ' style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;border:1.5px solid ' + (isActive ? '#e5e7eb' : 'transparent') + ';background:' + (isActive ? '#fafafa' : 'transparent') + ';" >'
+                            + '<div id="pc-cb-color-' + id + '" style="width:16px;height:16px;border-radius:4px;border:1.5px solid ' + (isActive ? '#D63044' : '#d1d5db') + ';flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:' + (isActive ? '#D63044' : '') + ';">' + (isActive ? '<svg width="9" height="9" viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 9 11 1"/></svg>' : '') + '</div>'
+                            + '<div style="width:18px;height:18px;border-radius:50%;flex-shrink:0;background:' + hex + ';' + swatchBorder + '"></div>'
+                            + '<span style="font-family:Montserrat,sans-serif;font-size:12px;color:#374151;font-weight:' + (isActive ? '500' : '400') + ';">' + label + '</span>'
+                            + '</div>';
+                    }).join('');
+                }
+
+                function fetchColorOptions() {
+                    if (colorOptionsPromise) {
+                        renderColorOptions();
+                        return colorOptionsPromise;
+                    }
+
+                    var container = document.getElementById('pc-color-body');
+                    if (container) {
+                        container.innerHTML = '<div style="grid-column:1/-1;padding:8px 0 4px;font-family:Montserrat,sans-serif;font-size:12px;color:#9ca3af;">Loading colors...</div>';
+                    }
+
+                    colorOptionsPromise = fetch(FILTER_ATTRIBUTES_API_URL, {
+                        headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+                    .then(function (data) {
+                        var attrs = data.data || [];
+                        var colorAttr = attrs.find(function (a) { return a.code === 'color'; });
+                        if (!colorAttr) return null;
+                        return fetch(FILTER_ATTRIBUTE_OPTIONS_URL.replace('__ATTRIBUTE_ID__', colorAttr.id) + '?per_page=200', {
+                            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+                        });
+                    })
+                    .then(function (r) {
+                        if (!r) return { data: [] };
+                        if (!r.ok) throw new Error('HTTP ' + r.status);
+                        return r.json();
+                    })
+                    .then(function (json) {
+                        colorOptions = json.data || [];
+                        renderColorOptions();
+                    })
+                    .catch(function (err) {
+                        console.error('[ColorFilter]', err);
+                        colorOptionsPromise = null;
+                        var container = document.getElementById('pc-color-body');
+                        if (container) container.innerHTML = '';
+                    });
+
+                    return colorOptionsPromise;
+                }
+
                 window.pcOpenDrawer = function () {
                     document.getElementById('pc-drawer-overlay').style.display = 'block';
                     document.getElementById('pc-filter-drawer').style.transform = 'translateX(0)';
@@ -863,6 +922,7 @@
                     fetchCategoryTree();
                     fetchSizeOptions();
                     renderSizeTrigger();
+                    fetchColorOptions();
                 };
 
                 window.pcCloseDrawer = function () {
@@ -955,7 +1015,7 @@
                     grid.innerHTML = options.map(function (option) {
                         var isActive = !!selectedSizes[option.id];
 
-                        return '<button type="button" onclick="pcToggleSize(\'' + esc(option.id) + '\')" style="min-height:56px;padding:12px 10px;border:1.5px solid ' + (isActive ? '#111' : '#e5e7eb') + ';border-radius:10px;background:' + (isActive ? '#D63044' : '#fff') + ';font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;color:' + (isActive ? '#fff' : '#111') + ';cursor:pointer;line-height:1.3;">' + esc(option.label) + '</button>';
+                        return '<button type="button" onclick="pcToggleSize(\'' + esc(option.id) + '\')" style="min-height:56px;padding:12px 10px;border:1.5px solid ' + (isActive ? '#111' : '#e5e7eb') + ';border-radius:10px;background:' + (isActive ? '#D63044' : '#fff') + ';font-family:Montserrat,sans-serif;font-size:13px;font-weight:500;color:' + (isActive ? '#fff' : '#111') + ';cursor:pointer;line-height:1.3;word-break:break-word;overflow-wrap:break-word;">' + esc(option.label) + '</button>';
                     }).join('');
                 }
 
@@ -1439,6 +1499,7 @@
                             label.style.fontWeight = '400';
                         }
                     });
+                    renderColorOptions();
 
                     renderCatFilterSection();
                     sliderVal.min = PRICE_MIN;
