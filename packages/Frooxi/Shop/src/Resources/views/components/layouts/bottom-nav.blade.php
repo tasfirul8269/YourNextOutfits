@@ -5,7 +5,7 @@
 
 <div
     id="mobile-bottom-nav"
-    style="position:fixed;bottom:0;left:0;right:0;z-index:1000;background:#e30612;border-top:1px solid rgba(255,255,255,0.15);padding-bottom:env(safe-area-inset-bottom);"
+    style="position:fixed;bottom:0;left:0;right:0;z-index:1000;background:#D63044;border-top:1px solid rgba(255,255,255,0.15);padding-bottom:env(safe-area-inset-bottom);"
 >
     <div style="display:grid;grid-template-columns:repeat(4,1fr);align-items:stretch;">
 
