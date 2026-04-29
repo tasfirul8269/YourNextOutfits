@@ -266,34 +266,26 @@
                 </div>
 
                 <!-- Trade License Section -->
-                <div style="border-top:1px solid #e5e7eb;">
+                <div style="border-bottom:1px solid #e5e7eb;">
                     <div
-                        class="flex items-center justify-between px-6 py-4 transition-colors duration-200 hover:bg-gray-50 cursor-pointer"
+                        class="flex items-center justify-between py-2 transition-colors duration-200 cursor-pointer"
                         @click="showTradeLicense = !showTradeLicense"
                     >
-                        <div class="flex items-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                                <polyline points="10 9 9 9 8 9"/>
-                            </svg>
-                            <span class="text-base font-medium text-black">Trade License</span>
-                        </div>
+                        <span class="text-base font-medium text-black">Trade License</span>
                         <span
-                            class="text-lg transition-transform duration-200"
-                            :class="showTradeLicense ? 'icon-arrow-up' : 'icon-arrow-down'"
+                            class="transition-transform duration-200"
+                            :class="showTradeLicense ? 'icon-arrow-down' : 'icon-arrow-right'"
+                            style="font-size: 18px;"
                         ></span>
                     </div>
 
                     <!-- Trade License Number (Expandable) -->
                     <div
-                        class="overflow-hidden transition-all duration-300"
-                        :class="showTradeLicense ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'"
+                        v-show="showTradeLicense"
+                        class="overflow-hidden"
                     >
-                        <div class="px-6 pb-4">
-                            <p class="text-sm text-zinc-600" style="padding-left: 33px;">
+                        <div class="pb-2">
+                            <p class="text-sm text-zinc-600 pl-4">
                                 TRAD/DNCC/ 048012/2025
                             </p>
                         </div>
@@ -301,18 +293,12 @@
                 </div>
 
                 <!-- Store Locations Section (Non-collapsible) -->
-                <div style="border-top:1px solid #e5e7eb;">
-                    <div class="px-6 py-4">
-                        <div class="flex items-center gap-3 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                            <span class="text-base font-medium text-black">Visit Our Store</span>
-                        </div>
-                        <div style="padding-left: 33px;">
-                            <p class="text-sm text-black mb-2">Gulshan, Dhaka</p>
-                            <a href="tel:01880932952" class="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 transition-colors duration-200">
+                <div style="border-bottom:1px solid #e5e7eb;">
+                    <div class="py-2">
+                        <span class="text-base font-medium text-black">Visit Our Store</span>
+                        <div class="pl-4 mt-1">
+                            <p class="text-sm text-black">Gulshan, Dhaka</p>
+                            <a href="tel:01880932952" class="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 transition-colors duration-200 mt-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                                 </svg>
