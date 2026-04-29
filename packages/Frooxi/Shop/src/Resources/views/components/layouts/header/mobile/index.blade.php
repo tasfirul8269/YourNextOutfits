@@ -215,7 +215,7 @@
                             v-for="(category, index) in categories"
                             :key="category.id"
                             :class="{'mb-2': category.children && category.children.length}"
-                            :style="{ borderBottom: index < categories.length - 1 ? '1px solid #e5e7eb' : 'none' }"
+                            :style="{ borderBottom: index < categories.length ? '1px solid #e5e7eb' : 'none' }"
                         >
                         <div
                             class="flex items-center justify-between py-2 transition-colors duration-200 cursor-pointer"
@@ -266,7 +266,10 @@
                 </div>
 
                 <!-- Trade License Section -->
-                <div class="mb-2">
+                <div
+                    class="mb-2"
+                    style="border-bottom: 1px solid #e5e7eb;"
+                >
                     <div
                         class="flex items-center justify-between py-2 transition-colors duration-200 cursor-pointer"
                         @click="showTradeLicense = !showTradeLicense"
@@ -293,7 +296,7 @@
                 </div>
 
                 <!-- Store Locations Section (Non-collapsible) -->
-                <div>
+                <div style="border-bottom: 1px solid #e5e7eb;">
                     <div class="py-2">
                         <span class="text-base font-medium text-black">Visit Our Store</span>
                         <div class="pl-4 mt-1">
@@ -358,6 +361,7 @@
                     currentSecondLevelCategory: null,
                     currentParentCategory: null,
                     expandedCategories: {},
+                    showTradeLicense: false,
                 }
             },
 
@@ -414,12 +418,8 @@
                 },
 
                 autoExpandFirst() {
-                    if (this.categories.length > 0) {
-                        const first = this.categories[0];
-                        if (first.children && first.children.length) {
-                            this.expandedCategories = { [first.id]: true };
-                        }
-                    }
+                    // Don't auto-expand any category by default
+                    this.expandedCategories = {};
                 },
 
                 showThirdLevel(secondLevelCategory, parentCategory, event) {
