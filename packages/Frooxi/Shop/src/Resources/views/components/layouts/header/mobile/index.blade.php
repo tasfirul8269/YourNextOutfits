@@ -266,7 +266,7 @@
                 </div>
 
                 <!-- Trade License Section -->
-                <div style="border-bottom:1px solid #e5e7eb;">
+                <div class="mb-2">
                     <div
                         class="flex items-center justify-between py-2 transition-colors duration-200 cursor-pointer"
                         @click="showTradeLicense = !showTradeLicense"
@@ -293,7 +293,7 @@
                 </div>
 
                 <!-- Store Locations Section (Non-collapsible) -->
-                <div style="border-bottom:1px solid #e5e7eb;">
+                <div>
                     <div class="py-2">
                         <span class="text-base font-medium text-black">Visit Our Store</span>
                         <div class="pl-4 mt-1">
