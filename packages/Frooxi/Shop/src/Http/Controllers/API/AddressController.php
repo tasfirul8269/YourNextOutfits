@@ -37,15 +37,10 @@ class AddressController extends APIController
         Event::dispatch('customer.addresses.create.before');
 
         $data = array_merge($request->only([
-            'company_name',
             'first_name',
             'last_name',
-            'vat_id',
             'address',
-            'country',
-            'state',
             'city',
-            'postcode',
             'phone',
             'default_address',
             'email',
@@ -86,15 +81,10 @@ class AddressController extends APIController
         Event::dispatch('customer.addresses.update.before');
 
         $customerAddress = $this->customerAddressRepository->update(array_merge($request->only([
-            'company_name',
             'first_name',
             'last_name',
-            'vat_id',
             'address',
-            'country',
-            'state',
             'city',
-            'postcode',
             'phone',
             'default_address',
             'email',

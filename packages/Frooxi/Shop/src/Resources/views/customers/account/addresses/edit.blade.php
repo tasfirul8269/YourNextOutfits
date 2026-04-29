@@ -56,27 +56,8 @@
                 method="PUT"
                 :action="route('shop.customers.account.addresses.update',  $address->id)"
             >
-                {!! view_render_event('frooxi.shop.customers.account.address.edit_form_controls.before', ['address' => $address]) !!}
-
-                <!-- Company Name -->
-                <x-shop::form.control-group>
-                    <x-shop::form.control-group.label>
-                        @lang('shop::app.customers.account.addresses.edit.company-name')
-                    </x-shop::form.control-group.label>
-
-                    <x-shop::form.control-group.control
-                        type="text"
-                        name="company_name"
-                        :value="old('company_name') ?? $address->company_name"
-                        :label="trans('shop::app.customers.account.addresses.edit.company-name')"
-                        :placeholder="trans('shop::app.customers.account.addresses.edit.company-name')"
-                    />
-
-                    <x-shop::form.control-group.error control-name="company_name" />
-                </x-shop::form.control-group>
-
-                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.company_name.after', ['address' => $address]) !!}
-
+                {!! view_render_event('frooxi.shop.customers.account.address.edit_form_controls.before', ['address' => $address]) }
+                
                 <!-- First Name -->
                 <x-shop::form.control-group>
                     <x-shop::form.control-group.label class="required">
@@ -135,27 +116,8 @@
                     <x-shop::form.control-group.error control-name="email" />
                 </x-shop::form.control-group>
 
-                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.email.after', ['address' => $address]) !!}
-
-                <!-- Vat ID -->
-                <x-shop::form.control-group>
-                    <x-shop::form.control-group.label>
-                        @lang('shop::app.customers.account.addresses.edit.vat-id')
-                    </x-shop::form.control-group.label>
-
-                    <x-shop::form.control-group.control
-                        type="text"
-                        name="vat_id"
-                        :value="old('vat_id') ?? $address->vat_id"
-                        :label="trans('shop::app.customers.account.addresses.edit.vat-id')"
-                        :placeholder="trans('shop::app.customers.account.addresses.edit.vat-id')"
-                    />
-
-                    <x-shop::form.control-group.error control-name="vat_id" />
-                </x-shop::form.control-group>
-
-                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.vat_id.after', ['address' => $address]) !!}
-
+                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.email.after', ['address' => $address]) }
+                
                 @php
                     $addresses = explode(PHP_EOL, $address->address);
                 @endphp
@@ -199,77 +161,8 @@
                     @endfor
                 @endif
 
-                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.street-addres.after', ['address' => $address]) !!}
-
-                <!-- Country Name -->
-                <x-shop::form.control-group>
-                    <x-shop::form.control-group.label class="{{ core()->isCountryRequired() ? 'required' : '' }}">
-                        @lang('shop::app.customers.account.addresses.edit.country')
-                    </x-shop::form.control-group.label>
-
-                    <x-shop::form.control-group.control
-                        type="select"
-                        name="country"
-                        rules="{{ core()->isStateRequired() ? 'required' : '' }}"
-                        v-model="addressData.country"
-                        :aria-label="trans('shop::app.customers.account.addresses.edit.country')"
-                        :label="trans('shop::app.customers.account.addresses.edit.country')"
-                    >
-                        @foreach (core()->countries() as $country)
-                            <option 
-                                {{ $country->code === config('app.default_country') ? 'selected' : '' }}  
-                                value="{{ $country->code }}"
-                            >
-                                {{ $country->name }}
-                            </option>
-                        @endforeach
-                    </x-shop::form.control-group.control>
-
-                    <x-shop::form.control-group.error control-name="country" />
-                </x-shop::form.control-group>
-
-                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.country.after', ['address' => $address]) !!}
-
-                <!-- State Name -->
-                <x-shop::form.control-group>
-                    <x-shop::form.control-group.label class="{{ core()->isStateRequired() ? 'required' : '' }}">
-                        @lang('shop::app.customers.account.addresses.edit.state')
-                    </x-shop::form.control-group.label>
-                    <template v-if="haveStates()">
-                        <x-shop::form.control-group.control
-                            type="select"
-                            name="state"
-                            id="state"
-                            rules="{{ core()->isStateRequired() ? 'required' : '' }}"
-                            v-model="addressData.state"
-                            :label="trans('shop::app.customers.account.addresses.edit.state')"
-                            :placeholder="trans('shop::app.customers.account.addresses.edit.state')"
-                        >
-                            <option 
-                                v-for='(state, index) in countryStates[addressData.country]'
-                                :value="state.code"
-                            >
-                                @{{ state.default_name }}
-                            </option>
-                        </x-shop::form.control-group.control>
-                    </template>
-
-                    <template v-else>
-                        <x-shop::form.control-group.control
-                            type="text"
-                            name="state"
-                            rules="{{ core()->isStateRequired() ? 'required' : '' }}"
-                            :value="old('state') ?? $address->state"
-                            :label="trans('shop::app.customers.account.addresses.edit.state')"
-                            :placeholder="trans('shop::app.customers.account.addresses.edit.state')"
-                        />
-                    </template>
-
-                    <x-shop::form.control-group.error control-name="state" />
-                </x-shop::form.control-group>
-
-                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.state.after', ['address' => $address]) !!}
-
+                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.street-addres.after', ['address' => $address]) }
+                
                 <x-shop::form.control-group>
                     <x-shop::form.control-group.label class="required">
                         @lang('shop::app.customers.account.addresses.edit.city')
@@ -287,27 +180,8 @@
                     <x-shop::form.control-group.error control-name="city" />
                 </x-shop::form.control-group>
 
-                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.city.after', ['address' => $address]) !!}
-
-                <x-shop::form.control-group>
-                    <x-shop::form.control-group.label class="{{ core()->isPostCodeRequired() ? 'required' : '' }}">
-                        @lang('shop::app.customers.account.addresses.edit.post-code')
-                    </x-shop::form.control-group.label>
-
-                    <x-shop::form.control-group.control
-                        type="text"
-                        name="postcode"
-                        rules="{{ core()->isPostCodeRequired() ? 'required' : '' }}|postcode"
-                        :value="old('postal-code') ?? $address->postcode"
-                        :label="trans('shop::app.customers.account.addresses.edit.post-code')"
-                        :placeholder="trans('shop::app.customers.account.addresses.edit.post-code')"
-                    />
-
-                    <x-shop::form.control-group.error control-name="postcode" />
-                </x-shop::form.control-group>
-
-                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.postcode.after', ['address' => $address]) !!}
-
+                {!! view_render_event('frooxi.shop.customers.account.addresses.edit_form_controls.city.after', ['address' => $address]) }
+                
                 <x-shop::form.control-group>
                     <x-shop::form.control-group.label class="required">
                         @lang('shop::app.customers.account.addresses.edit.phone')
@@ -345,21 +219,11 @@
 
                 data() {
                     return {
-                        addressData: {
-                            country: "{{ old('country') ?? $address->country }}",
-
-                            state: "{{ old('state') ?? $address->state }}",
-                        },
-
-                        countryStates: @json(core()->groupedStatesByCountries()),
+                        addressData: {},
                     };
                 },
     
-                methods: {
-                    haveStates() {
-                        return !!this.countryStates[this.addressData.country]?.length;
-                    },
-                },
+                methods: {},
             });
         </script>
     @endpush

@@ -50,15 +50,10 @@ class AddressController extends Controller
         Event::dispatch('customer.addresses.create.before');
 
         $data = array_merge(request()->only([
-            'company_name',
             'first_name',
             'last_name',
-            'vat_id',
             'address',
-            'country',
-            'state',
             'city',
-            'postcode',
             'phone',
             'email',
             'default_address',
@@ -119,15 +114,10 @@ class AddressController extends Controller
         Event::dispatch('customer.addresses.update.before', $id);
 
         $data = array_merge(request()->only([
-            'company_name',
             'first_name',
             'last_name',
-            'vat_id',
             'address',
-            'country',
-            'state',
             'city',
-            'postcode',
             'phone',
             'email',
         ]), [
