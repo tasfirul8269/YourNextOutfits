@@ -47,7 +47,7 @@ return [
         'key' => 'sales',
         'name' => 'admin::app.components.layouts.sidebar.sales',
         'route' => 'admin.sales.orders.index',
-        'sort' => 3,
+        'sort' => 4,
         'icon' => 'icon-sales',
     ],
     [
@@ -77,7 +77,7 @@ return [
         'key' => 'customers',
         'name' => 'admin::app.components.layouts.sidebar.customers',
         'route' => 'admin.customers.customers.index',
-        'sort' => 4,
+        'sort' => 5,
         'icon' => 'icon-customer-2',
     ],
     [
@@ -100,7 +100,7 @@ return [
         'key' => 'storefront',
         'name' => 'Storefront',
         'route' => 'admin.storefront.hero_carousel.index',
-        'sort' => 5,
+        'sort' => 6,
         'icon' => 'icon-store',
     ],
     [
@@ -110,12 +110,13 @@ return [
         'sort' => 1,
         'icon' => '',
     ],
+    // Flash Sale (Moved to Parent)
     [
-        'key' => 'storefront.flash_sale',
+        'key' => 'flash_sale',
         'name' => 'Flash Sale',
         'route' => 'admin.storefront.flash_sale.index',
-        'sort' => 2,
-        'icon' => '',
+        'sort' => 3,
+        'icon' => 'icon-sales',
     ],
     [
         'key' => 'storefront.shipping_methods',
@@ -130,7 +131,7 @@ return [
         'key' => 'settings',
         'name' => 'admin::app.components.layouts.sidebar.settings',
         'route' => 'admin.settings.page.index',
-        'sort' => 6,
+        'sort' => 7,
         'icon' => 'icon-settings',
     ],
 ];
