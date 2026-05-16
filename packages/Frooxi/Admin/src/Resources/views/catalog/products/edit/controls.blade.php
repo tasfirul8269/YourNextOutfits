@@ -2,6 +2,7 @@
     $hiddenAttributes = [
         'tax_category_id',
         'brand',
+        'color',
         'meta_title',
         'meta_keywords',
         'meta_description',

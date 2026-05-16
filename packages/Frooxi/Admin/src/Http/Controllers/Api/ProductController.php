@@ -182,7 +182,7 @@ class ProductController extends Controller
      */
     public function attributeOptions(): JsonResponse
     {
-        $codes = ['size', 'color', 'sleeve'];
+        $codes = ['size', 'sleeve'];
         $result = [];
 
         foreach ($codes as $code) {

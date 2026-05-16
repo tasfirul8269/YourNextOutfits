@@ -34,9 +34,6 @@ Route::prefix('customer')->group(function () {
             Route::post('', 'store')->name('shop.customers.register.store');
         });
 
-        Route::get('verify-account/{token}', 'verifyAccount')->name('shop.customers.verify');
-        Route::get('resend/verification/{email}', 'resendVerificationEmail')->name('shop.customers.resend.verification_email');
-
         Route::get('verify-otp', 'showOtpForm')->name('shop.customers.verify-otp');
         Route::post('verify-otp', 'verifyOtp')->name('shop.customers.verify-otp.store');
         Route::post('resend-otp', 'resendOtp')->name('shop.customers.resend-otp');

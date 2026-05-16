@@ -231,9 +231,9 @@
                         class="primary-button"
                         @click="$refs.productCreateModal.toggle()"
                     >
-                        @lang('admin::app.catalog.products.index.create-btn')
+                        {{ request()->get('flash_sale') ? 'Create Flash Sale Product' : trans('admin::app.catalog.products.index.create-btn') }}
                     </button>
-                @endif
+@endif
 
                 <x-admin::form
                     v-slot="{ meta, errors, handleSubmit }"
@@ -248,7 +248,7 @@
                                     class="text-lg font-bold text-gray-800 dark:text-white"
                                     v-if="! attributes.length"
                                 >
-                                    @lang('admin::app.catalog.products.index.create.title')
+                                    {{ request()->get('flash_sale') ? 'Create Flash Sale Product' : trans('admin::app.catalog.products.index.create.title') }}
                                 </p>
 
                                 <p
@@ -763,5 +763,21 @@
                 }
             })
         </script>
+
+        {{-- Auto-append flash_sale parameter to redirect URL if coming from flash sale page --}}
+        @if (request()->get('flash_sale'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const createProductForm = app.component('v-create-product-form');
+                    if (createProductForm) {
+                        const originalCreate = createProductForm.methods.create;
+                        createProductForm.methods.create = function(params, { resetForm, resetField, setErrors }) {
+                            params.flash_sale = 1;
+                            return originalCreate.call(this, params, { resetForm, resetField, setErrors });
+                        };
+                    }
+                });
+            </script>
+        @endif
     @endPushOnce
 </x-admin::layouts>

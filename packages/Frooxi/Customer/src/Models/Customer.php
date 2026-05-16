@@ -87,6 +87,17 @@ class Customer extends Authenticatable implements CustomerContract
     protected $appends = ['image_url'];
 
     /**
+     * Get the name of the unique identifier for authentication.
+     * Use phone instead of email for login.
+     *
+     * @return string
+     */
+    public function getAuthIdentifierName()
+    {
+        return 'phone';
+    }
+
+    /**
      * Send the password reset notification.
      *
      * @param  string  $token

@@ -13,7 +13,7 @@ class LoginRequest extends FormRequest
      * @var array
      */
     private $rules = [
-        'email' => 'required|email',
+        'phone' => ['required', 'regex:/^(\+?880|0)?1[3-9][0-9]{8}$/'],
         'password' => 'required|min:6',
     ];
 

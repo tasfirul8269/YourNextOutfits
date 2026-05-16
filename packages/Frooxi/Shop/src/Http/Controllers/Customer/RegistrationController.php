@@ -8,7 +8,6 @@ use Frooxi\Customer\Repositories\CustomerRepository;
 use Frooxi\Customer\Services\OtpService;
 use Frooxi\Shop\Http\Controllers\Controller;
 use Frooxi\Shop\Http\Requests\Customer\RegistrationRequest;
-use Frooxi\Shop\Mail\Customer\EmailVerificationNotification;
 use Frooxi\Shop\Mail\Customer\RegistrationNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -56,7 +55,6 @@ class RegistrationController extends Controller
             'first_name',
             'last_name',
             'phone',
-            'email',
             'password_confirmation',
         ]), [
             'password' => bcrypt(request()->input('password')),
@@ -123,46 +121,6 @@ class RegistrationController extends Controller
         }
 
         return redirect()->route('shop.customer.session.index');
-    }
-
-    /**
-     * Resend verification email.
-     *
-     * @param  string  $email
-     * @return Response
-     */
-    public function resendVerificationEmail($email)
-    {
-        $verificationData = [
-            'email' => $email,
-            'token' => md5(uniqid(rand(), true)),
-        ];
-
-        $customer = $this->customerRepository->findOneByField('email', $email);
-
-        $this->customerRepository->update(['token' => $verificationData['token']], $customer->id);
-
-        try {
-            Mail::queue(new EmailVerificationNotification($verificationData));
-
-            if (Cookie::has('enable-resend')) {
-                Cookie::queue(Cookie::forget('enable-resend'));
-            }
-
-            if (Cookie::has('email-for-resend')) {
-                Cookie::queue(Cookie::forget('email-for-resend'));
-            }
-        } catch (\Exception $e) {
-            report($e);
-
-            session()->flash('error', trans('shop::app.customers.signup-form.verification-not-sent'));
-
-            return redirect()->back();
-        }
-
-        session()->flash('success', trans('shop::app.customers.signup-form.verification-sent'));
-
-        return redirect()->back();
     }
 
     /**

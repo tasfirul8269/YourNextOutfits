@@ -30,11 +30,17 @@ Route::prefix('storefront')->group(function () {
     Route::controller(FlashSaleController::class)->prefix('flash-sale')->group(function () {
         Route::get('', 'index')->name('admin.storefront.flash_sale.index');
 
+        Route::get('create', 'create')->name('admin.storefront.flash_sale.create');
+
         Route::post('store', 'store')->name('admin.storefront.flash_sale.store');
+
+        Route::get('edit/{id}', 'edit')->name('admin.storefront.flash_sale.edit');
 
         Route::put('update/{id}', 'update')->name('admin.storefront.flash_sale.update');
 
         Route::delete('destroy/{id}', 'destroy')->name('admin.storefront.flash_sale.destroy');
+
+        Route::put('toggle/{id}', 'toggleStatus')->name('admin.storefront.flash_sale.toggle');
 
         Route::post('mass-update', 'massUpdate')->name('admin.storefront.flash_sale.mass_update');
     });

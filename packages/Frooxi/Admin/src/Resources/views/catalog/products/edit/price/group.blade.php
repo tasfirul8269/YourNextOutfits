@@ -1,8 +1,8 @@
-<!-- Simplified Price Section: Base Price and Sale Price -->
+<!-- Simplified Price Section: Base Price and Flash Sale Discount -->
 <div class="grid gap-3">
     <!-- Base Price -->
     <x-admin::form.control-group>
-        <x-admin::form.control-group.label>
+        <x-admin::form.control-group.label class="required">
             Base Price
         </x-admin::form.control-group.label>
 
@@ -21,28 +21,29 @@
         <x-admin::form.control-group.error control-name="price" />
     </x-admin::form.control-group>
 
-    <!-- Sale Price (Special Price) -->
-    <x-admin::form.control-group>
-        <x-admin::form.control-group.label>
-            Sale Price
-        </x-admin::form.control-group.label>
+    <!-- Flash Sale Discount -->
+    @if (request()->get('flash_sale') || $product->getAttributeValue('flash_sale_discount'))
+        <x-admin::form.control-group>
+            <x-admin::form.control-group.label :class="request()->get('flash_sale') ? 'required' : ''">
+                Discount Percentage (%)
+            </x-admin::form.control-group.label>
 
-        <x-admin::form.control-group.control
-            type="price"
-            name="special_price"
-            rules="nullable|numeric|min:0"
-            :value="old('special_price') ?: (isset($product->special_price) && $product->special_price !== null ? rtrim(rtrim(number_format((float) $product->special_price, 4, '.', ''), '0'), '.') : '')"
-            label="Sale Price"
-        >
-            <x-slot:currency>
-                {{ core()->currencySymbol(core()->getBaseCurrencyCode()) }}
-            </x-slot>
-        </x-admin::form.control-group.control>
+            <x-admin::form.control-group.control
+                type="number"
+                name="flash_sale_discount"
+                rules="integer|min:0|max:99"
+                :value="old('flash_sale_discount') ?: ($product->getAttributeValue('flash_sale_discount') ?? '')"
+                placeholder="e.g. 30"
+                min="0"
+                max="99"
+                label="Discount Percentage"
+            />
 
-        <x-admin::form.control-group.error control-name="special_price" />
-        
-        <p class="mt-1 text-xs text-gray-500">
-            Leave empty if product is not on sale
-        </p>
-    </x-admin::form.control-group>
+            <x-admin::form.control-group.error control-name="flash_sale_discount" />
+            
+            <p class="mt-1 text-xs text-gray-500">
+                Enter discount (1-99%). Leave 0 to disable flash sale. The sale price will be calculated automatically.
+            </p>
+        </x-admin::form.control-group>
+    @endif
 </div>

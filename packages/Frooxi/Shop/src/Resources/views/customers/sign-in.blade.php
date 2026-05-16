@@ -72,26 +72,26 @@
             <x-shop::form :action="route('shop.customer.session.create')">
                 {!! view_render_event('frooxi.shop.customers.login_form_controls.before') !!}
 
-                {{-- Email --}}
+                {{-- Phone --}}
                 <div style="margin-bottom:20px;">
                     <label style="display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#374151;margin-bottom:8px;">
-                        @lang('shop::app.customers.login-form.email')
+                        Phone Number
                         <span style="color:#ef4444;margin-left:2px;">*</span>
                     </label>
 
                     <x-shop::form.control-group>
                         <x-shop::form.control-group.control
-                            type="email"
+                            type="text"
                             class="!rounded-lg !border-zinc-200 !bg-zinc-50 !px-5 !py-4 !text-sm !font-normal"
-                            name="email"
-                            rules="required|email"
+                            name="phone"
+                            rules="required"
                             value=""
-                            :label="trans('shop::app.customers.login-form.email')"
-                            placeholder="email@example.com"
-                            :aria-label="trans('shop::app.customers.login-form.email')"
+                            :label="'Phone Number'"
+                            placeholder="+880 1XXXXXXXXX"
+                            :aria-label="'Phone Number'"
                             aria-required="true"
                         />
-                        <x-shop::form.control-group.error control-name="email" />
+                        <x-shop::form.control-group.error control-name="phone" />
                     </x-shop::form.control-group>
                 </div>
 

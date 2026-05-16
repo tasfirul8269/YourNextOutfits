@@ -105,9 +105,15 @@ class ProductController extends Controller
             $configurableFamily = $this->attributeFamilyRepository
                 ->find(request()->input('attribute_family_id'));
 
+            // Filter out the 'color' attribute from configurable attributes
+            $configurableAttributes = $configurableFamily->configurable_attributes
+                ->filter(function ($attribute) {
+                    return $attribute->code !== 'color';
+                });
+
             return new JsonResponse([
                 'data' => [
-                    'attributes' => AttributeResource::collection($configurableFamily->configurable_attributes),
+                    'attributes' => AttributeResource::collection($configurableAttributes),
                 ],
             ]);
         }
@@ -126,9 +132,17 @@ class ProductController extends Controller
 
         session()->flash('success', trans('admin::app.catalog.products.create-success'));
 
+        $redirectUrl = route('admin.catalog.products.edit', $product->id);
+
+        // Redirect to flash sale edit if context matches
+        if (request()->get('flash_sale') || session('flash_sale_product')) {
+            $redirectUrl = route('admin.storefront.flash_sale.edit', $product->id).'?flash_sale=1';
+            session()->forget('flash_sale_product');
+        }
+
         return new JsonResponse([
             'data' => [
-                'redirect_url' => route('admin.catalog.products.edit', $product->id),
+                'redirect_url' => $redirectUrl,
             ],
         ]);
     }
@@ -163,11 +177,30 @@ class ProductController extends Controller
         try {
             Event::dispatch('catalog.product.update.before', $id);
 
-            $product = $this->productRepository->update($request->all(), $id);
+            $data = $request->all();
+
+            // Calculate special_price if flash_sale_discount is present
+            if (isset($data['flash_sale_discount']) && (int) $data['flash_sale_discount'] > 0) {
+                $product = $this->productRepository->find($id);
+                $price = $data['price'] ?? $product->price;
+                $data['special_price'] = $price * (1 - $data['flash_sale_discount'] / 100);
+                $data['visible_individually'] = 0;
+            } else {
+                // If discount is removed or 0, restore visibility and clear special price
+                $data['visible_individually'] = 1;
+                $data['special_price'] = null;
+                $data['flash_sale_discount'] = 0;
+            }
+
+            $product = $this->productRepository->update($data, $id);
 
             Event::dispatch('catalog.product.update.after', $product);
 
             session()->flash('success', trans('admin::app.catalog.products.update-success'));
+
+            if ($request->get('flash_sale')) {
+                return redirect()->route('admin.storefront.flash_sale.index');
+            }
 
             return redirect()->route('admin.catalog.products.index');
         } catch (\Exception $e) {

@@ -7,8 +7,10 @@ use Frooxi\Shop\Http\Requests\ContactRequest;
 use Frooxi\Shop\Http\Resources\CategoryTreeResource;
 use Frooxi\Shop\Mail\ContactUs;
 use Frooxi\Shop\Repositories\FlashSaleItemRepository;
+use Frooxi\Shop\Models\FlashSaleProduct;
 use Frooxi\Shop\Repositories\HeroSlideRepository;
 use Frooxi\Theme\Repositories\ThemeCustomizationRepository;
+use Frooxi\Product\Repositories\ProductRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -30,7 +32,8 @@ class HomeController extends Controller
         protected ThemeCustomizationRepository $themeCustomizationRepository,
         protected CategoryRepository $categoryRepository,
         protected HeroSlideRepository $heroSlideRepository,
-        protected FlashSaleItemRepository $flashSaleItemRepository
+        protected FlashSaleItemRepository $flashSaleItemRepository,
+        protected ProductRepository $productRepository
     ) {}
 
     /**
@@ -118,9 +121,13 @@ class HomeController extends Controller
      */
     public function flashSale(): View
     {
-        $flashSaleItems = $this->flashSaleItemRepository->getActiveItems()->load('product');
+        // Get products with flash_sale_discount > 0 using the repository
+        $flashSaleProducts = $this->productRepository->getAll([
+            'is_flash_sale_page' => 1,
+            'status'             => 1,
+        ]);
 
-        return view('shop::home.flash-sale', compact('flashSaleItems'));
+        return view('shop::home.flash-sale', compact('flashSaleProducts'));
     }
 
     /**

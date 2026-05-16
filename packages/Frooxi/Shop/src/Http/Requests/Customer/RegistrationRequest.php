@@ -28,7 +28,6 @@ class RegistrationRequest extends FormRequest
             'first_name' => 'string|required',
             'last_name' => 'string|required',
             'phone' => ['required', 'string', 'regex:/^(\+?880|0)?1[3-9][0-9]{8}$/', 'unique:customers,phone'],
-            'email' => 'email|nullable|unique:customers,email,NULL,id,channel_id,'.core()->getCurrentChannel()->id,
             'password' => 'confirmed|min:6|required',
         ];
 

@@ -103,6 +103,16 @@ class ProductDataGrid extends DataGrid
             '))
             ->where('product_flat.locale', app()->getLocale())
             ->whereNull('product_flat.parent_id')  // Only show parent products, not variations
+            // Exclude flash sale products from the main product list
+            ->leftJoin('product_attribute_values as flash_sale_check', function($join) {
+                $join->on('product_flat.product_id', '=', 'flash_sale_check.product_id')
+                     ->where('flash_sale_check.attribute_id', function($query) {
+                         $query->select('id')->from('attributes')->where('code', 'flash_sale_discount')->limit(1);
+                     });
+            })->where(function($query) {
+                $query->whereNull('flash_sale_check.integer_value')
+                      ->orWhere('flash_sale_check.integer_value', 0);
+            })
             ->groupBy('product_flat.product_id');
 
         $this->addFilter('product_id', 'product_flat.product_id');

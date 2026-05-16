@@ -105,7 +105,7 @@ return [
     ],
     [
         'key' => 'storefront.hero_carousel',
-        'name' => 'Hero Banners',
+        'name' => 'Top Banners',
         'route' => 'admin.storefront.hero_carousel.index',
         'sort' => 1,
         'icon' => '',

@@ -30,9 +30,13 @@
 
     <x-admin::form
         method="PUT"
-        :action="route('admin.catalog.products.update', $product->id)"
+        :action="request()->get('flash_sale') ? route('admin.storefront.flash_sale.update', $product->id) : route('admin.catalog.products.update', $product->id)"
         enctype="multipart/form-data"
     >
+        @if (request()->get('flash_sale'))
+            <input type="hidden" name="flash_sale" value="1">
+        @endif
+
         {!! view_render_event('frooxi.admin.catalog.product.edit.actions.before', ['product' => $product]) !!}
 
         <!-- Page Header -->
@@ -40,14 +44,14 @@
             <div class="flex items-center justify-between gap-4 max-sm:flex-wrap">
                 <div class="grid gap-1.5">
                     <p class="font-serif text-2xl font-bold text-gray-900 dark:text-white">
-                        @lang('admin::app.catalog.products.edit.title')
+                        {{ request()->get('flash_sale') ? 'Edit Flash Sale Product' : trans('admin::app.catalog.products.edit.title') }}
                     </p>
                 </div>
 
                 <div class="flex items-center gap-x-2.5">
                     <!-- Back Button -->
                     <a
-                        href="{{ route('admin.catalog.products.index') }}"
+                        href="{{ request()->get('flash_sale') ? route('admin.storefront.flash_sale.index') : route('admin.catalog.products.index') }}"
                         class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
                     >
                         <span class="icon-arrow-left text-lg"></span>
@@ -238,6 +242,7 @@
                                         $hiddenAttributes = [
                                             'tax_category_id',
                                             'brand',
+                                            'color',
                                             'meta_title',
                                             'meta_keywords',
                                             'meta_description',
@@ -251,6 +256,15 @@
                                             'customer_group_prices',
                                             'manage_stock',
                                         ];
+
+                                        if (request()->get('flash_sale')) {
+                                            $hiddenAttributes = array_merge($hiddenAttributes, [
+                                                'special_price',
+                                                'special_price_from',
+                                                'special_price_to',
+                                                'cost',
+                                            ]);
+                                        }
                                     @endphp
 
                                     @if (in_array($attribute->code, $hiddenAttributes))
@@ -298,7 +312,8 @@
 
                                 @includeWhen($group->code == 'price', 'admin::catalog.products.edit.price.group')
 
-                                @includeWhen($group->code === 'inventories', 'admin::catalog.products.edit.inventories')                                
+                                @includeWhen($group->code === 'inventories', 'admin::catalog.products.edit.inventories')
+
                             </div>
 
                             {!! view_render_event("frooxi.admin.catalog.product.edit.form.{$group->code}.after", ['product' => $product]) !!}

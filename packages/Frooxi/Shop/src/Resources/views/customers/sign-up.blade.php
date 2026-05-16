@@ -143,27 +143,7 @@
                     </x-shop::form.control-group>
                 </div>
 
-                {{-- Email --}}
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#374151;margin-bottom:7px;">
-                        Email Address (Optional)
-                    </label>
-                    <x-shop::form.control-group>
-                        <x-shop::form.control-group.control
-                            type="email"
-                            class="!rounded-lg !border-zinc-200 !bg-zinc-50 !px-4 !py-3 !text-sm !font-normal"
-                            name="email"
-                            rules="email"
-                            :value="old('email')"
-                            :label="trans('shop::app.customers.signup-form.email')"
-                            placeholder="email@example.com"
-                            :aria-label="trans('shop::app.customers.signup-form.email')"
-                        />
-                        <x-shop::form.control-group.error control-name="email" />
-                    </x-shop::form.control-group>
-                </div>
 
-                {!! view_render_event('frooxi.shop.customers.signup_form.email.after') !!}
 
                 {{-- 2-col password grid --}}
                 <div id="auth-pass-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;">
