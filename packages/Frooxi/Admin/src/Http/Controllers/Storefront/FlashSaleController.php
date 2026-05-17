@@ -78,7 +78,7 @@ class FlashSaleController extends Controller
             if (isset($data['flash_sale_discount']) && (int) $data['flash_sale_discount'] > 0) {
                 $price = $data['price'] ?? 0;
                 $data['special_price'] = $price * (1 - $data['flash_sale_discount'] / 100);
-                $data['visible_individually'] = 0;
+                $data['visible_individually'] = 1;
             } else {
                 $data['visible_individually'] = 1;
                 $data['special_price'] = null;

@@ -74,7 +74,8 @@
                         class="absolute top-3 z-10 inline-flex rounded-full bg-red-500 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm ltr:left-3 rtl:right-3"
                         v-if="product.on_sale"
                     >
-                        @lang('shop::app.components.products.card.sale')
+                        <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
+                        <span v-else>@lang('shop::app.components.products.card.sale')</span>
                     </p>
 
                     <!-- Product New Badge -->
