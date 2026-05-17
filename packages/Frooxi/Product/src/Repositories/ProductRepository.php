@@ -283,22 +283,12 @@ class ProductRepository extends Repository
 
             // Exclude or include flash sale products based on context
             if (empty($params['is_flash_sale_page'])) {
-                $qb->leftJoin('product_attribute_values as flash_sale_check', function($join) {
-                    $join->on('products.id', '=', 'flash_sale_check.product_id')
-                         ->where('flash_sale_check.attribute_id', function($query) {
-                             $query->select('id')->from('attributes')->where('code', 'flash_sale_discount')->limit(1);
-                         });
-                })->where(function($query) {
-                    $query->whereNull('flash_sale_check.integer_value')
-                          ->orWhere('flash_sale_check.integer_value', 0);
+                $qb->where(function ($query) {
+                    $query->whereNull('products.flash_sale_discount')
+                        ->orWhere('products.flash_sale_discount', 0);
                 });
             } else {
-                $qb->join('product_attribute_values as flash_sale_include', function($join) {
-                    $join->on('products.id', '=', 'flash_sale_include.product_id')
-                         ->where('flash_sale_include.attribute_id', function($query) {
-                             $query->select('id')->from('attributes')->where('code', 'flash_sale_discount')->limit(1);
-                         });
-                })->where('flash_sale_include.integer_value', '>', 0);
+                $qb->where('products.flash_sale_discount', '>', 0);
             }
 
             if (! empty($params['category_id'])) {

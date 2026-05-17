@@ -41,6 +41,68 @@ class FlashSaleController extends Controller
     }
 
     /**
+     * Store a newly created flash sale product.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'sku' => ['required', 'unique:products,sku', new \Frooxi\Core\Rules\Slug],
+            'name' => 'required',
+            'price' => 'required|numeric',
+        ]);
+
+        try {
+            Event::dispatch('catalog.product.create.before');
+
+            $request->merge([
+                'type' => 'simple',
+                'attribute_family_id' => 1,
+            ]);
+
+            $product = $this->productRepository->create($request->only([
+                'type',
+                'attribute_family_id',
+                'sku',
+            ]));
+
+            Event::dispatch('catalog.product.create.after', $product);
+
+            // Now update the product with the rest of the attributes
+            Event::dispatch('catalog.product.update.before', $product->id);
+
+            $data = $request->all();
+
+            if (isset($data['flash_sale_discount']) && (int) $data['flash_sale_discount'] > 0) {
+                $price = $data['price'] ?? 0;
+                $data['special_price'] = $price * (1 - $data['flash_sale_discount'] / 100);
+                $data['visible_individually'] = 0;
+            } else {
+                $data['visible_individually'] = 1;
+                $data['special_price'] = null;
+                $data['flash_sale_discount'] = 0;
+            }
+
+            $data['channel'] = core()->getRequestedChannelCode();
+            $data['locale'] = core()->getRequestedLocaleCode();
+
+            $product = $this->productRepository->update($data, $product->id);
+
+            Event::dispatch('catalog.product.update.after', $product);
+
+            session()->flash('success', trans('admin::app.catalog.products.create-success'));
+
+            return redirect()->route('admin.storefront.flash_sale.index');
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+
+            return redirect()->back()->withInput();
+        }
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

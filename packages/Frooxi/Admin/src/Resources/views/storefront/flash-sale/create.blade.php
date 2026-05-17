@@ -362,10 +362,10 @@
 
                         <x-admin::form.control-group.control
                             type="number"
-                            id="special_price"
-                            name="special_price"
+                            id="flash_sale_discount"
+                            name="flash_sale_discount"
                             ::rules="[]"
-                            :value="old('special_price')"
+                            :value="old('flash_sale_discount')"
                             label="Discount Percentage"
                             min="1"
                             max="99"
@@ -375,7 +375,7 @@
                             </x-slot>
                         </x-admin::form.control-group.control>
 
-                        <x-admin::form.control-group.error control-name="special_price" />
+                        <x-admin::form.control-group.error control-name="flash_sale_discount" />
                     </x-admin::form.control-group>
                 </div>
 
