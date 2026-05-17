@@ -30,21 +30,11 @@
                     <!-- Filter Tags -->
                     <div v-if="discounts.length > 0" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 40px;">
                         <button
-                            @click="currentFilter = null"
-                            :style="currentFilter === null
-                                ? 'padding: 6px 20px; background: #B91C2C; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;'
-                                : 'padding: 6px 20px; background: #D63044; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;'"
-                        >
-                            All
-                        </button>
-
-                        <button
                             v-for="discount in discounts"
                             :key="discount"
+                            v-if="currentFilter !== discount"
                             @click="currentFilter = discount"
-                            :style="currentFilter === discount
-                                ? 'padding: 6px 20px; background: #B91C2C; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;'
-                                : 'padding: 6px 20px; background: #D63044; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;'"
+                            style="padding: 6px 20px; background: #D63044; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;"
                         >
                             @{{ discount }}% Off
                         </button>
@@ -78,7 +68,7 @@
                             :key="product.id"
                             class="cursor-pointer"
                             style="font-family: Montserrat, sans-serif; width: calc(25% - 24px); min-width: 250px;"
-                            @click="window.location.href = '/' + product.url_key"
+                            @click="goToProduct('/' + product.url_key)"
                             @mouseenter="hoveredProduct = product.id"
                             @mouseleave="hoveredProduct = null"
                         >
@@ -111,8 +101,19 @@
                                         style="display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 28px; background: #111; color: #fff; border: none; outline: none; border-radius: 5px; cursor: pointer; transform: translateY(0); transition: transform .3s ease; overflow: hidden; position: relative; min-width: 140px;"
                                         :style="hoveredProduct === product.id ? 'transform: translateY(-6px);' : ''"
                                         @click.stop="addToCart(product.id)"
+                                        @mouseenter="hoveredButton = product.id"
+                                        @mouseleave="hoveredButton = null"
                                     >
-                                        <span style="font-size: 13px; font-weight: 500; font-family: Montserrat, sans-serif; letter-spacing: .2px;">Add to cart</span>
+                                        <span 
+                                            style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; font-family: Montserrat, sans-serif; letter-spacing: .2px; transition: transform .28s ease, opacity .28s ease; z-index: 1;"
+                                            :style="hoveredButton === product.id ? 'transform: translateY(-100%); opacity: 0;' : 'transform: translateY(0); opacity: 1;'"
+                                        >Add to cart</span>
+                                        <span 
+                                            style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #111; transition: transform .28s ease, opacity .28s ease; z-index: 2;"
+                                            :style="hoveredButton === product.id ? 'transform: translateY(0); opacity: 1;' : 'transform: translateY(100%); opacity: 1;'"
+                                        >
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -145,6 +146,7 @@
                         sortBy: 'featured',
                         isLoading: true,
                         hoveredProduct: null,
+                        hoveredButton: null,
                     };
                 },
 
@@ -206,6 +208,9 @@
                         .catch(error => {
                             this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message });
                         });
+                    },
+                    goToProduct(url) {
+                        window.location.href = url;
                     }
                 }
             });
