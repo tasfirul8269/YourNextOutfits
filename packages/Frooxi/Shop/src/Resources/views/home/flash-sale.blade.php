@@ -81,27 +81,38 @@
                                     >
                                 </div>
 
-                                <!-- CTA -->
-                                <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; pointer-events: auto;">
+                                <!-- Desktop CTA -->
+                                <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; pointer-events: auto;" class="hidden md:flex">
                                     <button 
                                         style="display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 28px; background: #111; color: #fff; border: none; outline: none; border-radius: 5px; cursor: pointer; transform: translateY(0); transition: transform .3s ease; overflow: hidden; position: relative; min-width: 140px;"
                                         :style="hoveredProduct === product.id ? 'transform: translateY(-6px);' : ''"
-                                        @click.stop="addToCart(product.id)"
+                                        @click.stop="product.is_saleable ? addToCart(product.id) : goToProduct('/' + product.url_key)"
                                         @mouseenter="hoveredButton = product.id"
                                         @mouseleave="hoveredButton = null"
                                     >
                                         <span 
                                             style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; font-family: Montserrat, sans-serif; letter-spacing: .2px; transition: transform .28s ease, opacity .28s ease; z-index: 1;"
                                             :style="hoveredButton === product.id ? 'transform: translateY(-100%); opacity: 0;' : 'transform: translateY(0); opacity: 1;'"
-                                        >Add to cart</span>
+                                        >@{{ product.is_saleable ? 'Add to cart' : 'View product' }}</span>
                                         <span 
                                             style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #111; transition: transform .28s ease, opacity .28s ease; z-index: 2;"
                                             :style="hoveredButton === product.id ? 'transform: translateY(0); opacity: 1;' : 'transform: translateY(100%); opacity: 1;'"
                                         >
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                                            <svg v-if="product.is_saleable" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                                            <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                         </span>
                                     </button>
                                 </div>
+
+                                <!-- Mobile CTA -->
+                                <button 
+                                    style="position: absolute; bottom: 10px; right: 10px; z-index: 4; width: 44px; height: 44px; background: #111; color: #fff; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; pointer-events: auto;"
+                                    class="flex md:hidden"
+                                    @click.stop="product.is_saleable ? addToCart(product.id) : goToProduct('/' + product.url_key)"
+                                >
+                                    <svg v-if="product.is_saleable" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                                    <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
                             </div>
 
                             <!-- Info -->
