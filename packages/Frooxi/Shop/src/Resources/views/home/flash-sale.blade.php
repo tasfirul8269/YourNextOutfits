@@ -76,8 +76,6 @@
                         <x-shop::products.card
                             class="min-w-[291px] max-w-[291px] max-md:min-w-56 max-sm:min-w-[192px]"
                             v-for="product in filteredProducts"
-                            :key="product.id"
-                            ::product="product"
                         />
                     </div>
                 </div>
