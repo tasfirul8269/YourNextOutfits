@@ -36,14 +36,20 @@ class ProductController extends APIController
 
         $query = $searchData['effective_query'] ?? $searchData['original_query'];
 
+        $params = array_merge(request()->query(), [
+            'query'      => $query,
+            'channel_id' => core()->getCurrentChannel()->id,
+            'status'     => 1,
+        ]);
+
+        // Flash sale products have visible_individually=0, so skip this filter for flash sale pages
+        if (empty($params['is_flash_sale_page'])) {
+            $params['visible_individually'] = 1;
+        }
+
         $products = $this->productRepository
             ->setSearchEngine($searchEngine)
-            ->getAll(array_merge(request()->query(), [
-                'query' => $query,
-                'channel_id' => core()->getCurrentChannel()->id,
-                'status' => 1,
-                'visible_individually' => 1,
-            ]));
+            ->getAll($params);
 
         if (! empty($query)) {
             /**
