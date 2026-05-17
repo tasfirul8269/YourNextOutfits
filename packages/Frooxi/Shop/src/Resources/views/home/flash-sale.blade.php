@@ -19,6 +19,14 @@
     <v-flash-sale-page></v-flash-sale-page>
 
     @pushOnce('scripts')
+        <style>
+            .desktop-cta { display: flex !important; }
+            .mobile-cta { display: none !important; }
+            @media (max-width: 768px) {
+                .desktop-cta { display: none !important; }
+                .mobile-cta { display: flex !important; }
+            }
+        </style>
         <script type="text/x-template" id="v-flash-sale-page-template">
             <div style="min-height: 100vh; background: #fff; padding: 40px 16px 100px;">
                 <!-- Page Header -->
@@ -82,7 +90,7 @@
                                 </div>
 
                                 <!-- Desktop CTA -->
-                                <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; pointer-events: auto;" class="hidden md:flex">
+                                <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; pointer-events: auto;" class="desktop-cta">
                                     <button 
                                         style="display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 28px; background: #111; color: #fff; border: none; outline: none; border-radius: 5px; cursor: pointer; transform: translateY(0); transition: transform .3s ease; overflow: hidden; position: relative; min-width: 140px;"
                                         :style="hoveredProduct === product.id ? 'transform: translateY(-6px);' : ''"
@@ -107,7 +115,7 @@
                                 <!-- Mobile CTA -->
                                 <button 
                                     style="position: absolute; bottom: 10px; right: 10px; z-index: 4; width: 44px; height: 44px; background: #111; color: #fff; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; pointer-events: auto;"
-                                    class="flex md:hidden"
+                                    class="mobile-cta"
                                     @click.stop="product.is_saleable ? addToCart(product.id) : goToProduct('/' + product.url_key)"
                                 >
                                     <svg v-if="product.is_saleable" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
