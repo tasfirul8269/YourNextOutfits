@@ -77,7 +77,7 @@ class ProductsCategoriesProxyController extends Controller
         if ($product) {
             if (
                 ! $product->url_key
-                || ! $product->visible_individually
+                || (! $product->visible_individually && ! $product->flash_sale_discount)
                 || ! $product->status
             ) {
                 abort(404);

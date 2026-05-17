@@ -73,10 +73,56 @@
                     class="container mt-5 max-lg:px-8 max-sm:!px-4"
                 >
                     <div class="flex flex-wrap gap-8 max-md:gap-7 max-sm:gap-4">
-                        <x-shop::products.card
-                            class="min-w-[291px] max-w-[291px] max-md:min-w-56 max-sm:min-w-[192px]"
-                            v-for="product in filteredProducts"
-                        />
+                        <div 
+                            v-for="product in filteredProducts" 
+                            :key="product.id"
+                            class="cursor-pointer"
+                            style="font-family: Montserrat, sans-serif; width: calc(25% - 24px); min-width: 250px;"
+                            @click="window.location.href = '/' + product.url_key"
+                            @mouseenter="hoveredProduct = product.id"
+                            @mouseleave="hoveredProduct = null"
+                        >
+                            <!-- Image Container -->
+                            <div style="position: relative; border-radius: 8px; overflow: hidden; background: #f9f9f9;">
+                                <!-- Discount Badge -->
+                                <div style="position: absolute; top: 10px; left: 10px; z-index: 4; background: #ef4444; color: #fff; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
+                                    @{{ discountsMap[product.id] }}% OFF
+                                </div>
+
+                                <!-- Images -->
+                                <div style="position: relative; width: 100%; aspect-ratio: 2/3; overflow: hidden;">
+                                    <img 
+                                        :src="product.base_image.medium_image_url" 
+                                        loading="lazy" 
+                                        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 1s ease, transform 1s ease;"
+                                        :style="hoveredProduct === product.id ? 'opacity: 0; transform: scale(1.05);' : 'opacity: 1; transform: scale(1);'"
+                                    >
+                                    <img 
+                                        :src="(product.images && product.images[1] && product.images[1].medium_image_url) ? product.images[1].medium_image_url : product.base_image.medium_image_url" 
+                                        loading="lazy" 
+                                        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 1s ease, transform 1s ease;"
+                                        :style="hoveredProduct === product.id ? 'opacity: 1; transform: scale(1.05);' : 'opacity: 0; transform: scale(1);'"
+                                    >
+                                </div>
+
+                                <!-- CTA -->
+                                <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; pointer-events: auto;">
+                                    <button 
+                                        style="display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 28px; background: #111; color: #fff; border: none; outline: none; border-radius: 5px; cursor: pointer; transform: translateY(0); transition: transform .3s ease; overflow: hidden; position: relative; min-width: 140px;"
+                                        :style="hoveredProduct === product.id ? 'transform: translateY(-6px);' : ''"
+                                        @click.stop="addToCart(product.id)"
+                                    >
+                                        <span style="font-size: 13px; font-weight: 500; font-family: Montserrat, sans-serif; letter-spacing: .2px;">Add to cart</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Info -->
+                            <div style="padding: 10px 2px 0;">
+                                <p style="font-size: 13px; font-weight: 400; color: #111827; margin: 0 0 4px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@{{ product.name }}</p>
+                                <p style="font-size: 13px; color: #6b7280; margin: 0;">@{{ product.min_price }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -98,6 +144,7 @@
                         currentFilter: null,
                         sortBy: 'featured',
                         isLoading: true,
+                        hoveredProduct: null,
                     };
                 },
 
@@ -141,6 +188,24 @@
                         } else if (this.sortBy === 'discount') {
                             this.products.sort((a, b) => (this.discountsMap[b.id] || 0) - (this.discountsMap[a.id] || 0));
                         }
+                    },
+
+                    addToCart(productId) {
+                        this.$axios.post('{{ route("shop.api.checkout.cart.store") }}', {
+                            'quantity': 1,
+                            'product_id': productId,
+                        })
+                        .then(response => {
+                            if (response.data.message) {
+                                this.$emitter.emit('update-mini-cart', response.data.data);
+                                this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                            } else {
+                                this.$emitter.emit('add-flash', { type: 'warning', message: response.data.data.message });
+                            }
+                        })
+                        .catch(error => {
+                            this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message });
+                        });
                     }
                 }
             });
