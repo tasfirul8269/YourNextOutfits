@@ -118,12 +118,13 @@ class FlashSaleController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param  \Frooxi\Admin\Http\Requests\ProductForm  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(\Frooxi\Admin\Http\Requests\ProductForm $request, $id)
     {
-        return app(\Frooxi\Admin\Http\Controllers\Catalog\ProductController::class)->update($id);
+        return app(\Frooxi\Admin\Http\Controllers\Catalog\ProductController::class)->update($request, $id);
     }
 
     /**

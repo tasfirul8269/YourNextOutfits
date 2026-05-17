@@ -56,7 +56,13 @@ class ProductController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return datagrid(ProductDataGrid::class)->process();
+            try {
+                return datagrid(ProductDataGrid::class)->process();
+            } catch (\Exception $e) {
+                \Log::channel('single')->error('DATAGRID ERROR: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+                file_put_contents(storage_path('logs/datagrid_error.log'), 'DATAGRID ERROR: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
         }
 
         $families = $this->attributeFamilyRepository->all();
