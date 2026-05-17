@@ -34,27 +34,13 @@
                             :key="discount"
                             v-if="currentFilter !== discount"
                             @click="currentFilter = discount"
-                            style="padding: 6px 20px; background: #D63044; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;"
+                            style="padding: 8px 24px; background: #D63044; color: white; border: none; border-radius: 0; font-size: 14px; font-weight: 600; cursor: pointer;"
                         >
                             @{{ discount }}% Off
                         </button>
                     </div>
 
-                    <!-- Sort + Filter Bar -->
-                    <div style="max-width: 1200px; margin: 0 auto 24px; display: flex; justify-content: space-between; align-items: center;">
-                        <div style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; color: #374151;">
-                            <span>&#9776;</span> Filter
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: #374151;">
-                            Sort by:
-                            <select v-model="sortBy" @change="sortProducts" style="border: 1px solid #d1d5db; border-radius: 4px; padding: 4px 8px; font-size: 13px;">
-                                <option value="featured">Featured</option>
-                                <option value="price_low">Price: Low to High</option>
-                                <option value="price_high">Price: High to Low</option>
-                                <option value="discount">Highest Discount</option>
-                            </select>
-                        </div>
-                    </div>
+
                 </div>
 
                 <!-- Products Grid -->
@@ -62,12 +48,12 @@
                     v-if="filteredProducts.length > 0"
                     class="container mt-5 max-lg:px-8 max-sm:!px-4"
                 >
-                    <div class="flex flex-wrap gap-8 max-md:gap-7 max-sm:gap-4">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-md:gap-7 max-sm:gap-4">
                         <div 
                             v-for="product in filteredProducts" 
                             :key="product.id"
                             class="cursor-pointer"
-                            style="font-family: Montserrat, sans-serif; width: calc(25% - 24px); min-width: 250px;"
+                            style="font-family: Montserrat, sans-serif;"
                             @click="goToProduct('/' + product.url_key)"
                             @mouseenter="hoveredProduct = product.id"
                             @mouseleave="hoveredProduct = null"
