@@ -103,13 +103,17 @@ class ProductDataGrid extends DataGrid
                 ) as total_quantity
             '))
             ->where('product_flat.locale', app()->getLocale())
-            ->whereNull('product_flat.parent_id')  // Only show parent products, not variations
+            ->whereNull('product_flat.parent_id');  // Only show parent products, not variations
+
+        if (! $this instanceof \Frooxi\Admin\DataGrids\Storefront\FlashSaleProductDataGrid) {
             // Exclude flash sale products from the main product list
-            ->where(function ($query) {
+            $queryBuilder->where(function ($query) {
                 $query->whereNull('products.flash_sale_discount')
                     ->orWhere('products.flash_sale_discount', 0);
-            })
-            ->groupBy('product_flat.product_id');
+            });
+        }
+
+        $queryBuilder->groupBy('product_flat.product_id');
 
         $this->addFilter('product_id', 'product_flat.product_id');
         $this->addFilter('channel', 'product_flat.channel');
