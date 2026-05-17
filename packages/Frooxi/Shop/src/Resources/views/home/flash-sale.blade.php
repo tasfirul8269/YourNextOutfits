@@ -24,7 +24,7 @@
                 <!-- Page Header -->
                 <div style="text-align: center; margin-bottom: 40px;">
                     <h1 style="margin: 0 0 24px 0; font-family: Montserrat, sans-serif; font-size: clamp(26px, 4vw, 42px); font-weight: 500; line-height: 1.05; letter-spacing: .08em; text-transform: uppercase; color: #111;">
-                        BIGGEST SALE
+                        FLASH SALE
                     </h1>
 
                     <!-- Filter Tags -->
@@ -32,8 +32,8 @@
                         <button
                             @click="currentFilter = null"
                             :style="currentFilter === null
-                                ? 'padding: 6px 20px; background: #D63044; color: white; border: 2px solid #D63044; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;'
-                                : 'padding: 6px 20px; background: #fff; color: #D63044; border: 2px solid #D63044; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;'"
+                                ? 'padding: 6px 20px; background: #B91C2C; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;'
+                                : 'padding: 6px 20px; background: #D63044; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;'"
                         >
                             All
                         </button>
@@ -43,8 +43,8 @@
                             :key="discount"
                             @click="currentFilter = discount"
                             :style="currentFilter === discount
-                                ? 'padding: 6px 20px; background: #D63044; color: white; border: 2px solid #D63044; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;'
-                                : 'padding: 6px 20px; background: #fff; color: #D63044; border: 2px solid #D63044; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;'"
+                                ? 'padding: 6px 20px; background: #B91C2C; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;'
+                                : 'padding: 6px 20px; background: #D63044; color: white; border: none; border-radius: 0; font-size: 13px; font-weight: 600; cursor: pointer;'"
                         >
                             @{{ discount }}% Off
                         </button>
