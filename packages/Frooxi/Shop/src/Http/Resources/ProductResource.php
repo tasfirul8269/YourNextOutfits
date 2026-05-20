@@ -31,6 +31,12 @@ class ProductResource extends JsonResource
     {
         $productTypeInstance = $this->getTypeInstance();
 
+        $prices = $productTypeInstance->getProductPrices();
+        $calculated_discount = 0;
+        if (isset($prices['final']) && isset($prices['regular']) && $prices['final']['price'] < $prices['regular']['price'] && $prices['regular']['price'] > 0) {
+            $calculated_discount = round((($prices['regular']['price'] - $prices['final']['price']) / $prices['regular']['price']) * 100);
+        }
+
         $data = [
             'id' => $this->id,
             'sku' => $this->sku,
@@ -48,7 +54,7 @@ class ProductResource extends JsonResource
                 ->where('channel_id', core()->getCurrentChannel()->id)
                 ->where('product_id', $this->id)->count(),
             'min_price' => core()->formatPrice($productTypeInstance->getMinimalPrice()),
-            'prices' => $productTypeInstance->getProductPrices(),
+            'prices' => $prices,
             'price_html' => $productTypeInstance->getPriceHtml(),
             'ratings' => [
                 'average' => $this->reviewHelper->getAverageRating($this),
@@ -61,6 +67,7 @@ class ProductResource extends JsonResource
             'discount_percentage' => $productTypeInstance instanceof \Frooxi\Product\Type\Configurable && $productTypeInstance->getDefaultVariant()
                 ? $productTypeInstance->getDefaultVariant()->discount_percentage
                 : $this->discount_percentage,
+            'calculated_discount' => $calculated_discount,
         ];
 
         return $data;
