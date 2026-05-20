@@ -427,7 +427,7 @@
                                     <!-- Mass Update -->
                                     <template v-if="selectedType == 'editPrices'">
                                         <div class="border-b pb-2.5 dark:border-gray-800">
-                                            <div class="flex items-end gap-2.5">
+                                            <div class="flex items-end gap-2.5 mb-2.5">
                                                 <x-admin::form.control-group class="!mb-0 flex-1">
                                                     <x-admin::form.control-group.label class="required">
                                                         @lang('admin::app.catalog.products.edit.types.configurable.mass-edit.apply-to-all-sku')
@@ -450,6 +450,21 @@
                                                         />
                                                     </div>
                                                 </x-admin::form.control-group>
+                                                
+                                                <x-admin::form.control-group class="!mb-0 flex-1">
+                                                    <x-admin::form.control-group.label>
+                                                        Discount Percentage (%)
+                                                    </x-admin::form.control-group.label>
+                        
+                                                    <div class="relative">
+                                                        <x-admin::form.control-group.control
+                                                            type="text"
+                                                            name="discount_percentage"
+                                                            ::rules="{decimal: true, min_value: 0, max_value: 100}"
+                                                            label="Discount Percentage"
+                                                        />
+                                                    </div>
+                                                </x-admin::form.control-group>
 
                                                 <button class="secondary-button">
                                                     @lang('admin::app.catalog.products.edit.types.configurable.mass-edit.apply-to-all-btn')
@@ -457,6 +472,7 @@
                                             </div>
                     
                                             <x-admin::form.control-group.error control-name="price" />
+                                            <x-admin::form.control-group.error control-name="discount_percentage" />
                                         </div>
                                     </template>
 
@@ -629,6 +645,21 @@
                                                 @{{ message }}
                                             </p>
                                         </v-error-message>
+                                    </x-admin::form.control-group>
+
+                                    <x-admin::form.control-group class="mb-0 max-w-[115px] flex-1">
+                                        <div class="relative">
+                                            <v-field
+                                                type="text"
+                                                class="flex min-h-[39px] w-full rounded-md border bg-white py-1.5 text-sm font-normal text-gray-600 transition-all hover:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 px-3"
+                                                :class="[errors['variants[variant_discount_' + variant.id + ']'] ? 'border border-red-500' : '']"
+                                                :name="'variants[variant_discount_' + variant.id + ']'"
+                                                :rules="{decimal: true, min_value: 0, max_value: 100}"
+                                                v-model="variant.discount_percentage"
+                                                label="Discount %"
+                                            >
+                                            </v-field>
+                                        </div>
                                     </x-admin::form.control-group>
                                 </template>
 
@@ -808,6 +839,12 @@
                     type="hidden"
                     :name="'variants[' + variant.id + '][price]'"
                     :value="variant.price"
+                />
+
+                <input
+                    type="hidden"
+                    :name="'variants[' + variant.id + '][discount_percentage]'"
+                    :value="variant.discount_percentage"
                 />
 
                 <input
@@ -1047,6 +1084,22 @@
 
                                             <x-admin::form.control-group class="flex-1">
                                                 <x-admin::form.control-group.label>
+                                                    Discount Percentage (%)
+                                                </x-admin::form.control-group.label>
+                    
+                                                <x-admin::form.control-group.control
+                                                    type="number"
+                                                    name="discount_percentage"
+                                                    ::rules="{decimal: true, min_value: 0, max_value: 100}"
+                                                    ::value="variant.discount_percentage"
+                                                    label="Discount Percentage"
+                                                />
+                    
+                                                <x-admin::form.control-group.error control-name="discount_percentage" />
+                                            </x-admin::form.control-group>
+
+                                            <x-admin::form.control-group class="flex-1">
+                                                <x-admin::form.control-group.label>
                                                     @lang('admin::app.catalog.products.edit.types.configurable.edit.status')
                                                 </x-admin::form.control-group.label>
                     
@@ -1166,6 +1219,7 @@
                         name: '',
                         sku: '',
                         price: 0,
+                        discount_percentage: 0,
                         status: 1,
                         weight: 0,
                         inventories: {},
@@ -1210,6 +1264,7 @@
                         sku: '{{ $product->sku }}' + '-variant-' + optionIds.join('-'),
                         name: '',
                         price: 0,
+                        discount_percentage: 0,
                         status: 1,
                         weight: 0,
                         inventories: {},
@@ -1241,6 +1296,7 @@
                         sku: '{{ $product->sku }}' + '-variant-' + optionIds.join('-'),
                         name: '',
                         price: 0,
+                        discount_percentage: 0,
                         status: 1,
                         weight: 0,
                         inventories: {},
@@ -1559,6 +1615,10 @@
                         variant.price = this.findVariantByAttribute({
                             id: variant.id,
                             name: 'price'
+                        });
+                        variant.discount_percentage = this.findVariantByAttribute({
+                            id: variant.id,
+                            name: 'discount_percentage'
                         });
                     });
                 },

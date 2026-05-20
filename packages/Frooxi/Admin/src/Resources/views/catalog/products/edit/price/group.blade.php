@@ -1,3 +1,4 @@
+@if ($product->type != 'configurable')
 <!-- Simplified Price Section: Base Price and Flash Sale Discount -->
 <div class="grid gap-3">
     <!-- Base Price -->
@@ -69,3 +70,4 @@
         </x-admin::form.control-group>
     @endif
 </div>
+@endif
