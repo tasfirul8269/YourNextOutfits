@@ -453,7 +453,7 @@
                                                 
                                                 <x-admin::form.control-group class="!mb-0 flex-1">
                                                     <x-admin::form.control-group.label>
-                                                        Discount Percentage (%)
+                                                        Discount (%)
                                                     </x-admin::form.control-group.label>
                         
                                                     <div class="relative">
@@ -461,7 +461,7 @@
                                                             type="text"
                                                             name="discount_percentage"
                                                             ::rules="{decimal: true, min_value: 0, max_value: 100}"
-                                                            label="Discount Percentage"
+                                                            label="Discount (%)"
                                                         />
                                                     </div>
                                                 </x-admin::form.control-group>
@@ -1084,7 +1084,7 @@
 
                                             <x-admin::form.control-group class="flex-1">
                                                 <x-admin::form.control-group.label>
-                                                    Discount Percentage (%)
+                                                    Discount (%)
                                                 </x-admin::form.control-group.label>
                     
                                                 <x-admin::form.control-group.control
@@ -1092,7 +1092,7 @@
                                                     name="discount_percentage"
                                                     ::rules="{decimal: true, min_value: 0, max_value: 100}"
                                                     ::value="variant.discount_percentage"
-                                                    label="Discount Percentage"
+                                                    label="Discount (%)"
                                                 />
                     
                                                 <x-admin::form.control-group.error control-name="discount_percentage" />
