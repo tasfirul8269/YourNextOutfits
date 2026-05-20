@@ -1,6 +1,6 @@
 @if ($prices['final']['price'] < $prices['regular']['price'])
     @php
-        $discountPercentage = round((($prices['regular']['price'] - $prices['final']['price']) / $prices['regular']['price']) * 100);
+        $discountPercentage = floatval($product->discount_percentage);
     @endphp
     <p
         class="final-price font-medium text-zinc-500 line-through max-sm:leading-4"

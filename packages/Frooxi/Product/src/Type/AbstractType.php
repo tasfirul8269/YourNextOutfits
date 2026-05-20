@@ -726,11 +726,9 @@ abstract class AbstractType
      */
     public function haveDiscount($qty = null)
     {
-        if (! $priceIndex = $this->getPriceIndex()) {
-            return false;
-        }
+        $discountPercentage = $this->product->discount_percentage;
 
-        return $priceIndex->min_price != $priceIndex->regular_min_price;
+        return ! empty($discountPercentage) && floatval($discountPercentage) > 0;
     }
 
     /**
@@ -740,17 +738,25 @@ abstract class AbstractType
      */
     public function getProductPrices()
     {
-        return [
-            'regular' => [
-                'price' => core()->convertPrice($this->product->price),
-                'formatted_price' => core()->currency($this->product->price),
-            ],
+        $regularPrice = core()->convertPrice($this->product->price);
+        $discountPercentage = $this->product->discount_percentage;
 
-            'final' => [
-                'price' => core()->convertPrice($minimalPrice = $this->getMinimalPrice()),
-                'formatted_price' => core()->currency($minimalPrice),
+        $prices = [
+            'regular' => [
+                'price' => $regularPrice,
+                'formatted_price' => core()->currency($regularPrice),
             ],
         ];
+
+        if (! empty($discountPercentage) && floatval($discountPercentage) > 0) {
+            $finalPrice = round($regularPrice * (1 - floatval($discountPercentage) / 100), 4);
+            $prices['final'] = [
+                'price' => $finalPrice,
+                'formatted_price' => core()->currency($finalPrice),
+            ];
+        }
+
+        return $prices;
     }
 
     /**

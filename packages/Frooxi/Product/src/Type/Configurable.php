@@ -368,7 +368,7 @@ class Configurable extends AbstractType
 
         // Return first variant that has a discount
         foreach ($variants as $variant) {
-            if ($variant->special_price > 0 && $variant->special_price < $variant->price) {
+            if ($variant->discount_percentage > 0) {
                 return $variant;
             }
         }
@@ -387,7 +387,7 @@ class Configurable extends AbstractType
     {
         $defaultVariant = $this->getDefaultVariant();
         if ($defaultVariant) {
-            return $defaultVariant->special_price > 0 && $defaultVariant->special_price < $defaultVariant->price;
+            return $defaultVariant->discount_percentage > 0;
         }
 
         return false;
@@ -404,9 +404,10 @@ class Configurable extends AbstractType
 
         if ($defaultVariant) {
             $regularPrice = core()->convertPrice($defaultVariant->price);
-            
+
             if ($this->haveDiscount()) {
-                $finalPrice = core()->convertPrice($defaultVariant->special_price);
+                $finalPrice = round($regularPrice * (1 - floatval($defaultVariant->discount_percentage) / 100), 4);
+
                 return [
                     'regular' => [
                         'price' => $regularPrice,
@@ -429,6 +430,7 @@ class Configurable extends AbstractType
 
         // Fallback
         $minPrice = $this->getMinimalPrice();
+
         return [
             'regular' => [
                 'price' => $minPrice,

@@ -1,6 +1,7 @@
 @if (isset($prices['final']) && $prices['final']['price'] < $prices['regular']['price'])
     @php
-        $discountPercentage = round((($prices['regular']['price'] - $prices['final']['price']) / $prices['regular']['price']) * 100);
+        $defaultVariant = $product->getTypeInstance()->getDefaultVariant();
+        $discountPercentage = $defaultVariant ? floatval($defaultVariant->discount_percentage) : 0;
     @endphp
     <p
         class="regular-price font-medium text-zinc-500 line-through max-sm:leading-4"
