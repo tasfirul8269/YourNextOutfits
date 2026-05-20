@@ -74,11 +74,10 @@
                         <!-- Product Sale Badge -->
                         <p
                             class="inline-flex rounded-full bg-red-500 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm"
-                            v-if="product.on_sale || product.discount_percentage || product.flash_sale_discount || product.calculated_discount"
+                            v-if="product.on_sale || product.discount_percentage || product.flash_sale_discount"
                         >
                             <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
                             <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
-                            <span v-else-if="product.calculated_discount">@{{ product.calculated_discount }}% OFF</span>
                             <span v-else>@lang('shop::app.components.products.card.sale')</span>
                         </p>
 
@@ -217,11 +216,10 @@
                     <div class="absolute top-5 flex flex-col items-start gap-2 ltr:left-5 max-sm:ltr:left-2 rtl:right-5">
                         <p
                             class="inline-block rounded-[44px] bg-red-500 px-2.5 text-sm text-white"
-                            v-if="product.on_sale || product.discount_percentage || product.flash_sale_discount || product.calculated_discount"
+                            v-if="product.on_sale || product.discount_percentage || product.flash_sale_discount"
                         >
                             <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
                             <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
-                            <span v-else-if="product.calculated_discount">@{{ product.calculated_discount }}% OFF</span>
                             <span v-else>@lang('shop::app.components.products.card.sale')</span>
                         </p>
 
