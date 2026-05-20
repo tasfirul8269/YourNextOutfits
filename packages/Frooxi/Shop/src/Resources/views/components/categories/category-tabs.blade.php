@@ -1283,11 +1283,16 @@
         var isMobile = window.innerWidth <= 768;
         var img1 = p.base_image&&p.base_image.medium_image_url ? p.base_image.medium_image_url : '';
         var img2 = (p.images&&p.images[1]&&p.images[1].medium_image_url) ? p.images[1].medium_image_url : img1;
-        var url  = '/'+p.url_key, price=p.min_price||'';
+        var url  = '/'+p.url_key, price=p.price_html||p.min_price||'';
         var isSaleable=!!p.is_saleable;
         var cardId='pc-'+p.id;
         
-        var badge = p.is_new ? '<div style="position:absolute;top:10px;left:10px;z-index:4;background:#ef4444;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:9999px;font-family:Montserrat,sans-serif;letter-spacing:.3px;">New</div>' : '';
+        var badge = p.is_new ? '<div style="position:absolute;top:10px;left:10px;z-index:4;background:#1e3a8a;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:9999px;font-family:Montserrat,sans-serif;letter-spacing:.3px;">New</div>' : '';
+        if (p.on_sale || p.discount_percentage || p.flash_sale_discount || p.calculated_discount) {
+            var percent = p.flash_sale_discount || parseFloat(p.discount_percentage) || p.calculated_discount || '';
+            var text = percent ? percent + '% OFF' : 'SALE';
+            badge += '<div style="position:absolute;top:10px;right:10px;z-index:4;background:#ef4444;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:9999px;font-family:Montserrat,sans-serif;letter-spacing:.3px;">' + text + '</div>';
+        }
 
         var imgs = img1
             ? '<div style="position:relative;width:100%;aspect-ratio:2/3;overflow:hidden;">'
@@ -1331,7 +1336,7 @@
                 + '<div style="position:relative;border-radius:6px;overflow:hidden;background:#f9f9f9;">'+badge+imgs+cta+'</div>'
                 + '<div style="padding:6px 2px 0;">'
                 + '<p style="font-size:11px;font-weight:400;color:#111827;margin:0 0 3px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+esc(p.name)+'</p>'
-                + '<p style="font-size:12px;font-weight:600;color:#111;margin:0;">'+price+'</p>'
+                + '<div style="font-size:12px;font-weight:600;color:#111;margin:0;">'+price+'</div>'
                 + '</div></div>';
         }
 
@@ -1339,7 +1344,7 @@
             + '<div style="position:relative;border-radius:8px;overflow:hidden;background:#f9f9f9;">'+badge+imgs+cta+'</div>'
             + '<div style="padding:10px 2px 0;">'
             + '<p style="font-size:13px;font-weight:400;color:#111827;margin:0 0 4px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(p.name)+'</p>'
-            + '<p style="font-size:13px;color:#6b7280;margin:0;">'+price+'</p>'
+            + '<div style="font-size:13px;color:#111;margin:0;">'+price+'</div>'
             + '</div></div>';
     }
 
