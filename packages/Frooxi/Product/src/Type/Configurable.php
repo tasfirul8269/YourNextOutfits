@@ -404,28 +404,22 @@ class Configurable extends AbstractType
 
         if ($defaultVariant) {
             $regularPrice = core()->convertPrice($defaultVariant->price);
+            $finalPrice = $regularPrice;
 
             if ($this->haveDiscount()) {
                 $finalPrice = round($regularPrice * (1 - floatval($defaultVariant->discount_percentage) / 100), 4);
-
-                return [
-                    'regular' => [
-                        'price' => $regularPrice,
-                        'formatted_price' => core()->currency($regularPrice),
-                    ],
-                    'final' => [
-                        'price' => $finalPrice,
-                        'formatted_price' => core()->currency($finalPrice),
-                    ],
-                ];
-            } else {
-                return [
-                    'regular' => [
-                        'price' => $regularPrice,
-                        'formatted_price' => core()->currency($regularPrice),
-                    ],
-                ];
             }
+
+            return [
+                'regular' => [
+                    'price' => $regularPrice,
+                    'formatted_price' => core()->currency($regularPrice),
+                ],
+                'final' => [
+                    'price' => $finalPrice,
+                    'formatted_price' => core()->currency($finalPrice),
+                ],
+            ];
         }
 
         // Fallback
@@ -433,6 +427,10 @@ class Configurable extends AbstractType
 
         return [
             'regular' => [
+                'price' => $minPrice,
+                'formatted_price' => core()->currency($minPrice),
+            ],
+            'final' => [
                 'price' => $minPrice,
                 'formatted_price' => core()->currency($minPrice),
             ],

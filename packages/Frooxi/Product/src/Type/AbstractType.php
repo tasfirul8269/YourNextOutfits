@@ -741,22 +741,22 @@ abstract class AbstractType
         $regularPrice = core()->convertPrice($this->product->price);
         $discountPercentage = $this->product->discount_percentage;
 
-        $prices = [
+        $finalPrice = $regularPrice;
+        if (! empty($discountPercentage) && floatval($discountPercentage) > 0) {
+            $finalPrice = round($regularPrice * (1 - floatval($discountPercentage) / 100), 4);
+        }
+
+        return [
             'regular' => [
                 'price' => $regularPrice,
                 'formatted_price' => core()->currency($regularPrice),
             ],
-        ];
 
-        if (! empty($discountPercentage) && floatval($discountPercentage) > 0) {
-            $finalPrice = round($regularPrice * (1 - floatval($discountPercentage) / 100), 4);
-            $prices['final'] = [
+            'final' => [
                 'price' => $finalPrice,
                 'formatted_price' => core()->currency($finalPrice),
-            ];
-        }
-
-        return $prices;
+            ],
+        ];
     }
 
     /**
