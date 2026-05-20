@@ -185,9 +185,20 @@ class ProductController extends Controller
                 $price = $data['price'] ?? $product->price;
                 $data['special_price'] = $price * (1 - $data['flash_sale_discount'] / 100);
                 $data['visible_individually'] = 0;
+            } elseif (isset($data['discount_percentage']) && (float) $data['discount_percentage'] > 0) {
+                // Map standard discount_percentage to special_price for simple products
+                $product = $this->productRepository->find($id);
+                $price = $data['price'] ?? $product->price;
+                $data['special_price'] = round($price * (1 - (float) $data['discount_percentage'] / 100), 4);
+
+                if (! isset($data['visible_individually'])) {
+                    $data['visible_individually'] = 1;
+                }
             } else {
                 // If discount is removed or 0, restore visibility and clear special price
-                $data['visible_individually'] = 1;
+                if (! isset($data['visible_individually'])) {
+                    $data['visible_individually'] = 1;
+                }
                 $data['special_price'] = null;
                 $data['flash_sale_discount'] = 0;
             }
