@@ -361,7 +361,7 @@ class Configurable extends AbstractType
      */
     public function getDefaultVariant()
     {
-        $variants = $this->product->variants()->where('status', 1)->get();
+        $variants = $this->product->variants()->get();
         if ($variants->isEmpty()) {
             return null;
         }
