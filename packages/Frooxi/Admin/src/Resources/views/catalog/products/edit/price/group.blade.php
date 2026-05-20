@@ -21,6 +21,28 @@
         <x-admin::form.control-group.error control-name="price" />
     </x-admin::form.control-group>
 
+    <!-- Discount Percentage -->
+    <x-admin::form.control-group>
+        <x-admin::form.control-group.label>
+            Discount Percentage (%)
+        </x-admin::form.control-group.label>
+
+        <x-admin::form.control-group.control
+            type="number"
+            name="discount_percentage"
+            rules="min:0|max:100"
+            :value="old('discount_percentage') ?: ($product->discount_percentage ?? '')"
+            placeholder="e.g. 10"
+            label="Discount Percentage"
+        />
+
+        <x-admin::form.control-group.error control-name="discount_percentage" />
+        
+        <p class="mt-1 text-xs text-gray-500">
+            Enter a discount percentage to apply to the base price.
+        </p>
+    </x-admin::form.control-group>
+
     <!-- Flash Sale Discount -->
     @if (request()->get('flash_sale') || $product->getAttributeValue('flash_sale_discount'))
         <x-admin::form.control-group>
