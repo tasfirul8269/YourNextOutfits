@@ -75,6 +75,7 @@
                         v-if="product.on_sale"
                     >
                         <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
+                        <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
                         <span v-else>@lang('shop::app.components.products.card.sale')</span>
                     </p>
 
@@ -213,7 +214,9 @@
                         class="absolute top-5 inline-block rounded-[44px] bg-red-500 px-2.5 text-sm text-white ltr:left-5 max-sm:ltr:left-2 rtl:right-5"
                         v-if="product.on_sale"
                     >
-                        @lang('shop::app.components.products.card.sale')
+                        <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
+                        <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
+                        <span v-else>@lang('shop::app.components.products.card.sale')</span>
                     </p>
 
                     <p

@@ -1088,7 +1088,7 @@
                                                 </x-admin::form.control-group.label>
                     
                                                 <x-admin::form.control-group.control
-                                                    type="number"
+                                                    type="text"
                                                     name="discount_percentage"
                                                     ::rules="{decimal: true, min_value: 0, max_value: 100}"
                                                     ::value="variant.discount_percentage"

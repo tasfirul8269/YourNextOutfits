@@ -58,6 +58,7 @@ class ProductResource extends JsonResource
                 'total' => $this->reviewHelper->getTotalReviews($this),
             ],
             'flash_sale_discount' => $this->flash_sale_discount,
+            'discount_percentage' => $this->discount_percentage,
         ];
 
         return $data;

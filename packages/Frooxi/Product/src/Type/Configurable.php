@@ -216,7 +216,8 @@ class Configurable extends AbstractType
 
         // Convert discount_percentage → special_price for the variant
         if (! empty($data['discount_percentage']) && (float) $data['discount_percentage'] > 0) {
-            $data['special_price'] = round($data['price'] * (1 - (float) $data['discount_percentage'] / 100), 4);
+            $price = $data['price'] ?? 0;
+            $data['special_price'] = round((float) $price * (1 - (float) $data['discount_percentage'] / 100), 4);
         } else {
             $data['special_price'] = null;
         }
@@ -255,7 +256,8 @@ class Configurable extends AbstractType
 
         // Convert discount_percentage → special_price for the variant
         if (! empty($data['discount_percentage']) && (float) $data['discount_percentage'] > 0) {
-            $data['special_price'] = round($data['price'] * (1 - (float) $data['discount_percentage'] / 100), 4);
+            $price = $data['price'] ?? $variant->price;
+            $data['special_price'] = round((float) $price * (1 - (float) $data['discount_percentage'] / 100), 4);
         } else {
             $data['special_price'] = null;
         }
