@@ -27,6 +27,7 @@
         <title>{{ $title ?? '' }}</title>
 
         <link rel="icon" href="{{ asset('themes/shop/favicon_white.png') }}" type="image/png">
+        <link rel="apple-touch-icon" href="{{ asset('themes/shop/favicon_white.png') }}">
 
         <meta charset="UTF-8">
 
