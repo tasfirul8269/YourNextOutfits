@@ -254,9 +254,27 @@
 
                         this.childAttributes.unshift(attribute);
                     }
+
+                    this.$nextTick(() => {
+                        this.autoSelectFirstVariant();
+                    });
                 },
 
                 methods: {
+                    autoSelectFirstVariant() {
+                        let availableVariantIds = Object.keys(this.config.index);
+                        if (availableVariantIds.length === 0) return;
+
+                        let firstVariantId = availableVariantIds[0];
+                        let optionsToSelect = this.config.index[firstVariantId];
+
+                        this.childAttributes.forEach(attribute => {
+                            if (optionsToSelect[attribute.id]) {
+                                this.configure(attribute, optionsToSelect[attribute.id]);
+                            }
+                        });
+                    },
+
                     shouldRenderAsDropdown(attribute) {
                         return (! this.isColorAttribute(attribute))
                             && (! this.isSizeAttribute(attribute))

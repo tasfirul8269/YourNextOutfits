@@ -355,14 +355,80 @@ class Configurable extends AbstractType
     }
 
     /**
+     * Get default variant for pricing and discount display.
+     *
+     * @return \Frooxi\Product\Models\Product|null
+     */
+    public function getDefaultVariant()
+    {
+        $variants = $this->product->variants()->where('status', 1)->get();
+        if ($variants->isEmpty()) {
+            return null;
+        }
+
+        // Return first variant that has a discount
+        foreach ($variants as $variant) {
+            if ($variant->special_price > 0 && $variant->special_price < $variant->price) {
+                return $variant;
+            }
+        }
+
+        // If none has a discount, return the first one
+        return $variants->first();
+    }
+
+    /**
+     * Have special price.
+     *
+     * @param  int  $qty
+     * @return bool
+     */
+    public function haveDiscount($qty = null)
+    {
+        $defaultVariant = $this->getDefaultVariant();
+        if ($defaultVariant) {
+            return $defaultVariant->special_price > 0 && $defaultVariant->special_price < $defaultVariant->price;
+        }
+
+        return false;
+    }
+
+    /**
      * Get product prices.
      *
      * @return array
      */
     public function getProductPrices()
     {
-        $minPrice = $this->getMinimalPrice();
+        $defaultVariant = $this->getDefaultVariant();
 
+        if ($defaultVariant) {
+            $regularPrice = core()->convertPrice($defaultVariant->price);
+            
+            if ($this->haveDiscount()) {
+                $finalPrice = core()->convertPrice($defaultVariant->special_price);
+                return [
+                    'regular' => [
+                        'price' => $regularPrice,
+                        'formatted_price' => core()->currency($regularPrice),
+                    ],
+                    'final' => [
+                        'price' => $finalPrice,
+                        'formatted_price' => core()->currency($finalPrice),
+                    ],
+                ];
+            } else {
+                return [
+                    'regular' => [
+                        'price' => $regularPrice,
+                        'formatted_price' => core()->currency($regularPrice),
+                    ],
+                ];
+            }
+        }
+
+        // Fallback
+        $minPrice = $this->getMinimalPrice();
         return [
             'regular' => [
                 'price' => $minPrice,

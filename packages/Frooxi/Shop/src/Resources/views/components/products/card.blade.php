@@ -69,23 +69,26 @@
                 {!! view_render_event('frooxi.shop.components.products.card.average_ratings.after') !!}
 
                 <div class="pointer-events-none absolute inset-0">
-                    <!-- Product Sale Badge -->
-                    <p
-                        class="absolute top-3 z-10 inline-flex rounded-full bg-red-500 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm ltr:left-3 rtl:right-3"
-                        v-if="product.on_sale"
-                    >
-                        <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
-                        <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
-                        <span v-else>@lang('shop::app.components.products.card.sale')</span>
-                    </p>
+                    <!-- Badges -->
+                    <div class="absolute top-3 z-10 flex flex-col gap-2 ltr:left-3 rtl:right-3">
+                        <!-- Product Sale Badge -->
+                        <p
+                            class="inline-flex rounded-full bg-red-500 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm"
+                            v-if="product.on_sale"
+                        >
+                            <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
+                            <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
+                            <span v-else>@lang('shop::app.components.products.card.sale')</span>
+                        </p>
 
-                    <!-- Product New Badge -->
-                    <p
-                        class="absolute top-3 z-10 inline-flex rounded-full bg-navyBlue px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm ltr:left-3 rtl:right-3"
-                        v-else-if="product.is_new"
-                    >
-                        @lang('shop::app.components.products.card.new')
-                    </p>
+                        <!-- Product New Badge -->
+                        <p
+                            class="inline-flex rounded-full bg-navyBlue px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm"
+                            v-if="product.is_new"
+                        >
+                            @lang('shop::app.components.products.card.new')
+                        </p>
+                    </div>
 
                     <div class="pointer-events-auto absolute top-3 z-10 flex flex-col gap-2 opacity-100 transition-all duration-300 md:translate-x-2 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100 ltr:right-3 rtl:left-3">
                         {!! view_render_event('frooxi.shop.components.products.card.wishlist_option.before') !!}
@@ -210,21 +213,23 @@
                 {!! view_render_event('frooxi.shop.components.products.card.image.after') !!}
 
                 <div class="action-items bg-black">
-                    <p
-                        class="absolute top-5 inline-block rounded-[44px] bg-red-500 px-2.5 text-sm text-white ltr:left-5 max-sm:ltr:left-2 rtl:right-5"
-                        v-if="product.on_sale"
-                    >
-                        <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
-                        <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
-                        <span v-else>@lang('shop::app.components.products.card.sale')</span>
-                    </p>
+                    <div class="absolute top-5 flex flex-col items-start gap-2 ltr:left-5 max-sm:ltr:left-2 rtl:right-5">
+                        <p
+                            class="inline-block rounded-[44px] bg-red-500 px-2.5 text-sm text-white"
+                            v-if="product.on_sale"
+                        >
+                            <span v-if="product.flash_sale_discount">@{{ product.flash_sale_discount }}% OFF</span>
+                            <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
+                            <span v-else>@lang('shop::app.components.products.card.sale')</span>
+                        </p>
 
-                    <p
-                        class="absolute top-5 inline-block rounded-[44px] bg-navyBlue px-2.5 text-sm text-white ltr:left-5 max-sm:ltr:left-2 rtl:right-5"
-                        v-else-if="product.is_new"
-                    >
-                        @lang('shop::app.components.products.card.new')
-                    </p>
+                        <p
+                            class="inline-block rounded-[44px] bg-navyBlue px-2.5 text-sm text-white"
+                            v-if="product.is_new"
+                        >
+                            @lang('shop::app.components.products.card.new')
+                        </p>
+                    </div>
 
                     <div class="opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100 max-sm:opacity-100">
 
