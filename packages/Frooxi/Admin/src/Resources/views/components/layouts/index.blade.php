@@ -11,8 +11,8 @@
 
     <title>{{ $title ?? '' }}</title>
 
-    <link rel="icon" href="{{ asset('themes/shop/favicon_white.png') }}" type="image/png">
-    <link rel="apple-touch-icon" href="{{ asset('themes/shop/favicon_white.png') }}">
+    <link rel="icon" href="{{ asset('themes/shop/favicon_white.png?v=2') }}" type="image/png">
+    <link rel="apple-touch-icon" href="{{ asset('themes/shop/favicon_white.png?v=2') }}">
 
     <meta charset="UTF-8">
 
