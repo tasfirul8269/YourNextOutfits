@@ -52,6 +52,7 @@ class Configurable extends AbstractType
         'short_description',
         'description',
         'price',
+        'special_price',
         'weight',
         'status',
         'tax_category_id',
@@ -213,6 +214,13 @@ class Configurable extends AbstractType
             'inventories' => [],
         ], $data);
 
+        // Convert discount_percentage → special_price for the variant
+        if (! empty($data['discount_percentage']) && (float) $data['discount_percentage'] > 0) {
+            $data['special_price'] = round($data['price'] * (1 - (float) $data['discount_percentage'] / 100), 4);
+        } else {
+            $data['special_price'] = null;
+        }
+
         $variant = parent::create([
             'type' => 'simple',
             'sku' => $sku,
@@ -244,6 +252,13 @@ class Configurable extends AbstractType
         $variant = $this->productRepository->find($id);
 
         $variant->update(['sku' => $data['sku']]);
+
+        // Convert discount_percentage → special_price for the variant
+        if (! empty($data['discount_percentage']) && (float) $data['discount_percentage'] > 0) {
+            $data['special_price'] = round($data['price'] * (1 - (float) $data['discount_percentage'] / 100), 4);
+        } else {
+            $data['special_price'] = null;
+        }
 
         $this->attributeValueRepository->saveValues($data, $variant, $this->fillableVariantAttributes);
 
