@@ -117,15 +117,23 @@ abstract class AbstractType
         // $rulePrice = $this->getCatalogRulePrice();
         $rulePrice = null;
 
+        $discountPercentage = (float) $this->product->discount_percentage;
+        $hasDiscountPercentage = $discountPercentage > 0 && $discountPercentage <= 100;
+        
+        $specialPrice = $this->product->special_price;
+        if ($hasDiscountPercentage) {
+            $specialPrice = $this->product->price - ($this->product->price * $discountPercentage / 100);
+        }
+
         if (
-            empty($this->product->special_price)
+            empty($specialPrice)
             && empty($rulePrice)
             && $customerGroupPrice == $this->product->price
         ) {
             return $this->product->price;
         }
 
-        if (! (float) $this->product->special_price) {
+        if (! (float) $specialPrice) {
             if ($rulePrice) {
                 $discountedPrice = min($rulePrice->price, $this->product->price);
             } else {
@@ -134,23 +142,25 @@ abstract class AbstractType
         } else {
             if ($rulePrice) {
                 if (
+                    $hasDiscountPercentage ||
                     core()->isChannelDateInInterval(
                         $this->product->special_price_from,
                         $this->product->special_price_to
                     )
                 ) {
-                    $discountedPrice = min($rulePrice->price, $this->product->special_price);
+                    $discountedPrice = min($rulePrice->price, $specialPrice);
                 } else {
                     $discountedPrice = $rulePrice->price;
                 }
             } else {
                 if (
+                    $hasDiscountPercentage ||
                     core()->isChannelDateInInterval(
                         $this->product->special_price_from,
                         $this->product->special_price_to
                     )
                 ) {
-                    $discountedPrice = $this->product->special_price;
+                    $discountedPrice = $specialPrice;
                 } else {
                     $discountedPrice = $this->product->price;
                 }
