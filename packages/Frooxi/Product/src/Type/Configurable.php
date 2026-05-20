@@ -56,6 +56,7 @@ class Configurable extends AbstractType
         'weight',
         'status',
         'tax_category_id',
+        'discount_percentage',
     ];
 
     /**
@@ -252,7 +253,14 @@ class Configurable extends AbstractType
     {
         $variant = $this->productRepository->find($id);
 
+        // Ensure SKU is present to avoid undefined index errors
+        $data['sku'] = $data['sku'] ?? $variant->sku;
         $variant->update(['sku' => $data['sku']]);
+
+        // Ensure fillable variant attributes are loaded
+        if (! $this->fillableVariantAttributes) {
+            $this->fillableVariantAttributes = $this->attributeRepository->findWhereIn('code', $this->fillableVariantAttributeCodes);
+        }
 
         // Convert discount_percentage → special_price for the variant
         if (! empty($data['discount_percentage']) && (float) $data['discount_percentage'] > 0) {
