@@ -189,6 +189,10 @@
                             @continue
                         @endif
 
+                        @if ($group->code === 'price' && $product->type === 'configurable')
+                            @continue
+                        @endif
+
                         @if (
                             $group->code === 'inventories' 
                             && (
