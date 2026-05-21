@@ -80,20 +80,21 @@
                             <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
                             <span v-else>@lang('shop::app.components.products.card.sale')</span>
                         </p>
+                    </div>
 
+                    <div class="pointer-events-none absolute top-3 z-10 flex flex-col gap-2 ltr:right-3 ltr:items-end rtl:left-3 rtl:items-start">
                         <!-- Product New Badge -->
                         <p
-                            class="inline-flex rounded-full bg-navyBlue px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm"
+                            class="pointer-events-auto inline-flex rounded-full bg-navyBlue px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm"
                             v-if="product.is_new"
                         >
                             @lang('shop::app.components.products.card.new')
                         </p>
-                    </div>
 
-                    <div class="pointer-events-auto absolute top-3 z-10 flex flex-col gap-2 opacity-100 transition-all duration-300 md:translate-x-2 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100 ltr:right-3 rtl:left-3">
-                        {!! view_render_event('frooxi.shop.components.products.card.wishlist_option.before') !!}
+                        <div class="pointer-events-auto flex flex-col gap-2 opacity-100 transition-all duration-300 md:translate-x-2 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100">
+                            {!! view_render_event('frooxi.shop.components.products.card.wishlist_option.before') !!}
 
-                        @if (core()->getConfigData('customer.settings.wishlist.wishlist_option'))
+                            @if (core()->getConfigData('customer.settings.wishlist.wishlist_option'))
                             <span
                                 class="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200/80 bg-white/95 text-lg text-zinc-700 shadow-sm backdrop-blur"
                                 role="button"
@@ -222,22 +223,22 @@
                             <span v-else-if="product.discount_percentage">@{{ parseFloat(product.discount_percentage) }}% OFF</span>
                             <span v-else>@lang('shop::app.components.products.card.sale')</span>
                         </p>
+                    </div>
 
+                    <div class="pointer-events-none absolute top-5 flex flex-col gap-2 ltr:right-5 ltr:items-end rtl:left-5 rtl:items-start">
                         <p
-                            class="inline-block rounded-[44px] bg-navyBlue px-2.5 text-sm text-white"
+                            class="pointer-events-auto inline-block rounded-[44px] bg-navyBlue px-2.5 text-sm text-white"
                             v-if="product.is_new"
                         >
                             @lang('shop::app.components.products.card.new')
                         </p>
-                    </div>
 
-                    <div class="opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100 max-sm:opacity-100">
+                        <div class="pointer-events-auto opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100 max-sm:opacity-100">
+                            {!! view_render_event('frooxi.shop.components.products.card.wishlist_option.before') !!}
 
-                        {!! view_render_event('frooxi.shop.components.products.card.wishlist_option.before') !!}
-
-                        @if (core()->getConfigData('customer.settings.wishlist.wishlist_option'))
-                            <span
-                                class="absolute top-5 flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-md bg-white text-2xl ltr:right-5 rtl:left-5"
+                            @if (core()->getConfigData('customer.settings.wishlist.wishlist_option'))
+                                <span
+                                    class="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-md bg-white text-2xl"
                                 role="button"
                                 aria-label="@lang('shop::app.components.products.card.add-to-wishlist')"
                                 tabindex="0"
