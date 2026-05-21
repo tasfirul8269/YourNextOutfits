@@ -1287,11 +1287,11 @@
         var isSaleable=!!p.is_saleable;
         var cardId='pc-'+p.id;
         
-        var badge = p.is_new ? '<div style="position:absolute;top:10px;left:10px;z-index:4;background:#1e3a8a;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:9999px;font-family:Montserrat,sans-serif;letter-spacing:.3px;">New</div>' : '';
+        var badge = p.is_new ? '<div style="position:absolute;top:10px;right:10px;z-index:4;background:#1e3a8a;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:9999px;font-family:Montserrat,sans-serif;letter-spacing:.3px;">New</div>' : '';
         if (p.on_sale || p.discount_percentage || p.flash_sale_discount) {
             var percent = p.flash_sale_discount || parseFloat(p.discount_percentage) || '';
             var text = percent ? percent + '% OFF' : 'SALE';
-            badge += '<div style="position:absolute;top:10px;right:10px;z-index:4;background:#ef4444;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:9999px;font-family:Montserrat,sans-serif;letter-spacing:.3px;">' + text + '</div>';
+            badge += '<div style="position:absolute;top:10px;left:10px;z-index:4;background:#ef4444;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:9999px;font-family:Montserrat,sans-serif;letter-spacing:.3px;">' + text + '</div>';
         }
 
         var priceHtml = '';
